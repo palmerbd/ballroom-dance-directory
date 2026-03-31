@@ -48,8 +48,7 @@ const STYLE_MAP: Record<string, DanceStyle> = {
   tango:       "tango",
   waltz:       "waltz",
   foxtrot:     "foxtrot",
-  cha_cha:     "cha_cha",
-  rumba:       "rumba",
+  // Note: cha_cha and rumba are not valid ACF checkbox values in WP
 };
 
 // ── Raw WP REST post → Studio ─────────────────────────────────────────────────

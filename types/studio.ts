@@ -124,7 +124,7 @@ export const STYLE_LABELS: Record<DanceStyle, string> = {
 
 export const DANCE_STYLES: DanceStyle[] = [
   "ballroom", "latin", "tango", "salsa", "swing",
-  "waltz", "foxtrot", "cha_cha", "rumba", "wedding_dance", "competition"
+  "waltz", "foxtrot", "wedding_dance", "competition"
 ];
 
 export const AMENITY_LABELS: Record<string, string> = {

@@ -6,7 +6,7 @@ import { StudioSearch } from "./StudioSearch";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Find Private Dance Studios Near You | Ballroom Dance Directory",
+  title: "Find Private Dance Studios Near You",
   description:
     "Browse 100+ private dance studios across America. Filter by city, dance style, and rating. Fred Astaire, Arthur Murray, Dance With Me, and elite independent studios offering ballroom, Latin, tango, and wedding dance lessons.",
 };
