@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   StudioCard,
@@ -149,12 +150,21 @@ function StudioListCard({ studio }: { studio: StudioCard }) {
 // ── Main export ───────────────────────────────────────────────────────────────
 
 export function StudioSearch({ studios }: { studios: StudioCard[] }) {
-  const [query,     setQuery]     = useState("");
-  const [city,      setCity]      = useState("");
-  const [style,     setStyle]     = useState("");
+  const searchParams = useSearchParams();
+
+  const [query,     setQuery]     = useState(searchParams.get("q") ?? "");
+  const [city,      setCity]      = useState(searchParams.get("city") ?? "");
+  const [style,     setStyle]     = useState(searchParams.get("style") ?? "");
   const [chain,     setChain]     = useState("");
   const [minRating, setMinRating] = useState(0);
   const [sortBy,    setSortBy]    = useState("rating");
+
+  // Sync state if params change (e.g. browser back/forward)
+  useEffect(() => {
+    setQuery(searchParams.get("q") ?? "");
+    setCity(searchParams.get("city") ?? "");
+    setStyle(searchParams.get("style") ?? "");
+  }, [searchParams]);
 
   const hasFilters = !!(query || city || style || chain || minRating);
 

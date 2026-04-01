@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { getAllStudios } from "@/lib/wordpress";
 import { StudioSearch } from "./StudioSearch";
 
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function StudiosPage() {
-  const studios = await getAllStudios(100);
+  const studios = await getAllStudios(800);
 
   return (
     <main>
@@ -47,7 +48,9 @@ export default async function StudiosPage() {
       </section>
 
       {/* ── Search + filter + grid (client component) ───────────────────── */}
-      <StudioSearch studios={studios} />
+      <Suspense fallback={<div className="py-20 text-center text-gray-400">Loading studios…</div>}>
+        <StudioSearch studios={studios} />
+      </Suspense>
 
       {/* ── CTA banner ──────────────────────────────────────────────────── */}
       <section className="py-16 px-6 bg-white border-t border-gray-200">

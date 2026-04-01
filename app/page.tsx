@@ -42,9 +42,9 @@ export default function HomePage() {
             Browse Fred Astaire, Arthur Murray, Dance With Me, and elite independent
             studios offering private instruction across the United States.
           </p>
-          <form action="/search" method="GET"
+          <form action="/studios" method="GET"
             className="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto">
-            <input type="text" name="city" placeholder="City or ZIP code"
+            <input type="text" name="q" placeholder="City or dance style"
               className="flex-1 px-5 py-4 rounded-lg text-gray-900 text-base bg-white
                          border-2 border-transparent focus:outline-none focus:border-yellow-400
                          placeholder:text-gray-400" />

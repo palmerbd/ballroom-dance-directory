@@ -71,11 +71,11 @@ export default function ContactPage() {
               We respond to all inquiries within 2 business days.
             </p>
             <a
-              href="mailto:bpalmer@abilenewebsitedesign.com"
+              href="mailto:info@ballroomdancedirectory.com"
               className="inline-block px-8 py-4 rounded-lg font-bold text-gray-900 transition-all hover:brightness-110"
               style={{ background: "linear-gradient(135deg, #b8922a, #e8c560)" }}
             >
-              bpalmer@abilenewebsitedesign.com
+              info@ballroomdancedirectory.com
             </a>
             <p className="mt-6 text-sm text-gray-400">
               For DMCA takedown notices, please include all required information as specified in our{" "}

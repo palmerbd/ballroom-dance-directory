@@ -145,7 +145,7 @@ export default function TermsPage() {
                 <li>Your electronic or physical signature</li>
               </ul>
               <p className="mt-3">
-                DMCA Agent contact: bpalmer@abilenewebsitedesign.com
+                DMCA Agent contact: info@ballroomdancedirectory.com
               </p>
             </section>
 
