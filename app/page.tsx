@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { DANCE_STYLES, STYLE_LABELS } from "@/types/studio";
+import { getAllStudios } from "@/lib/wordpress";
 
 export const revalidate = 86400;
 
@@ -19,7 +20,11 @@ const FEATURED_STYLES = [
   { key: "competition",   label: "Competition",    desc: "Train to compete and win" },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const studios = await getAllStudios();
+  const studioCount = studios.length;
+  const countLabel = studioCount > 0 ? `${studioCount.toLocaleString()}+` : "900+";
+
   return (
     <main>
       {/* Hero */}
@@ -63,7 +68,7 @@ export default function HomePage() {
               Find Studios
             </button>
           </form>
-          <p className="mt-6 text-white/40 text-sm">500+ elite studios listed across the United States</p>
+          <p className="mt-6 text-white/40 text-sm">{countLabel} elite studios listed across the United States</p>
         </div>
       </section>
 
