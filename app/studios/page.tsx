@@ -4,16 +4,33 @@ import { Suspense } from "react";
 import { getAllStudios } from "@/lib/wordpress";
 import { StudioSearch } from "./StudioSearch";
 
-export const revalidate = 1800; // 30-min ISR — keeps studio data reasonably fresh
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Find Private Dance Studios Near You",
   description:
-    "Browse 100+ private dance studios across America. Filter by city, dance style, and rating. Fred Astaire, Arthur Murray, Dance With Me, and elite independent studios offering ballroom, Latin, tango, and wedding dance lessons.",
+    "Browse 900+ private dance studios across America. Filter by city, dance style, and rating. Fred Astaire, Arthur Murray, Dance With Me, and elite independent studios offering ballroom, Latin, tango, and wedding dance lessons.",
 };
 
+// ── Loading skeleton shown while useSearchParams resolves ─────────────────────
+
+function StudioSearchFallback() {
+  return (
+    <div className="bg-white border-b border-gray-200 sticky top-0 z-20 shadow-sm">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 space-y-3">
+        <div className="h-10 bg-gray-100 rounded-xl animate-pulse" />
+        <div className="flex gap-2">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className="h-9 w-28 bg-gray-100 rounded-lg animate-pulse" />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default async function StudiosPage() {
-  const studios = await getAllStudios(100);
+  const studios = await getAllStudios();
 
   return (
     <main>
@@ -47,8 +64,8 @@ export default async function StudiosPage() {
         </div>
       </section>
 
-      {/* ── Search + filter + grid (client component) ───────────────────── */}
-      <Suspense fallback={<div className="py-20 text-center text-gray-400">Loading studios…</div>}>
+      {/* ── Search + filter + grid (Suspense required for useSearchParams) ── */}
+      <Suspense fallback={<StudioSearchFallback />}>
         <StudioSearch studios={studios} />
       </Suspense>
 
