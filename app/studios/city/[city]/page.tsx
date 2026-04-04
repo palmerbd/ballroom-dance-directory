@@ -7,15 +7,11 @@ import { getCityConfig } from "@/lib/neighborhoods";
 
 export const revalidate = 3600;
 
-// ── Static params ─────────────────────────────────────────────────────────────
-
 export async function generateStaticParams() {
   const all = await getAllStudios(500);
   const cities = [...new Set(all.map((s) => s.city.toLowerCase().replace(/\s+/g, "-")))];
   return cities.map((city) => ({ city }));
 }
-
-// ── Metadata ──────────────────────────────────────────────────────────────────
 
 export async function generateMetadata({
   params,
@@ -36,8 +32,6 @@ export async function generateMetadata({
     },
   };
 }
-
-// ── Sub-components ────────────────────────────────────────────────────────────
 
 function Stars({ rating }: { rating: number }) {
   const full  = Math.floor(rating);
@@ -128,32 +122,33 @@ function StudioListCard({ studio }: { studio: StudioCard }) {
   );
 }
 
-// ── City SEO content map ──────────────────────────────────────────────────────
-
 const CITY_CONTENT: Record<string, { intro: string; tip: string }> = {
-  "los-angeles": {
-    intro: "Los Angeles is home to a thriving private dance scene — from Hollywood-adjacent ballrooms to beachside Latin studios in Santa Monica. Whether you're preparing for a wedding, competition, or just want to move with more confidence, LA's elite instructors bring world-class technique to every session.",
-    tip: "Many LA studios offer flexible scheduling and package deals. Ask about intro lesson specials to find the right fit before committing.",
-  },
-  "chicago": {
-    intro: "Chicago's dance studio scene reflects the city's deep artistic roots — from Magnificent Mile ballrooms to neighborhood gems in Lincoln Park and the South Loop. The city's diverse cultural fabric shows in the range of styles offered, with everything from competitive ballroom to Afro-Cuban rhythms.",
-    tip: "Chicago winters mean studios can get booked quickly in January and February as people pursue indoor hobbies. Book ahead for prime evening slots.",
-  },
-  "dallas": {
-    intro: "Dallas has a passionate dance community built around both the social scene and competitive circuit. From classic Texas Two-Step to sophisticated ballroom, Lone Star City studios offer world-class private instruction with Southern hospitality.",
-    tip: "Dallas studios often specialize in either social or competitive dancing — ask upfront which direction your instructor leans to make sure it aligns with your goals.",
-  },
-  "miami": {
-    intro: "Miami is the Latin dance capital of the United States. With deep Cuban, Colombian, and Caribbean cultural roots, the city's private dance studios offer authentic instruction in Salsa, Mambo, Bachata, and beyond — often from native instructors who grew up in these traditions.",
-    tip: "Many Miami studios stay open late and can accommodate evening sessions after 8pm. Mention your schedule when booking and they'll often accommodate.",
-  },
-  "houston": {
-    intro: "Houston's remarkable cultural diversity makes it one of the most eclectic dance cities in America. From polished River Oaks ballet studios to inclusive Montrose neighborhood spaces, Houston offers private dance instruction across virtually every style and budget level.",
-    tip: "Houston traffic can be brutal. Many studios near the Galleria or Montrose offer dedicated parking or are accessible by Metro Rail — factor this into your studio choice.",
-  },
+  "los-angeles": { intro: "Los Angeles is home to a thriving private dance scene — from Hollywood-adjacent ballrooms to beachside Latin studios in Santa Monica. Whether you're preparing for a wedding, competition, or just want to move with more confidence, LA's elite instructors bring world-class technique to every session.", tip: "Many LA studios offer flexible scheduling and package deals. Ask about intro lesson specials to find the right fit before committing." },
+  "chicago": { intro: "Chicago's dance studio scene reflects the city's deep artistic roots — from Magnificent Mile ballrooms to neighborhood gems in Lincoln Park and the South Loop. The city's diverse cultural fabric shows in the range of styles offered, with everything from competitive ballroom to Afro-Cuban rhythms.", tip: "Chicago winters mean studios can get booked quickly in January and February as people pursue indoor hobbies. Book ahead for prime evening slots." },
+  "dallas": { intro: "Dallas has a passionate dance community built around both the social scene and competitive circuit. From classic Texas Two-Step to sophisticated ballroom, Lone Star City studios offer world-class private instruction with Southern hospitality.", tip: "Dallas studios often specialize in either social or competitive dancing — ask upfront which direction your instructor leans to make sure it aligns with your goals." },
+  "miami": { intro: "Miami is the Latin dance capital of the United States. With deep Cuban, Colombian, and Caribbean cultural roots, the city's private dance studios offer authentic instruction in Salsa, Mambo, Bachata, and beyond — often from native instructors who grew up in these traditions.", tip: "Many Miami studios stay open late and can accommodate evening sessions after 8pm. Mention your schedule when booking and they'll often accommodate." },
+  "houston": { intro: "Houston's remarkable cultural diversity makes it one of the most eclectic dance cities in America. From polished River Oaks ballet studios to inclusive Montrose neighborhood spaces, Houston offers private dance instruction across virtually every style and budget level.", tip: "Houston traffic can be brutal. Many studios near the Galleria or Montrose offer dedicated parking or are accessible by Metro Rail — factor this into your studio choice." },
+  "new-york-city": { intro: "New York City's dance studio landscape is unmatched in depth and prestige. From Lincoln Center–adjacent ballrooms on the Upper West Side to intimate salons in Greenwich Village, NYC attracts world-champion instructors and a student body that includes Broadway performers, socialites, and passionate beginners alike.", tip: "NYC studios fill up fast, especially on evenings and weekends. Many top studios offer dedicated beginner tracks — don't be intimidated to book even if you have zero experience." },
+  "new-york": { intro: "New York's dance scene spans every borough — from polished Manhattan ballrooms to neighborhood studios in Brooklyn and Queens offering everything from Argentine tango to West African dance. Whatever style you're drawn to, New York has a world-class instructor who specializes in it.", tip: "Subway access varies by neighborhood — confirm the studio's closest train stop when booking, especially for evening classes when Ubers surge." },
+  "atlanta": { intro: "Atlanta's dance scene punches well above its weight. The city's vibrant arts community and proximity to a world-class film and entertainment industry has cultivated exceptional talent across ballroom, Latin, and contemporary styles. Buckhead and Midtown are the two primary dance corridors.", tip: "Many Atlanta studios participate in the competitive ballroom circuit and can prepare you for showcases even as a beginner. Mention your goals early so they can match you to the right instructor." },
+  "seattle": { intro: "Seattle's dance community thrives in the spaces between its coffee shop culture and tech-industry wealth. From Capitol Hill swing dancing venues to Bellevue ballrooms, the Pacific Northwest offers a uniquely welcoming private lesson environment with instructors who emphasize individuality and fun.", tip: "Seattle rain means indoor activities surge in fall and winter. Studios in Capitol Hill, Ballard, and Bellevue tend to book faster November through March — plan ahead." },
+  "denver": { intro: "Denver's active, outdoorsy population brings exceptional energy to the ballroom floor. The Mile High City has cultivated a competitive dance scene anchored by Arthur Murray and Fred Astaire franchises, alongside passionate independent studios that reflect Colorado's pioneering spirit.", tip: "Denver studios often host monthly social dances where you can practice between lessons and meet other students. Ask your studio about their social calendar — it's one of Denver's best-kept dance secrets." },
+  "las-vegas": { intro: "Las Vegas is a professional dance hub hiding in plain sight. Behind the neon, the city employs thousands of professional dancers for shows, events, and casinos — and many of them teach private lessons on the side. You're often just one studio visit away from learning from a Cirque du Soleil veteran.", tip: "Vegas studios understand unpredictable schedules — many offer late-night appointments and weekend slots that most cities never see. Don't assume you can't fit lessons into a Vegas lifestyle." },
+  "phoenix": { intro: "Phoenix's sprawling Sunbelt layout means dance studios are spread across the Valley of the Sun — from Scottsdale's luxury ballrooms to Mesa and Tempe studios that serve ASU's student population. The dry desert heat makes Phoenix studios popular year-round with climate-controlled facilities.", tip: "Scottsdale tends to have the highest concentration of upscale private lesson studios in the Phoenix metro. If you're in Chandler, Gilbert, or Tempe, ask about satellite locations or traveling instructors." },
+  "minneapolis": { intro: "Minneapolis is a hidden gem in the American dance world. The Twin Cities arts community — one of the most vibrant per capita in the country — has seeded exceptional ballroom and Latin studios throughout the metro. Expect rigorous training and a community that takes the craft seriously.", tip: "Minnesota winters push dance indoors in a big way. Studios in Minneapolis and St. Paul tend to see a spike in new students every October — book your intro lesson before the seasonal rush." },
+  "nashville": { intro: "Nashville's rise as a national destination city has brought a dance studio boom. Beyond country line dancing, Music City has cultivated serious ballroom and Latin instruction, with studios drawing from the city's deep pool of musically sophisticated residents who bring rhythm to everything they do.", tip: "Nashville's wedding industry is enormous — many studios run dedicated wedding dance packages that include choreography and rehearsal coaching. Worth asking even if you're not planning a wedding." },
+  "boston": { intro: "Boston's world-class university ecosystem keeps the dance scene perpetually refreshed with ambitious students and faculty. From Back Bay ballrooms to Cambridge studios catering to the MIT and Harvard communities, Boston offers private dance instruction at a consistently high academic standard.", tip: "Parking in Boston is notoriously difficult. Prioritize studios near the T — especially the Green Line and Red Line corridors — for the most convenient access." },
+  "san-diego": { intro: "San Diego's year-round sunshine and laid-back beach culture create an infectious enthusiasm for social dance. The city's private studio scene reflects this warmth — instructors tend to emphasize enjoyment and confidence over rigid technique, making San Diego an excellent place for first-time dancers.", tip: "San Diego studios in the Gaslamp Quarter and Hillcrest neighborhoods often partner with local Latin dance venues. Ask your instructor about complimentary social dance tickets — it's a great way to practice." },
+  "portland": { intro: "Portland's fiercely independent creative culture has produced a dance studio scene unlike any other. Alongside national chains, the city hosts a constellation of independent instructors — many of them competition champions who chose Oregon's quality of life over the ballroom circuit. Expect creativity, warmth, and no pretension.", tip: "Portland studios tend to be smaller and more intimate than those in larger cities. The upside is more personal attention. The downside is availability — popular instructors book weeks in advance." },
+  "san-antonio": { intro: "San Antonio's rich Hispanic heritage infuses its dance scene with authentic Latin flair. Studios here offer some of the most genuine instruction in Salsa, Cumbia, and Bachata you'll find in the country, alongside polished ballroom programs shaped by the city's military and upscale social culture.", tip: "San Antonio's dance community is tight-knit and welcoming to newcomers. Studios often host free demo nights — a great way to watch instructors before booking a private lesson." },
+  "austin": { intro: "Austin's explosive growth has brought world-class dance instruction to the Live Music Capital. From East Austin Latin studios to Westlake ballrooms catering to tech executives, the city's dance scene is as eclectic as its music scene — and expanding fast.", tip: "Austin's traffic has become Houston-level bad on major corridors. Studios near South Congress, East Cesar Chavez, or the Domain tend to have the best parking and access from multiple sides of town." },
+  "tampa": { intro: "Tampa's Gulf Coast energy and strong Cuban heritage make it one of Florida's most dynamic dance cities. South Tampa and Hyde Park are home to upscale private lesson studios, while Ybor City's Latin roots give the city an authentic connection to the rhythms at the heart of competitive ballroom.", tip: "Tampa's dance community regularly produces national-level competitors. Even recreational students benefit from this — studios here maintain high standards that accelerate your progress." },
+  "orlando": { intro: "Orlando's tourism industry draws professional dancers from around the world, and many of them teach private lessons between gigs at Walt Disney World, Universal, and the city's show venues. You're likely to find instructors here with performance résumés unmatched in any other mid-size city.", tip: "Many Orlando studios offer accelerated programs for visitors — 3-day or week-long intensives are common. If you're in town short-term, ask about crash-course options." },
+  "frisco": { intro: "Frisco's rapid growth has brought first-rate private dance studios to this Dallas suburb. With a young, affluent population and strong school arts programs, Frisco has become a serious training ground for competitive ballroom — particularly youth dancers working toward national titles.", tip: "Frisco studios often offer family packages and youth lesson programs. If you have children interested in competitive dance, start the conversation early — waitlists form for top junior instructors." },
+  "plano": { intro: "Plano's sophisticated suburban community supports a polished dance studio scene that rivals many larger cities. With a diverse international community and strong corporate culture that values social polish, Plano studios attract students who want high-quality instruction without the drive into Dallas proper.", tip: "Plano is home to several corporate headquarters — many studios offer lunch-hour private lessons for working professionals. Ask about midday availability." },
+  "scottsdale": { intro: "Scottsdale's luxury market has cultivated the finest private dance studios in the Phoenix metropolitan area. Studios here attract an upscale clientele that expects premium instruction, top-tier facilities with sprung floors, and instructors with national competition credentials.", tip: "Snowbirds arrive in Scottsdale in October and leave in April. If you're a year-round resident, winter months may require earlier booking as studios fill with seasonal students." },
+  "bellevue": { intro: "Bellevue's tech-wealth demographic has created a demand for high-quality, sophisticated private dance instruction. Studios here cater to busy professionals and competitive students, offering premium instruction in ballroom, Latin, and wedding dance with flexible scheduling to accommodate demanding careers.", tip: "Bellevue studios are significantly less expensive than comparable Manhattan or San Francisco studios — and the instruction quality is equal. If you're new to the area from a coastal city, you'll be pleasantly surprised." },
 };
-
-// ── Page ──────────────────────────────────────────────────────────────────────
 
 export default async function CityPage({
   params,
@@ -171,7 +166,16 @@ export default async function CityPage({
     .filter((s) => s.rating)
     .reduce((sum, s) => sum + (s.rating || 0), 0) / studios.filter((s) => s.rating).length;
 
-  // Schema.org for city page
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.ballroomdancedirectory.com" },
+      { "@type": "ListItem", "position": 2, "name": "Studios", "item": "https://www.ballroomdancedirectory.com/studios" },
+      { "@type": "ListItem", "position": 3, "name": `Dance Studios in ${cityName}`, "item": `https://www.ballroomdancedirectory.com/studios/city/${city}` },
+    ],
+  };
+
   const schemaOrg = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -186,14 +190,15 @@ export default async function CityPage({
     })),
   };
 
-  // Neighborhood config for sidebar
-  const cityConf = getCityConfig(city);
-
   return (
     <main>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
       {/* Hero */}
@@ -202,7 +207,6 @@ export default async function CityPage({
         style={{ background: "linear-gradient(135deg, #0c1428 0%, #1a2d5a 100%)" }}
       >
         <div className="max-w-5xl mx-auto">
-          {/* Breadcrumb */}
           <nav className="text-sm mb-6">
             <Link href="/" className="text-white/50 hover:text-white transition-colors">Home</Link>
             <span className="text-white/30 mx-2">/</span>
@@ -220,7 +224,6 @@ export default async function CityPage({
             {avgRating > 0 && ` · Avg. rating ${avgRating.toFixed(1)}★`}
           </p>
 
-          {/* Stats pills */}
           <div className="flex flex-wrap gap-3">
             <span className="px-4 py-2 rounded-full text-sm font-semibold bg-white/10 text-white/80">
               🎵 {studios.length} Studios
@@ -239,7 +242,6 @@ export default async function CityPage({
       <div className="max-w-5xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-          {/* Studio grid */}
           <div className="lg:col-span-2">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               {studios.map((studio) => (
@@ -248,10 +250,8 @@ export default async function CityPage({
             </div>
           </div>
 
-          {/* Sidebar */}
           <div className="space-y-6">
 
-            {/* City intro */}
             {cityContent && (
               <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
                 <h2 className="font-display font-bold text-gray-900 text-lg mb-3">
@@ -267,38 +267,52 @@ export default async function CityPage({
               </div>
             )}
 
-            {/* Neighborhoods in this city */}
-            {cityConf && cityConf.neighborhoods.length > 0 && (
-              <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-                <h3 className="font-display font-bold text-gray-900 text-base mb-3">
-                  Browse by Neighborhood
-                </h3>
-                <div className="space-y-0.5">
-                  {cityConf.neighborhoods.map((n) => (
-                    <Link
-                      key={n.slug}
-                      href={`/studios/city/${city}/${n.slug}`}
-                      className="flex items-center justify-between py-2 px-3 rounded-lg text-sm
-                                 text-gray-700 hover:bg-yellow-50 hover:text-yellow-800 transition-colors"
-                    >
-                      <span>{n.name}</span>
-                      <span className="text-gray-300">→</span>
-                    </Link>
-                  ))}
+            {(() => {
+              const cityConf = getCityConfig(city);
+              if (!cityConf || !cityConf.neighborhoods.length) return null;
+              return (
+                <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+                  <h3 className="font-display font-bold text-gray-900 text-base mb-3">
+                    Browse by Neighborhood
+                  </h3>
+                  <div className="space-y-0.5">
+                    {cityConf.neighborhoods.map((n) => (
+                      <Link
+                        key={n.slug}
+                        href={`/studios/city/${city}/${n.slug}`}
+                        className="flex items-center justify-between py-2 px-3 rounded-lg text-sm
+                                   text-gray-700 hover:bg-yellow-50 hover:text-yellow-800 transition-colors"
+                      >
+                        <span>{n.name}</span>
+                        <span className="text-gray-300">→</span>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              );
+            })()}
 
-            {/* Browse by city */}
             <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
               <h3 className="font-display font-bold text-gray-900 text-base mb-3">Browse Other Cities</h3>
               <div className="space-y-1">
                 {[
-                  { slug: "los-angeles", name: "Los Angeles" },
-                  { slug: "chicago",     name: "Chicago" },
-                  { slug: "dallas",      name: "Dallas" },
-                  { slug: "miami",       name: "Miami" },
-                  { slug: "houston",     name: "Houston" },
+                  { slug: "los-angeles",    name: "Los Angeles" },
+                  { slug: "new-york-city",  name: "New York City" },
+                  { slug: "chicago",        name: "Chicago" },
+                  { slug: "dallas",         name: "Dallas" },
+                  { slug: "miami",          name: "Miami" },
+                  { slug: "houston",        name: "Houston" },
+                  { slug: "atlanta",        name: "Atlanta" },
+                  { slug: "seattle",        name: "Seattle" },
+                  { slug: "denver",         name: "Denver" },
+                  { slug: "las-vegas",      name: "Las Vegas" },
+                  { slug: "phoenix",        name: "Phoenix" },
+                  { slug: "nashville",      name: "Nashville" },
+                  { slug: "boston",         name: "Boston" },
+                  { slug: "san-diego",      name: "San Diego" },
+                  { slug: "portland",       name: "Portland" },
+                  { slug: "austin",         name: "Austin" },
+                  { slug: "tampa",          name: "Tampa" },
                 ].filter((c) => c.slug !== city).map((c) => (
                   <Link
                     key={c.slug}
