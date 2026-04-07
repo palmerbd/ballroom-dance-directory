@@ -50,7 +50,7 @@ export default function LeadCaptureForm({
   return (
     <div className="rounded-2xl p-6 shadow-sm" style={{ background: "linear-gradient(135deg,#0c1428 0%,#1a2d5a 100%)" }}>
       <div className="flex items-center gap-2 mb-4">
-        <span className="text-yellow-400 text-lg">\u2b50</span>
+        <span className="text-yellow-400 text-lg">⭐</span>
         <div>
           <div className="text-yellow-400 text-xs font-bold uppercase tracking-wider">Featured Studio</div>
           <h3 className="font-bold text-white text-base leading-tight">Send a Message</h3>

@@ -97,9 +97,11 @@ function mapWPPost(post: Record<string, unknown>): Studio {
     slug:                  post.slug as string,
     title,
     description:
-      (post.excerpt as Record<string, string>)?.rendered
-        ?.replace(/<[^>]+>/g, "")
-        .trim() || "",
+      decodeHtmlEntities(
+        (post.excerpt as Record<string, string>)?.rendered
+          ?.replace(/<[^>]+>/g, "")
+          .trim() || ""
+      ),
     phone:                 (acf.studio_phone          as string) || "",
     address:               (acf.studio_address_street as string) || "",
     city,
