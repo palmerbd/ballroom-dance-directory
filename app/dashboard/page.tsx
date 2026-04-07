@@ -1,12 +1,13 @@
 "use client";
 
-// ─── /dashboard — Studio Owner Dashboard ─────────────────────────────────────────────────
+// ─── /dashboard — Studio Owner Dashboard ─────────────────────────────────────
 // Requires Supabase session (redirects to /claim if not logged in).
 // Shows the owner's claimed listing, claim status, and next steps.
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase, type Claim } from "@/lib/supabase";
+import PhotoManager from "@/components/PhotoManager";
 
 type PageState = "loading" | "unauthenticated" | "no_claim" | "ready";
 
@@ -66,7 +67,7 @@ export default function DashboardPage() {
     window.location.href = "/";
   }
 
-  // ── Loading ──────────────────────────────────────────────────────────────────────────────
+  // ── Loading ────────────────────────────────────────────────────────────────
 
   if (pageState === "loading") {
     return (
@@ -77,7 +78,7 @@ export default function DashboardPage() {
     );
   }
 
-  // ── Not logged in ──────────────────────────────────────────────────────────────────────────
+  // ── Not logged in ──────────────────────────────────────────────────────────
 
   if (pageState === "unauthenticated") {
     return (
@@ -102,7 +103,7 @@ export default function DashboardPage() {
     );
   }
 
-  // ── No claim yet ───────────────────────────────────────────────────────────────────────────
+  // ── No claim yet ───────────────────────────────────────────────────────────
 
   if (pageState === "no_claim") {
     return (
@@ -137,7 +138,7 @@ export default function DashboardPage() {
     );
   }
 
-  // ── Dashboard ──────────────────────────────────────────────────────────────────────────────────
+  // ── Dashboard ──────────────────────────────────────────────────────────────
 
   const statusCfg = STATUS_CONFIG[claim!.status] || STATUS_CONFIG.pending;
 
@@ -146,21 +147,23 @@ export default function DashboardPage() {
 
       {/* Header */}
       <div style={{ background: "linear-gradient(135deg,#0c1428 0%,#1a2d5a 100%)" }}
-        className="py-10 px-6">
-        <div className="max-w-2xl mx-auto flex items-start justify-between">
-          <div>
+        className="pt-6 pb-10 px-6">
+        <div className="max-w-2xl mx-auto">
+          {/* Nav row — Back on left, Sign out on right, same vertical baseline */}
+          <div className="flex items-center justify-between mb-6">
             <Link href="/" className="text-white/40 hover:text-white text-sm transition-colors">
               &larr; Back to directory
             </Link>
-            <h1 className="font-bold text-white text-2xl mt-3">Studio Dashboard</h1>
-            <p className="text-white/50 text-sm mt-1">{email}</p>
+            <button
+              onClick={handleSignOut}
+              className="text-white/40 hover:text-white/80 text-sm transition-colors"
+            >
+              Sign out
+            </button>
           </div>
-          <button
-            onClick={handleSignOut}
-            className="text-white/40 hover:text-white/80 text-sm transition-colors mt-1"
-          >
-            Sign out
-          </button>
+          {/* Title row */}
+          <h1 className="font-bold text-white text-2xl">Studio Dashboard</h1>
+          <p className="text-white/50 text-sm mt-1">{email}</p>
         </div>
       </div>
 
@@ -247,7 +250,7 @@ export default function DashboardPage() {
                 <div className="flex items-start justify-between">
                   <div>
                     <div className="text-yellow-400 text-xs font-bold uppercase tracking-wider mb-2">
-                      Featured Listing &mdash; $49/mo
+                      Featured Listing — $49/mo
                     </div>
                     <h3 className="font-bold text-white text-lg mb-2">Upgrade to Featured</h3>
                     <p className="text-white/60 text-sm">
@@ -265,12 +268,20 @@ export default function DashboardPage() {
                     style={{ background: "linear-gradient(135deg,#b8922a,#e8c560)" }}
                   >
                     Upgrade to Featured &rarr;
-                  </Link>
-                  <p className="text-white/30 text-xs mt-2">Cancel anytime &middot; Powered by Stripe</p>
+</Link>
+                  <p className="text-white/30 text-xs mt-2">Cancel anytime · Powered by Stripe</p>
                 </div>
               </>
             )}
           </div>
+        )}
+
+        {/* Photo management — Featured tier only */}
+        {claim!.tier === "paid" && (
+          <PhotoManager
+            claimId={claim!.id}
+            studioSlug={claim!.studio_slug}
+          />
         )}
 
         {/* Help */}

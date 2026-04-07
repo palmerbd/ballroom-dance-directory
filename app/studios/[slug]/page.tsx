@@ -5,7 +5,8 @@ import { getStudio, getAllStudioSlugs, getStudiosByCity } from "@/lib/wordpress"
 import { Studio, StudioCard, CHAIN_CONFIG, STYLE_LABELS, AMENITY_LABELS, DanceStyle } from "@/types/studio";
 import ClaimBadge from "@/components/ClaimBadge";
 import LeadCaptureForm from "@/components/LeadCaptureForm";
-import StudioGallery from "@/components/StudioGallery";
+import StudioGallery, { type UploadedPhoto } from "@/components/StudioGallery";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 
 export const revalidate = 3600;
 
@@ -29,7 +30,7 @@ export async function generateMetadata({
 
   const location = [studio.city, studio.state].filter(Boolean).join(", ");
   return {
-    title: `${studio.title}${location ? " — " + location : ""} | Private Dance Directory`,
+    title: `${studio.title}${location ? " \u2014 " + location : ""} | Private Dance Directory`,
     description:
       studio.description ||
       `Private dance lessons at ${studio.title}${location ? ` in ${location}` : ""}. ${
@@ -144,6 +145,22 @@ export default async function StudioPage({
         studio.city.toLowerCase().replace(/\s+/g, "-")
       )).filter((s) => s.slug !== studio.slug).slice(0, 3)
     : [];
+
+  // Fetch uploaded photos for paid-tier studios (non-fatal if table doesn't exist yet)
+  let studioPhotos: UploadedPhoto[] = [];
+  if (studio.tier === "paid") {
+    try {
+      const { data } = await supabaseAdmin
+        .from("studio_photos")
+        .select("id, url")
+        .eq("studio_slug", slug)
+        .order("created_at", { ascending: true })
+        .limit(6);
+      studioPhotos = data ?? [];
+    } catch {
+      // Table may not exist yet — fall back to Unsplash placeholders silently
+    }
+  }
 
   const chain    = CHAIN_CONFIG[studio.studioChain];
   const location = [studio.address, studio.city, studio.state, studio.zip]
@@ -381,6 +398,9 @@ export default async function StudioPage({
         </div>
       )}
 
+      {/* Photo Gallery — currently only shown for claimed/paid studios.
+          To re-enable Unsplash placeholders for ALL studios, remove the
+          (studio.tier === "claimed" || studio.tier === "paid") && wrapper below. */}
       {(studio.tier === "claimed" || studio.tier === "paid") && (
         <div className="max-w-5xl mx-auto px-6 pt-10 pb-0">
           <StudioGallery
@@ -388,6 +408,7 @@ export default async function StudioPage({
             danceStyles={studio.danceStyles}
             chain={studio.studioChain}
             featuredImageUrl={studio.featuredImage}
+            studioPhotos={studioPhotos}
           />
         </div>
       )}
@@ -399,6 +420,7 @@ export default async function StudioPage({
           {/* Left / Main */}
           <div className="lg:col-span-2 space-y-8">
 
+            {/* About */}
             {studio.description && (
               <section>
                 <h2 className="font-display font-bold text-gray-900 text-xl mb-3">About</h2>
@@ -406,6 +428,7 @@ export default async function StudioPage({
               </section>
             )}
 
+            {/* Dance Styles */}
             {studio.danceStyles.length > 0 && (
               <section>
                 <h2 className="font-display font-bold text-gray-900 text-xl mb-4">Dance Styles Offered</h2>
@@ -423,6 +446,7 @@ export default async function StudioPage({
               </section>
             )}
 
+            {/* Amenities */}
             {studio.amenities && studio.amenities.length > 0 && (
               <section>
                 <h2 className="font-display font-bold text-gray-900 text-xl mb-4">Amenities</h2>
@@ -437,6 +461,7 @@ export default async function StudioPage({
               </section>
             )}
 
+            {/* Pricing */}
             {(studio.introLessonRate || studio.privateLessonRate || studio.monthlyRate) && (
               <section>
                 <h2 className="font-display font-bold text-gray-900 text-xl mb-4">Pricing</h2>
@@ -469,6 +494,7 @@ export default async function StudioPage({
               </section>
             )}
 
+            {/* Hours */}
             {hoursRows.length > 0 && (
               <section>
                 <h2 className="font-display font-bold text-gray-900 text-xl mb-4">Business Hours</h2>
@@ -486,6 +512,7 @@ export default async function StudioPage({
               </section>
             )}
 
+            {/* External Reviews */}
             {(studio.yelpUrl || studio.googleMapsUrl) && (
               <section>
                 <h2 className="font-display font-bold text-gray-900 text-xl mb-4">Reviews &amp; Directions</h2>
@@ -512,6 +539,7 @@ export default async function StudioPage({
           {/* Right / Sidebar */}
           <div className="space-y-6">
 
+            {/* Lead capture form */}
             {studio.tier === "paid" && (
               <LeadCaptureForm
                 studioSlug={studio.slug}
@@ -563,6 +591,7 @@ export default async function StudioPage({
                 />
               )}
 
+              {/* Primary CTA */}
               {studio.phone && (
                 <a
                   href={`tel:${studio.phone.replace(/\D/g, "")}`}
@@ -603,6 +632,7 @@ export default async function StudioPage({
               </div>
             )}
 
+            {/* Social links */}
             {(studio.facebookUrl || studio.instagramUrl) && (
               <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
                 <h3 className="font-display font-bold text-gray-900 text-lg mb-4">Follow</h3>
@@ -623,6 +653,7 @@ export default async function StudioPage({
               </div>
             )}
 
+            {/* Back to directory */}
             <Link href="/studios"
               className="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
               &larr; Back to all studios
