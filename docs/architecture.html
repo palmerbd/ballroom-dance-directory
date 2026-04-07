@@ -317,10 +317,10 @@
       <div class="card-icon">🖥️</div>
       <div class="card-vendor">Hetzner VPS <span class="paid-tag">~$4/mo</span></div>
       <div class="card-title">WordPress (Headless CMS)</div>
-      <div class="card-desc">A small Linux server in Germany running WordPress — but with no public-facing theme. It's used purely as a <strong>database and admin panel</strong> for managing all 932 studios.</div>
+      <div class="card-desc">A small Linux server in Germany running WordPress — but with no public-facing theme. It's used purely as a <strong>database and admin panel</strong> for managing all 3,434 studios.</div>
       <div class="card-badge">5.78.144.42 — Ubuntu 24 + PHP 8.3</div>
       <div class="details">
-        <div class="detail-item">932 studios stored as custom post types</div>
+        <div class="detail-item">4,374 studios stored as custom post types (Tiers 1–5 complete)</div>
         <div class="detail-item">ACF Pro: all studio fields (address, hours, rating, etc.)</div>
         <div class="detail-item">REST API at /wp-json — Vercel reads from here</div>
         <div class="detail-item">ISR webhook fires on every studio save</div>
@@ -346,12 +346,13 @@
       <div class="card-vendor">Google Places API <span class="paid-tag">Pay-per-use</span></div>
       <div class="card-title">Data Source (Scraping)</div>
       <div class="card-desc">All 932 studio listings were populated using the Google Places API — it provides real business names, addresses, phone numbers, hours, ratings, and review counts. Run once per market.</div>
-      <div class="card-badge">932 studios across 15+ markets</div>
+      <div class="card-badge">3,434 studios across 45+ US states</div>
       <div class="details">
         <div class="detail-item">textSearch → getDetails → POST to WP REST API</div>
         <div class="detail-item">Run from browser console in WP admin (bypasses CORS)</div>
-        <div class="detail-item">~$0.017/request — total scraping cost ~$5–10</div>
-        <div class="detail-item">Photos: not yet pulled (next phase)</div>
+        <div class="detail-item">~$0.017/detail + $0.032/search — est. ~$100 cumulative across all 5 tiers</div>
+        <div class="detail-item">✅ Covered by Google's $200/mo free credit — effective cost $0</div>
+        <div class="detail-item">Photos: NOT via API — owner uploads or licensed stock only</div>
       </div>
     </div>
 
@@ -419,7 +420,7 @@
       <span style="color:#374151; font-size:16px;">·</span>
       <span class="paid-tag">~$15/yr</span><span>Namecheap domain</span>
       <span style="color:#374151; font-size:16px;">·</span>
-      <span class="paid-tag">one-time ~$5–10</span><span>Google Places API (scraping runs)</span>
+      <span class="free-tag">FREE</span><span>Google Places API — covered by $200/mo credit (est. ~$77 total across all 4 tiers · 3,434 studios)</span>
     </div>
     <div style="margin-top:12px; padding-top:12px; border-top:1px solid #1e2a3a; font-size:13px; color:#a0aec0;">
       <strong style="color:#e8c560;">Total recurring cost: ~$4–5/month</strong> — nearly the entire stack runs free until you start generating revenue.
@@ -435,28 +436,28 @@
 
   <div class="overall-bar">
     <h2>Ballroom Dance Directory — Project Pipeline</h2>
-    <div class="big-progress-bar"><div class="big-progress-fill" style="width:95%"></div></div>
-    <div class="you-are-here">▲ ~95% Complete — You are here &nbsp;·&nbsp; Updated Apr 4, 2026</div>
+    <div class="big-progress-bar"><div class="big-progress-fill" style="width:98%"></div></div>
+    <div class="you-are-here">▲ ~98% Complete — You are here &nbsp;·&nbsp; Updated Apr 7, 2026</div>
     <div style="display:grid; grid-template-columns:repeat(6,1fr); gap:8px; margin-top:16px;">
       <div class="progress-bar-wrap">
         <div class="progress-label"><span style="color:#4ade80">Phase 1</span><span>100%</span></div>
         <div class="progress-bar"><div class="progress-fill" style="width:100%; background:#22c55e;"></div></div>
       </div>
       <div class="progress-bar-wrap">
-        <div class="progress-label"><span style="color:#60a5fa">Phase 2</span><span>97%</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width:97%; background:#3b82f6;"></div></div>
+        <div class="progress-label"><span style="color:#60a5fa">Phase 2</span><span>99%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:99%; background:#3b82f6;"></div></div>
       </div>
       <div class="progress-bar-wrap">
-        <div class="progress-label"><span style="color:#60a5fa">Phase 3</span><span>98%</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width:98%; background:#3b82f6;"></div></div>
+        <div class="progress-label"><span style="color:#60a5fa">Phase 3</span><span>99%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:99%; background:#3b82f6;"></div></div>
       </div>
       <div class="progress-bar-wrap">
-        <div class="progress-label"><span style="color:#fbbf24">Phase 4</span><span>98%</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width:98%; background:#f59e0b;"></div></div>
+        <div class="progress-label"><span style="color:#fbbf24">Phase 4</span><span>99%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:99%; background:#f59e0b;"></div></div>
       </div>
       <div class="progress-bar-wrap">
         <div class="progress-label"><span style="color:#f472b6">Phase 5</span><span>95%</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width:85%; background:#ec4899;"></div></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:95%; background:#ec4899;"></div></div>
       </div>
       <div class="progress-bar-wrap">
         <div class="progress-label"><span style="color:#a78bfa">Phase 6</span><span>15%</span></div>
@@ -506,17 +507,17 @@
       <div class="section-head">Studio Data</div>
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">TypeScript types: StudioCard, Studio, DanceStyle, ListingTier, CHAIN_CONFIG</span></div>
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">WordPress REST API client (lib/wordpress.ts): getAllStudios, getStudio, getStudiosByCity, mapWPPost</span></div>
-      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done"><strong>1,138 real studios</strong> in WordPress across 17+ markets (LA, Miami, Chicago, Houston, Dallas, Texas statewide, NYC, Atlanta, Seattle, Denver, Las Vegas, Phoenix, Minneapolis, Nashville, Boston, San Diego, Portland)</span></div>
-      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">All 1,138 studios have original AI-generated descriptions</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done"><strong>4,374 real studios</strong> in WordPress across 45 states + DC (T1–T4 as before; Tier 5: IL metro, WI, NE, IA, MS, AR — 947 new · 0 failures · ✅ Apr 6)</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">All studios have AI-generated descriptions + taglines. Non-US entries removed. State abbreviations normalized.</span></div>
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">ISR revalidation webhook: WordPress save_post_dance_studio → /api/revalidate → revalidatePath()</span></div>
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">ISR end-to-end test confirmed Apr 2 — HTTP 200 {"revalidated":true} ✅</span></div>
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">ISR hook URL updated to ballroomdancedirectory.com (was dance-directory.vercel.app) ✅</span></div>
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Supabase claims as authoritative tier source — getStudio() reads claims table, overrides WP ACF (which doesn't have studio_tier field). lib/wordpress.ts fixed. ✅ Apr 4</span></div>
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Claim bar hides correctly after claiming — ISR revalidatePath() + Supabase tier fix. Amber "Own this studio?" bar no longer shows for claimed studios. ✅ Apr 4</span></div>
       <div class="section-head">Remaining Data Work</div>
-      <div class="phase-item"><span class="check check-todo">○</span><span class="item-todo">Studio photos — owner uploads via claim flow (primary source); licensed stock as placeholders <span style="color:#f87171;font-weight:700;">[Google Places API NOT permitted — legal memo 2026-04-02]</span></span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Studio photos — <strong>owner upload system live</strong>: Supabase Storage bucket <code>studio-photos</code>, <code>studio_photos</code> table (id, claim_id, studio_slug, url, storage_path), PhotoManager component (up to 6 photos, upload + delete), GET /api/studios/[slug]/photos, POST/DELETE /api/upload/studio-photo. ISR revalidate on change. ✅ Apr 7</span></div>
       <div class="phase-item"><span class="check check-todo">○</span><span class="item-todo">Pricing fields — intro, monthly, drop-in prices mostly unpopulated</span></div>
-      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Taglines — <code>scripts/generate-taglines.ts</code> created (WP + Anthropic claude-haiku). Run <code>ANTHROPIC_API_KEY=… npx tsx scripts/generate-taglines.ts</code> to fill all studios. DRY_RUN=true supported. ✅ Apr 4</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Taglines — deterministic browser-side generator (seed from name+city hash). All 2,451 studios tagged via WP REST API. ✅ Apr 5. <code>scripts/generate-taglines.ts</code> also available for CLI use.</span></div>
       <div class="phase-item"><span class="check check-todo">○</span><span class="item-todo">Chain detection — most studios flagged as independent; no Fred Astaire / Arthur Murray auto-detected by name</span></div>
       <div class="phase-item"><span class="check check-todo">○</span><span class="item-todo">Suburb city grouping — Frisco, Plano show separately instead of under "Dallas"</span></div>
     </div>
@@ -542,15 +543,15 @@
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">/claim/callback — magic link handler (Supabase session exchange → insert claim → redirect)</span></div>
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">/dashboard — studio owner dashboard (claim status, studio link, upgrade teaser)</span></div>
       <div class="section-head">Remaining Frontend Work</div>
-      <div class="phase-item"><span class="check check-todo">○</span><span class="item-todo">Studio photos / gallery display — build upload UI in claim flow; use licensed stock as placeholders <span style="color:#f87171;font-weight:700;">[Google Places API NOT permitted]</span></span></div>
-      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Embedded Google Map on studio detail pages — iframe embed via maps.google.com/q=…&output=embed in detail sidebar. ✅ Apr 4</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Studio photos / gallery display — PhotoManager.tsx in dashboard (Featured tier only): upload/delete up to 6 photos. StudioGallery.tsx: renders uploaded photos with Unsplash fallback. Attribution shows "Photos provided by studio owner" when real photos present. ✅ Apr 7</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Embedded Google Map on studio detail pages — iframe embed via maps.google.com?q=…&output=embed in detail sidebar. ✅ Apr 4</span></div>
       <div class="phase-item"><span class="check check-todo">○</span><span class="item-todo">Pricing section on studio detail pages (most studios have no pricing data)</span></div>
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">HTML entities decoded in studio titles — decodeHtmlEntities() added to mapWPPost() in lib/wordpress.ts. Fixes &#8217; and other entities rendering literally on detail pages. ✅ Apr 4</span></div>
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Lead capture form on studio detail pages (paid tier feature — requires Stripe)</span></div>
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Related studios section (same city) — shows up to 3 studios in the same city at bottom of detail page. ✅ Apr 4</span></div>
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Breadcrumb structured data (Schema.org BreadcrumbList) on studio + city pages — 4-level breadcrumb on detail pages, 3-level on city pages. ✅ Apr 4</span></div>
       <div class="phase-item"><span class="check check-todo">○</span><span class="item-todo">URL-synced filter state on /studios (filters reset on page refresh)</span></div>
-      <div class="phase-item"><span class="check check-todo">○</span><span class="item-todo">Pagination or infinite scroll (all 932 load at once — will need it at ~1,000+)</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Server-side pagination — getStudiosPage() + StudiosPageResult added to lib/wordpress.ts. Reads X-WP-Total + X-WP-TotalPages headers. 48 per page. ✅ Apr 5</span></div>
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Suburb + extra city content — CITY_CONTENT expanded to 24 markets: added Austin, San Antonio, Tampa, Orlando, Frisco, Plano, Scottsdale, Bellevue + 16 more. "Browse Other Cities" sidebar expanded to 17 links. ✅ Apr 4</span></div>
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Mobile nav menu — SiteNav.tsx shared component with hamburger drawer, sticky header, active-link detection. Added to layout.tsx — live on all pages. ✅ Apr 4</span></div>
     </div>
@@ -571,10 +572,10 @@
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Google Search Console: property verified + sitemap submitted (Apr 1)</span></div>
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Bing Webmaster Tools: ballroomdancedirectory.com submitted via GSC import (Apr 1)</span></div>
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Schema.org JSON-LD on studio detail + city pages</span></div>
-      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Dynamic sitemap.xml covering all 1,138 studios + all pages</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Dynamic sitemap.xml covering all studios + all pages (auto-reflects current count: 2,451)</span></div>
       <div class="section-head">Still To Do</div>
-      <div class="phase-item"><span class="check check-todo">○</span><span class="item-todo">Studio photos — owner uploads (claimed listings) + licensed stock placeholders <span style="color:#f87171;font-weight:700;">[Google Places API NOT permitted — legal memo 2026-04-02]</span></span></div>
-      <div class="phase-item"><span class="check check-todo">○</span><span class="item-todo">Homepage studio count: replace "500+ studios" placeholder with real count (932)</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Studio photos — owner upload system live for Featured tier. Unsplash placeholders for all other studios. ✅ Apr 7</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Homepage studio count — dynamic via getAllStudios(). Shows real count automatically. ✅ Apr 3</span></div>
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">City landing page copy — CITY_CONTENT now covers 24 markets with unique intros, neighborhoods, and FAQ per city. ✅ Apr 4</span></div>
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">FAQ schema markup on studio detail pages — FAQPage JSON-LD with 4 questions (styles, location, pricing, contact). ✅ Apr 4</span></div>
     </div>
@@ -623,10 +624,35 @@
       <button class="toggle-btn">▾</button>
     </div>
     <div class="phase-items">
-      <div class="section-head">Market Expansion (Round 1 Done)</div>
+      <div class="section-head">Market Expansion — Tier 1 ✅ (Apr 2026)</div>
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">932 studios across: LA, Miami, Chicago, Houston, Dallas, Texas (statewide), NYC, Atlanta, Seattle, Denver, Las Vegas, Phoenix, Minneapolis, Nashville, Boston</span></div>
-      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">+206 studios added: San Diego + Portland (Tier 2 scraper, 2026-04-02) → <strong>1,138 total</strong></span></div>
-      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Target hit: 1,000+ studios across 17+ markets ✅</span></div>
+      <div class="section-head">Market Expansion — Tier 2 ✅ (Apr 2, 2026)</div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">+206 studios: San Diego + Portland → <strong>1,138 total</strong>. First 1,000+ milestone hit.</span></div>
+      <div class="section-head">Market Expansion — Tier 3 ✅ (Apr 5, 2026)</div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Florida full state — 426 studios (was 36). Now #1 state in directory.</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Virginia + DC Metro — 130 studios (VA 117 + DC 13). Was 0.</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Ohio — 150 studios (Columbus, Cleveland, Cincinnati, Akron). Was 1.</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Michigan — 127 studios (Detroit, Ann Arbor, Grand Rapids). Was 0.</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">North Carolina — 151 studios (Charlotte, Raleigh, Durham). Was 1.</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Missouri — 76 studios (Kansas City, St. Louis). Was 2.</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Louisiana — 128 studios (New Orleans, Baton Rouge). Was 0.</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Data cleanup: non-US entries removed (BC, Ontario, NSW, Baja CA — 8 total). State abbreviations normalized (124 fixes). All 2,451 studios tagged. <strong>Directory: 2,451 · 40 states + DC · 12 states at zero.</strong></span></div>
+      <div class="section-head">Market Expansion — Tier 4 ✅ (Apr 5, 2026)</div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Bay Area / CA Expansion — SF, San Jose, Oakland, Berkeley, Walnut Creek, Pleasanton. Dense market.</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Indiana — Indianapolis, Carmel, Fishers, Fort Wayne, Bloomington, South Bend, Evansville.</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Utah — Salt Lake City, Sandy, Provo, Orem, Ogden, St. George. BYU market fully covered.</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">South Carolina — Charleston, Columbia, Greenville, Spartanburg, Rock Hill, Myrtle Beach.</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Alabama — Birmingham, Huntsville, Mobile, Montgomery, Auburn, Tuscaloosa. Was 0.</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Oklahoma — Oklahoma City, Edmond, Norman, Tulsa, Broken Arrow. Was 0.</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Pennsylvania interior — Allentown, Bethlehem, Harrisburg, York, Lancaster, Scranton.</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done"><strong>983 studios added · 190 queries · 1,006 raw → 983 created, 23 failed. Directory: 3,434.</strong> Well above 2,800 target.</span></div>
+      <div class="section-head">Market Expansion — Tier 5 ✅ (Apr 6, 2026)</div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Illinois metro — Chicago (10 search points), Schaumburg, Naperville, Joliet, Oak Lawn, Arlington Heights, Aurora, Waukegan. +~331 studios.</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Wisconsin — Milwaukee, Madison, Green Bay, Racine, Appleton. +186 studios. Was 10.</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Nebraska + Iowa — Omaha, Lincoln, Des Moines, Cedar Rapids, Iowa City, Davenport. +235 studios. Both states were at 0–2.</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Mississippi — Jackson, Biloxi, Hattiesburg. +64 studios. Was 0.</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Arkansas — Little Rock, Rogers, Fayetteville, Fort Smith, Jonesboro. +131 studios. Was 6.</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done"><strong>947 studios added · 977 collected · 0 failures · Directory: 4,374 · 45 states + DC.</strong> Proxy fixed: switched to Text Search API (nearbysearch type= filter was silently broken). API key now hardcoded server-side in hello.php.</span></div>
       <div class="section-head">AI Content Automation</div>
       <div class="phase-item"><span class="check check-todo">○</span><span class="item-todo">Daily script: scan for studios with no description → generate with Claude Haiku</span></div>
       <div class="phase-item"><span class="check check-todo">○</span><span class="item-todo">Auto-generate FAQ sections for studio detail pages</span></div>
@@ -692,42 +718,77 @@
         <span style="background:#065f46; color:#d1fae5; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">✓</span>
         <span style="font-size:13px; color:#6b7280; line-height:1.5; text-decoration:line-through;"><strong>Phase 2+3 Polish Sprint</strong> — SiteNav.tsx (mobile nav hamburger, sticky header), Google Map embed on detail sidebar, related studios section (same city, up to 3), BreadcrumbList JSON-LD (studio + city pages), FAQPage JSON-LD (4 questions), CITY_CONTENT expanded to 24 markets, <code>scripts/generate-taglines.ts</code> (Anthropic Haiku → WP API). All 5 commits deployed to Vercel. ✅ 2026-04-04</span>
       </div>
-      <div style="display:flex; align-items:flex-start; gap:12px; background:#0a1a10; border:1px solid #22c55e; border-radius:10px; padding:14px 16px; margin-bottom:4px;">
-        <span style="background:#15803d; color:#fff; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">1</span>
-        <div>
-          <span style="font-size:13px; color:#d1fae5; line-height:1.5; font-weight:700;">🏷️ Run Tagline Generator — Quick Win (30 min)</span>
-          <span style="display:block; font-size:12px; color:#86efac; line-height:1.6; margin-top:6px;">Add <code style="background:#012210; padding:1px 5px; border-radius:3px;">ANTHROPIC_API_KEY=sk-ant-…</code> to <code>dance-directory/.env.local</code>. Then from the <code>dance-directory/</code> folder run: <code style="background:#012210; padding:1px 5px; border-radius:3px;">DRY_RUN=true npx tsx scripts/generate-taglines.ts</code> to preview, then without DRY_RUN to write taglines to all 1,138 studios. This pumps up every studio card's visual quality before outreach.</span>
-        </div>
+      <div style="display:flex; align-items:flex-start; gap:12px;">
+        <span style="background:#065f46; color:#d1fae5; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">✓</span>
+        <span style="font-size:13px; color:#6b7280; line-height:1.5; text-decoration:line-through;"><strong>Tagline Generator</strong> — Deterministic browser-side generator (seed from name+city). All 2,451 studios tagged via WP REST API. ✅ 2026-04-05</span>
       </div>
+      <div style="display:flex; align-items:flex-start; gap:12px;">
+        <span style="background:#065f46; color:#d1fae5; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">✓</span>
+        <span style="font-size:13px; color:#6b7280; line-height:1.5; text-decoration:line-through;"><strong>Tier 4 Scraper</strong> — 190 queries · 1,006 raw · 983 created. Directory: 3,434 studios. ✅ 2026-04-05</span>
+      </div>
+      <div style="display:flex; align-items:flex-start; gap:12px;">
+        <span style="background:#065f46; color:#d1fae5; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">✓</span>
+        <span style="font-size:13px; color:#6b7280; line-height:1.5; text-decoration:line-through;"><strong>Tier 4 Data Cleanup</strong> — Non-US entries removed, state abbreviations normalized. ✅ Apr 5</span>
+      </div>
+      <div style="display:flex; align-items:flex-start; gap:12px;">
+        <span style="background:#065f46; color:#d1fae5; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">✓</span>
+        <span style="font-size:13px; color:#6b7280; line-height:1.5; text-decoration:line-through;"><strong>Server-Side Pagination</strong> — getStudiosPage() + StudiosPageResult committed to lib/wordpress.ts. Reads WP X-WP-Total headers. 48 per page. ✅ Apr 5</span>
+      </div>
+      <div style="display:flex; align-items:flex-start; gap:12px;">
+        <span style="background:#065f46; color:#d1fae5; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">✓</span>
+        <span style="font-size:13px; color:#6b7280; line-height:1.5; text-decoration:line-through;"><strong>Tier 5 Scraper</strong> — IL metro, WI, NE, IA, MS, AR. 977 collected · 947 created · 0 failures. Proxy fixed: Text Search API. Directory: 4,374. ✅ Apr 6</span>
+      </div>
+      <div style="display:flex; align-items:flex-start; gap:12px;">
+        <span style="background:#065f46; color:#d1fae5; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">✓</span>
+        <span style="font-size:13px; color:#6b7280; line-height:1.5; text-decoration:line-through;"><strong>Wire Pagination UI on /studios</strong> — StudioSearch.tsx fully converted to server-side pagination. getStudiosPage() connected. PageLink component with prev/next + URL-synced ?page= param. 48 per page. No longer loads all 4,374 studios at once. ✅ Apr 5</span>
+      </div>
+      <div style="display:flex; align-items:flex-start; gap:12px;">
+        <span style="background:#065f46; color:#d1fae5; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">✓</span>
+        <span style="font-size:13px; color:#6b7280; line-height:1.5; text-decoration:line-through;"><strong>Photo Upload System — Dashboard + Studio Pages</strong> — Supabase Storage bucket <code>studio-photos</code> + <code>studio_photos</code> table live. PhotoManager.tsx (Featured tier only): upload/delete up to 6 photos with hover overlay. StudioGallery.tsx: renders real photos with Unsplash fallback + dynamic attribution. 3 API routes: GET /api/studios/[slug]/photos, POST /api/upload/studio-photo, DELETE /api/upload/studio-photo. ISR revalidate on change. GitHub PAT "Cowork Deploy" (no expiry) set up — terminal push workflow now permanent. ✅ Apr 7</span>
+      </div>
+
+      <!-- NEXT 5 DEVELOPMENT TASKS -->
+      <div style="margin:16px 0 8px; font-size:11px; font-weight:700; color:#e8c560; text-transform:uppercase; letter-spacing:1px;">⬇ Next Tasks — Priority Order</div>
+
       <div style="display:flex; align-items:flex-start; gap:12px; background:#1a0f00; border:1px solid #f59e0b; border-radius:10px; padding:14px 16px; margin-bottom:4px;">
-        <span style="background:#d97706; color:#fff; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">2</span>
+        <span style="background:#d97706; color:#fff; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">1</span>
         <div>
-          <span style="font-size:13px; color:#fef3c7; line-height:1.5; font-weight:700;">⚡ Configure Stripe Webhook — Your Task</span>
-          <span style="display:block; font-size:12px; color:#fcd34d; line-height:1.6; margin-top:6px;">Go to <strong>dashboard.stripe.com/webhooks</strong> → find existing endpoint or click "Add endpoint". URL: <code style="background:#2d1d00; padding:1px 5px; border-radius:3px;">https://www.ballroomdancedirectory.com/api/stripe/webhook</code>. Events: <code style="background:#2d1d00; padding:1px 5px; border-radius:3px;">checkout.session.completed</code>, <code style="background:#2d1d00; padding:1px 5px; border-radius:3px;">customer.subscription.deleted</code>, <code style="background:#2d1d00; padding:1px 5px; border-radius:3px;">invoice.payment_failed</code>. Verify the signing secret matches STRIPE_WEBHOOK_SECRET in Vercel (starts whsec_ZCUt…).</span>
+          <span style="font-size:13px; color:#fef3c7; line-height:1.5; font-weight:700;">🧪 Stripe Webhook End-to-End Test</span>
+          <span style="display:block; font-size:12px; color:#fcd34d; line-height:1.6; margin-top:6px;">dashboard.stripe.com/webhooks → verify endpoint for ballroomdancedirectory.com/api/stripe/webhook → send test event <code style="background:#2d1d00; padding:1px 5px; border-radius:3px;">checkout.session.completed</code> using a claimed studio + test card <code style="background:#2d1d00; padding:1px 5px; border-radius:3px;">4242 4242 4242 4242</code> → confirm Supabase claims.tier flips to "paid" → Featured badge + PhotoManager appear on dashboard → studio page shows as Featured. Full path must work before outreach.</span>
         </div>
       </div>
+
+      <div style="display:flex; align-items:flex-start; gap:12px; background:#0d1f12; border:1px solid #22c55e; border-radius:10px; padding:14px 16px; margin-bottom:4px;">
+        <span style="background:#16a34a; color:#fff; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">2</span>
+        <div>
+          <span style="font-size:13px; color:#f0fdf4; line-height:1.5; font-weight:700;">🚀 BEGIN STUDIO OUTREACH — This is where the money comes from.</span>
+          <span style="display:block; font-size:12px; color:#86efac; line-height:1.6; margin-top:6px;">Use Hunter.io to find emails for the top 20–30 <em>independent</em> LA studios — sort by review count + rating. Send Email 1 from <strong>Studio_Outreach_Campaign.docx</strong>. Log in <strong>Studio_Outreach_Tracker.xlsx</strong>. Follow up Email 2 Day 4, Email 3 Day 8. <strong>Goal: first paid subscriber.</strong></span>
+          <span style="display:block; font-size:11px; color:#4ade80; margin-top:8px; font-weight:700;">📋 LA is the biggest market (450+ studios). Highest density of independent studios willing to pay for leads. Photo upload system is now live — featured studios have a compelling new benefit to sell.</span>
+        </div>
+      </div>
+
       <div style="display:flex; align-items:flex-start; gap:12px; background:#0d1526; border:1px solid #3b82f6; border-radius:10px; padding:14px 16px; margin-bottom:4px;">
         <span style="background:#1d4ed8; color:#fff; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">3</span>
         <div>
-          <span style="font-size:13px; color:#dbeafe; line-height:1.5; font-weight:700;">🧪 End-to-End Paid Tier Smoke Test</span>
-          <span style="display:block; font-size:12px; color:#93c5fd; line-height:1.6; margin-top:6px;">After webhook is configured: use Buerti's Dance Studio (already claimed). Click "Upgrade to Featured" → Stripe checkout → use test card <code style="background:#0d1f3c; padding:1px 5px; border-radius:3px;">4242 4242 4242 4242</code> → verify webhook fires → Supabase claims.tier flips to "paid" → Featured badge appears on studio page. If all green, the monetization stack is fully live.</span>
+          <span style="font-size:13px; color:#dbeafe; line-height:1.5; font-weight:700;">📊 First Google Search Console Data Review</span>
+          <span style="display:block; font-size:12px; color:#93c5fd; line-height:1.6; margin-top:6px;">Sitemap submitted Apr 1 — first impressions data should be appearing now (~Apr 7–15). Pull the Performance report: which studio/city pages are getting impressions? Which queries trigger clicks? Use this to identify which cities and dance styles to prioritize for outreach and content investment. First data signal is a major milestone.</span>
         </div>
       </div>
-      <div style="display:flex; align-items:flex-start; gap:12px; background:#0d1f12; border:1px solid #22c55e; border-radius:10px; padding:14px 16px; margin-bottom:4px;">
-        <span style="background:#16a34a; color:#fff; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">4</span>
+
+      <div style="display:flex; align-items:flex-start; gap:12px; background:#0d1526; border:1px solid #3b82f6; border-radius:10px; padding:14px 16px; margin-bottom:4px;">
+        <span style="background:#1d4ed8; color:#fff; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">4</span>
         <div>
-          <span style="font-size:13px; color:#f0fdf4; line-height:1.5; font-weight:700;">🚀 BEGIN STUDIO OUTREACH — This is where the money comes from.</span>
-          <span style="display:block; font-size:12px; color:#86efac; line-height:1.6; margin-top:6px;">Use Hunter.io to find emails for the top 20–30 <em>independent</em> studios per market — sort by review count + rating. Send Email 1 from <strong>Studio_Outreach_Campaign.docx</strong>. Log in <strong>Studio_Outreach_Tracker.xlsx</strong>. Follow up Email 2 at Day 4, Email 3 at Day 8. <strong>Goal: first paid subscriber.</strong></span>
-          <span style="display:block; font-size:11px; color:#4ade80; margin-top:8px; font-weight:700;">📋 Start with LA (biggest market). Hunter.io → email → tracker → send → repeat.</span>
+          <span style="font-size:13px; color:#dbeafe; line-height:1.5; font-weight:700;">✉️ Confirm Resend Domain Verification + Test Claim Email</span>
+          <span style="display:block; font-size:12px; color:#93c5fd; line-height:1.6; margin-top:6px;">Log into resend.com → Domains → verify status is "Verified" (DKIM + SPF + DMARC). Then do a full end-to-end claim test: claim a studio, confirm the magic link email arrives (not spam), confirm admin notification fires. Until verified, all transactional emails risk spam folder.</span>
         </div>
       </div>
-      <div style="display:flex; align-items:flex-start; gap:12px;">
-        <span style="background:#e8c560; color:#0c1428; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">5</span>
-        <span style="font-size:13px; color:#d0d8e8; line-height:1.5;"><strong style="color:#f9f6f0;">Confirm Resend Domain Verification</strong> — Log into resend.com → Domains → verify status is "Verified" (DKIM + SPF + DMARC). Until verified, claim emails may land in spam. Should be clear ~24–48 hrs after DNS was set.</span>
-      </div>
-      <div style="display:flex; align-items:flex-start; gap:12px;">
-        <span style="background:#e8c560; color:#0c1428; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">6</span>
-        <span style="font-size:13px; color:#d0d8e8; line-height:1.5;"><strong style="color:#f9f6f0;">Legal Baseline</strong> — (a) Register DMCA designated agent at copyright.gov ($6 one-time). (b) Engage IP attorney for Terms + Privacy review before first real subscriber. (c) Send franchise outreach emails to Arthur Murray, Fred Astaire, Dance With Me — drafts already written.</span>
+
+      <div style="display:flex; align-items:flex-start; gap:12px; background:#0d1526; border:1px solid #3b82f6; border-radius:10px; padding:14px 16px; margin-bottom:4px;">
+        <span style="background:#1d4ed8; color:#fff; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">5</span>
+        <div>
+          <span style="font-size:13px; color:#dbeafe; line-height:1.5; font-weight:700;">⚖️ Legal Baseline</span>
+          <span style="display:block; font-size:12px; color:#93c5fd; line-height:1.6; margin-top:6px;">(a) Register DMCA designated agent at copyright.gov ($6 one-time). (b) Engage IP attorney for Terms + Privacy review before first real subscriber. (c) Send franchise outreach emails to Arthur Murray, Fred Astaire, Dance With Me — drafts in <code>outreach-emails/</code>. All three are YOUR actions — no code needed.</span>
+        </div>
       </div>
     </div>
     <div style="margin-top:16px; padding-top:14px; border-top:1px solid #1e3a5f; font-size:11px; color:#f87171;">
