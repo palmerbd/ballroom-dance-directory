@@ -19,7 +19,7 @@ export default function SiteNav() {
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20 md:h-24">
 
           {/* Logo */}
           <Link
@@ -30,10 +30,10 @@ export default function SiteNav() {
             <Image
               src="/logo.png"
               alt="Ballroom Dance Directory — The Elite Resource"
-              width={220}
-              height={87}
+              width={360}
+              height={143}
               priority
-              className="h-12 w-auto object-contain"
+              className="h-16 md:h-20 w-auto object-contain"
             />
           </Link>
 
