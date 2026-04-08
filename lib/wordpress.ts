@@ -366,7 +366,7 @@ interface WPPost {
   };
 }
 
-function decodeHtml(str: string): string {
+function decodeBlogHtml(str: string): string {
   return str
     .replace(/&amp;/g, "&")
     .replace(/&lt;/g, "<")
@@ -379,12 +379,12 @@ function decodeHtml(str: string): string {
     .replace(/&#8230;/g, "…");
 }
 
-function mapWPPost(p: WPPost): BlogPost {
+function mapWPBlogPost(p: WPPost): BlogPost {
   return {
     id:            p.id,
     slug:          p.slug,
-    title:         decodeHtml(p.title.rendered),
-    excerpt:       decodeHtml(p.excerpt.rendered.replace(/<[^>]+>/g, "").trim()),
+    title:         decodeBlogHtml(p.title.rendered),
+    excerpt:       decodeBlogHtml(p.excerpt.rendered.replace(/<[^>]+>/g, "").trim()),
     content:       p.content.rendered,
     date:          p.date,
     featuredImage: p._embedded?.["wp:featuredmedia"]?.[0]?.source_url ?? null,
@@ -402,7 +402,7 @@ export async function getBlogPosts(perPage = 12): Promise<BlogPost[]> {
     const res = await fetch(url.toString(), { next: { revalidate: 3600 } });
     if (!res.ok) return [];
     const posts = (await res.json()) as WPPost[];
-    return posts.map(mapWPPost);
+    return posts.map(mapWPBlogPost);
   } catch {
     return [];
   }
@@ -418,7 +418,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
     const res = await fetch(url.toString(), { next: { revalidate: 3600 } });
     if (!res.ok) return null;
     const posts = (await res.json()) as WPPost[];
-    return posts.length ? mapWPPost(posts[0]) : null;
+    return posts.length ? mapWPBlogPost(posts[0]) : null;
   } catch {
     return null;
   }
