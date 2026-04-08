@@ -25,6 +25,19 @@ const STATE_NAMES: Record<string, string> = {
   DC: "Washington DC",
 };
 
+// Reverse lookup: full state name (lowercase) → 2-letter abbreviation
+// Handles WP data inconsistency where some entries store full names instead of abbreviations
+const STATE_ABBRS: Record<string, string> = Object.fromEntries(
+  Object.entries(STATE_NAMES).map(([abbr, name]) => [name.toLowerCase(), abbr])
+);
+
+function normalizeState(raw: string): string {
+  const trimmed = raw.trim();
+  if (trimmed.length === 2) return trimmed.toUpperCase();
+  const abbr = STATE_ABBRS[trimmed.toLowerCase()];
+  return abbr ?? trimmed.toUpperCase();
+}
+
 export default async function CitiesPage() {
   const allCities = await getAllCities();
 
@@ -32,7 +45,7 @@ export default async function CitiesPage() {
   const byState = new Map<string, typeof allCities>();
   for (const c of allCities) {
     if (!c.state) continue;
-    const st = c.state.toUpperCase();
+    const st = normalizeState(c.state);
     if (!byState.has(st)) byState.set(st, []);
     byState.get(st)!.push(c);
   }
