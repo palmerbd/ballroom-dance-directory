@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 90" fill="none">
+  <!-- Hexagon badge -->
+  <polygon
+    points="42,4 78,4 96,36 78,68 42,68 24,36"
+    fill="#0c1428"
+    stroke="#c8a84b"
+    stroke-width="2.5"
+  />
+  <!-- Inner hexagon (gold border) -->
+  <polygon
+    points="44,8 76,8 92,36 76,64 44,64 28,36"
+    fill="none"
+    stroke="#e8c560"
+    stroke-width="1"
+    opacity="0.4"
+  />
+
+  <!-- Dancing couple silhouette (simplified geometric) -->
+  <!-- Lady (left, gold) -->
+  <ellipse cx="48" cy="22" rx="5" ry="5" fill="#c8a84b"/>
+  <path d="M43,28 Q44,42 40,58 Q46,54 48,42 Q50,54 56,58 Q52,42 53,28 Z" fill="#c8a84b"/>
+  <!-- Gentleman (right, darker navy/charcoal) -->
+  <ellipse cx="68" cy="21" rx="5" ry="5" fill="#8b9db8"/>
+  <path d="M63,27 L63,48 L60,58 L65,58 L68,48 L71,58 L76,58 L73,48 L73,27 Z" fill="#8b9db8"/>
+  <!-- Arm reaching to partner -->
+  <path d="M63,32 Q56,30 53,28" stroke="#8b9db8" stroke-width="1.5" fill="none"/>
+
+  <!-- BD monogram -->
+  <text
+    x="36"
+    y="60"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="24"
+    font-weight="700"
+    fill="#e8c560"
+    opacity="0.85"
+    letter-spacing="-1"
+  >BD</text>
+
+  <!-- Decorative flourish top -->
+  <path
+    d="M118,22 Q135,16 155,18 Q175,20 190,16 Q205,12 215,16"
+    stroke="#c8a84b"
+    stroke-width="1.2"
+    fill="none"
+    opacity="0.7"
+  />
+  <!-- Decorative flourish bottom -->
+  <path
+    d="M118,54 Q135,60 155,58 Q175,56 190,60 Q205,64 215,60"
+    stroke="#c8a84b"
+    stroke-width="1.2"
+    fill="none"
+    opacity="0.7"
+  />
+
+  <!-- BALLROOM text -->
+  <text
+    x="116"
+    y="38"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="26"
+    font-weight="800"
+    fill="#0c1428"
+    letter-spacing="3"
+  >BALLROOM</text>
+
+  <!-- DANCE DIRECTORY text -->
+  <text
+    x="117"
+    y="54"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="16"
+    font-weight="600"
+    fill="#c8a84b"
+    letter-spacing="2"
+  >DANCE DIRECTORY</text>
+
+  <!-- THE ELITE RESOURCE -->
+  <text
+    x="174"
+    y="66"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="9"
+    font-weight="400"
+    fill="#4a5568"
+    letter-spacing="3"
+    text-anchor="middle"
+  >THE ELITE RESOURCE</text>
+</svg>

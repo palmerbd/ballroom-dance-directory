@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getStudiosByCity } from "@/lib/wordpress";
+import { getStudiosByCity, citySlugToName } from "@/lib/wordpress";
 import { StudioCard, CHAIN_CONFIG, STYLE_LABELS, DanceStyle } from "@/types/studio";
 import {
   CITY_CONFIGS,
@@ -36,7 +36,7 @@ export async function generateMetadata({
 
   const { city, neighborhood } = result;
   return {
-    title: `Private Dance Studios in ${neighborhood.name}, ${city.name} | Private Dance Directory`,
+    title: `Ballroom Dance Studios in ${neighborhood.name}, ${city.name} | Ballroom Dance Directory`,
     description: `Find the best private dance studios in the ${neighborhood.name} area of ${city.name}, ${city.stateAbbr}. Top-rated studios offering ballroom, Latin, salsa, tango, and wedding dance lessons near ${neighborhood.name}.`,
     openGraph: {
       title: `Dance Studios in ${neighborhood.name}, ${city.name}`,
@@ -167,19 +167,25 @@ export default async function NeighborhoodPage({
   if (!result) notFound();
 
   const { city, neighborhood } = result;
+
+  // All studios in the city, then filter to neighborhood by address keywords
   const cityStudios = await getStudiosByCity(citySlug);
   const hoodStudios = matchStudiosToNeighborhood(
     cityStudios as unknown as { address?: string; city?: string; [key: string]: unknown }[],
     neighborhood.keywords
   ) as unknown as StudioCard[];
 
+  // Studios to show: neighborhood matches first, then remaining city studios as "nearby"
   const hoodIds = new Set(hoodStudios.map((s: StudioCard) => s.id));
-  const nearbyStudios = cityStudios.filter((s) => !hoodIds.has(s.id)).slice(0, 6);
+  const nearbyStudios = cityStudios
+    .filter((s) => !hoodIds.has(s.id))
+    .slice(0, 6);
 
+  // Schema.org JSON-LD
   const schemaOrg = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    "name": `Private Dance Studios in ${neighborhood.name}, ${city.name}`,
+    "name": `Ballroom Dance Studios in ${neighborhood.name}, ${city.name}`,
     "description": `Top-rated private dance studios in the ${neighborhood.name} area of ${city.name}, ${city.stateAbbr}`,
     "numberOfItems": hoodStudios.length,
     "itemListElement": hoodStudios.map((s: StudioCard, i: number) => ({
@@ -197,7 +203,7 @@ export default async function NeighborhoodPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
       />
 
-      {/* Hero */}
+      {/* ── Hero ────────────────────────────────────────────────────────── */}
       <section
         className="py-16 px-6"
         style={{ background: "linear-gradient(135deg, #0c1428 0%, #1a2d5a 100%)" }}
@@ -208,7 +214,10 @@ export default async function NeighborhoodPage({
             <span className="text-white/30 mx-2">/</span>
             <Link href="/studios" className="text-white/50 hover:text-white transition-colors">Studios</Link>
             <span className="text-white/30 mx-2">/</span>
-            <Link href={`/studios/city/${city.slug}`} className="text-white/50 hover:text-white transition-colors">
+            <Link
+              href={`/studios/city/${city.slug}`}
+              className="text-white/50 hover:text-white transition-colors"
+            >
               {city.name}
             </Link>
             <span className="text-white/30 mx-2">/</span>
@@ -222,7 +231,7 @@ export default async function NeighborhoodPage({
             className="font-display text-white font-bold mb-4"
             style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)" }}
           >
-            Private Dance Studios in {neighborhood.name}
+            Ballroom Dance Studios in {neighborhood.name}
           </h1>
           <p className="text-white/60 text-lg max-w-2xl mb-8">
             {hoodStudios.length > 0
@@ -246,24 +255,31 @@ export default async function NeighborhoodPage({
         </div>
       </section>
 
-      {/* Body */}
+      {/* ── Body ────────────────────────────────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
+          {/* ── Main content ──────────────────────────────────────────── */}
           <div className="lg:col-span-2 space-y-10">
 
+            {/* Neighborhood intro */}
             <div>
               <h2 className="font-display font-bold text-gray-900 text-2xl mb-4">
                 Dancing in {neighborhood.name}
               </h2>
-              <p className="text-gray-600 leading-relaxed">{neighborhood.description}</p>
+              <p className="text-gray-600 leading-relaxed">
+                {neighborhood.description}
+              </p>
             </div>
 
+            {/* Studio results */}
             {hoodStudios.length > 0 ? (
               <div>
                 <h2 className="font-display font-bold text-gray-900 text-xl mb-5">
                   Studios in {neighborhood.name}
-                  <span className="ml-2 text-base font-normal text-gray-400">({hoodStudios.length})</span>
+                  <span className="ml-2 text-base font-normal text-gray-400">
+                    ({hoodStudios.length})
+                  </span>
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   {hoodStudios.map((studio: StudioCard) => (
@@ -272,6 +288,7 @@ export default async function NeighborhoodPage({
                 </div>
               </div>
             ) : (
+              /* No direct matches — show SEO-friendly message + city fallback */
               <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-8 text-center">
                 <div className="text-4xl mb-4">💃</div>
                 <h2 className="font-display font-bold text-gray-900 text-xl mb-2">
@@ -291,6 +308,7 @@ export default async function NeighborhoodPage({
               </div>
             )}
 
+            {/* Nearby studios (if we have hood results, suggest more from the city) */}
             {hoodStudios.length > 0 && nearbyStudios.length > 0 && (
               <div>
                 <h2 className="font-display font-bold text-gray-900 text-xl mb-2">
@@ -316,33 +334,35 @@ export default async function NeighborhoodPage({
               </div>
             )}
 
-            <div className="text-gray-600 space-y-4">
-              <h2 className="font-display font-bold text-gray-900 text-xl">
+            {/* SEO body copy */}
+            <div className="prose prose-sm max-w-none text-gray-600">
+              <h2 className="font-display font-bold text-gray-900 text-xl not-prose mb-3">
                 Private Dance Lessons in {neighborhood.name}
               </h2>
               <p>
                 Finding the right private dance studio in {neighborhood.name} starts with knowing what
                 you&apos;re looking for. Whether you&apos;re preparing for your wedding first dance, training
-                for a competition, or simply looking to add a new skill to your life, the studios listed
-                here serve the {neighborhood.name} area of {city.name}, {city.stateAbbr}.
+                for a competition, or simply looking to add a new skill and social outlet to your life,
+                the studios listed here serve the {neighborhood.name} area of {city.name}, {city.stateAbbr}.
               </p>
               <p>
                 Private lessons give you one-on-one attention that group classes simply can&apos;t match.
                 Your instructor can adapt to your learning pace, correct technique in real time, and
-                design a curriculum around your specific goals — whether that&apos;s a particular dance
-                style, a performance date, or a fitness target.
+                design a curriculum around your specific goals — whether that&apos;s a particular dance style,
+                a performance date, or a fitness target.
               </p>
               <p>
-                Top styles available at {neighborhood.name} area studios include ballroom, Latin, salsa,
-                tango, waltz, foxtrot, and swing. Many studios also offer specialized wedding dance
-                packages, competition training, and social dance preparation programs.
+                The top styles available at {neighborhood.name} area studios include ballroom, Latin,
+                salsa, tango, waltz, foxtrot, and swing. Many studios also offer specialized wedding
+                dance packages, competition training, and social dance preparation programs.
               </p>
             </div>
           </div>
 
-          {/* Sidebar */}
+          {/* ── Sidebar ───────────────────────────────────────────────── */}
           <div className="space-y-6">
 
+            {/* City tip */}
             <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
               <h3 className="font-display font-bold text-gray-900 text-base mb-3">
                 Dancing in {city.name}
@@ -354,6 +374,7 @@ export default async function NeighborhoodPage({
               </div>
             </div>
 
+            {/* Other neighborhoods in this city */}
             <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
               <h3 className="font-display font-bold text-gray-900 text-base mb-3">
                 {city.name} Neighborhoods
@@ -374,9 +395,9 @@ export default async function NeighborhoodPage({
                   ))}
                 <Link
                   href={`/studios/city/${city.slug}`}
-                  className="flex items-center justify-between py-2 px-3 rounded-lg text-sm font-medium
-                             text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors
-                             border-t border-gray-100 mt-2 pt-3"
+                  className="flex items-center justify-between py-2 px-3 rounded-lg text-sm
+                             font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors mt-2
+                             border-t border-gray-100 pt-3"
                 >
                   <span>All {city.name} Studios</span>
                   <span className="text-gray-300">→</span>
@@ -384,6 +405,7 @@ export default async function NeighborhoodPage({
               </div>
             </div>
 
+            {/* Other cities */}
             <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
               <h3 className="font-display font-bold text-gray-900 text-base mb-3">Other Cities</h3>
               <div className="space-y-0.5">
@@ -419,10 +441,11 @@ export default async function NeighborhoodPage({
         </div>
       </div>
 
+      {/* ── Footer ──────────────────────────────────────────────────────── */}
       <footer className="py-10 px-6 bg-white border-t border-gray-100 mt-8">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
           <div>
-            <div className="font-display font-bold text-gray-900">Private Dance Directory</div>
+            <div className="font-display font-bold text-gray-900">Ballroom Dance Directory</div>
             <p className="text-gray-400 text-sm mt-1">
               America&apos;s premier resource for private dance instruction
             </p>
@@ -438,4 +461,4 @@ export default async function NeighborhoodPage({
       </footer>
     </main>
   );
-                  }
+}

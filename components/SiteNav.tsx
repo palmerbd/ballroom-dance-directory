@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const NAV_LINKS = [
@@ -20,16 +21,21 @@ export default function SiteNav() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
-          {/* Logo */}
+          {/* Logo — swap /logo.svg to /logo.png once the PNG file is placed in /public */}
           <Link
             href="/"
-            className="flex items-center gap-2 text-gray-900 hover:text-amber-700 transition-colors"
+            className="flex items-center shrink-0"
             onClick={() => setOpen(false)}
           >
-            <span className="font-display text-lg font-bold leading-tight tracking-tight">
-              Private Dance<br />
-              <span className="text-amber-700">Directory</span>
-            </span>
+            <Image
+              src="/logo.svg"
+              alt="Ballroom Dance Directory — The Elite Resource"
+              width={260}
+              height={56}
+              priority
+              className="h-11 w-auto object-contain"
+              style={{ maxWidth: 260 }}
+            />
           </Link>
 
           {/* Desktop nav */}

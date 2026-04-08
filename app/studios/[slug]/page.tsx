@@ -30,7 +30,7 @@ export async function generateMetadata({
 
   const location = [studio.city, studio.state].filter(Boolean).join(", ");
   return {
-    title: `${studio.title}${location ? " \u2014 " + location : ""} | Private Dance Directory`,
+    title: `${studio.title}${location ? " \u2014 " + location : ""} | Ballroom Dance Directory`,
     description:
       studio.description ||
       `Private dance lessons at ${studio.title}${location ? ` in ${location}` : ""}. ${
@@ -722,7 +722,7 @@ export default async function StudioPage({
       <footer className="py-10 px-6 bg-white border-t border-gray-100 mt-8">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
           <div>
-            <div className="font-display font-bold text-gray-900">Private Dance Directory</div>
+            <div className="font-display font-bold text-gray-900">Ballroom Dance Directory</div>
             <p className="text-gray-400 text-sm mt-1">America&apos;s premier resource for private dance instruction</p>
           </div>
           <div className="flex gap-6 text-sm text-gray-400">

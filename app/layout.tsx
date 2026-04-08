@@ -5,14 +5,14 @@ import SiteNav from "@/components/SiteNav";
 export const metadata: Metadata = {
   title: {
     default: "Private Dance Lessons Directory — Find Elite Studios Near You",
-    template: "%s | Private Dance Directory",
+    template: "%s | Ballroom Dance Directory",
   },
   description:
     "Find the finest private dance instruction studios near you. Browse Fred Astaire, Arthur Murray, Dance With Me, and elite independent studios offering ballroom, Latin, tango, and wedding dance lessons.",
   keywords: ["private dance lessons", "ballroom dancing", "dance studios", "Arthur Murray", "Fred Astaire"],
   openGraph: {
     type: "website",
-    siteName: "Private Dance Directory",
+    siteName: "Ballroom Dance Directory",
   },
 };
 

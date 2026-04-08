@@ -159,7 +159,7 @@ export default async function HomePage() {
       <footer className="py-12 px-6 bg-white border-t border-gray-200">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
           <div>
-            <div className="font-display font-bold text-gray-900 text-lg">Private Dance Directory</div>
+            <div className="font-display font-bold text-gray-900 text-lg">Ballroom Dance Directory</div>
             <p className="text-gray-400 text-sm mt-1">America&apos;s premier resource for private dance instruction</p>
           </div>
           <div className="flex gap-6 text-sm text-gray-400">

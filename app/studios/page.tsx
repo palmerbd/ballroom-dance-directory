@@ -129,7 +129,7 @@ export default async function StudiosPage({
       <footer className="py-10 px-6 bg-white border-t border-gray-100">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
           <div>
-            <div className="font-display font-bold text-gray-900">Private Dance Directory</div>
+            <div className="font-display font-bold text-gray-900">Ballroom Dance Directory</div>
             <p className="text-gray-400 text-sm mt-1">
               America&apos;s premier resource for private dance instruction
             </p>
