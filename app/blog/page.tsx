@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { getBlogPosts } from "@/lib/wordpress";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Dance Tips & Guides | Ballroom Dance Directory Blog",
