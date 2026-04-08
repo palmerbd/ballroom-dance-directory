@@ -42,7 +42,7 @@ const OTHER_STYLES = [
 ];
 
 export default async function WeddingDanceLessonsPage() {
-  const allStudios = await getAllStudios(500);
+  const allStudios = await getAllStudios(100);
   const studios = allStudios.filter((s) => s.danceStyles.includes("wedding_dance" as any));
   const cities = [...new Set(studios.map((s) => s.city).filter(Boolean))].sort();
 

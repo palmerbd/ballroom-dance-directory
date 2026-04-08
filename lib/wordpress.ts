@@ -290,7 +290,7 @@ export async function getStudio(slug: string): Promise<Studio | null> {
 
 /** All slugs for generateStaticParams */
 export async function getAllStudioSlugs(): Promise<string[]> {
-  const studios = await getAllStudios(500);
+  const studios = await getAllStudios(100);
   return studios.map((s) => s.slug);
 }
 
@@ -305,7 +305,7 @@ export function citySlugToName(slug: string): string {
 /** Studios filtered by city slug */
 export async function getStudiosByCity(citySlug: string): Promise<StudioCard[]> {
   const cityName = citySlugToName(citySlug).toLowerCase();
-  const all = await getAllStudios(500);
+  const all = await getAllStudios(100);
   return all.filter((s) => s.city.toLowerCase() === cityName);
 }
 

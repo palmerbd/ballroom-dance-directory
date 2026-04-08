@@ -5,7 +5,8 @@ import { getStudiosPage, getStudiosByStyle } from "@/lib/wordpress";
 import { DANCE_STYLES, STYLE_LABELS, DanceStyle } from "@/types/studio";
 import { StudioSearch } from "./StudioSearch";
 
-export const revalidate = 3600;
+// force-dynamic ensures searchParams are read fresh on every request.
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Find Private Dance Studios Near You",

@@ -10,9 +10,14 @@ export const revalidate = 3600;
 // ── Static params ─────────────────────────────────────────────────────────────
 
 export async function generateStaticParams() {
-  const all = await getAllStudios(500);
-  const cities = [...new Set(all.map((s) => s.city.toLowerCase().replace(/\s+/g, "-")))];
-  return cities.map((city) => ({ city }));
+  // Pre-build only major metros; all others render on-demand via ISR.
+  const majorCities = [
+    "new-york","los-angeles","chicago","houston","dallas","miami",
+    "phoenix","san-antonio","san-diego","atlanta","austin","denver",
+    "seattle","portland","boston","las-vegas","orlando","tampa",
+    "charlotte","nashville",
+  ];
+  return majorCities.map((city) => ({ city }));
 }
 
 // ── Metadata ──────────────────────────────────────────────────────────────────

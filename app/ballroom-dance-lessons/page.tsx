@@ -33,7 +33,7 @@ const FAQ = [
 ];
 
 export default async function BallroomDanceLessonsPage() {
-  const allStudios = await getAllStudios(500);
+  const allStudios = await getAllStudios(100);
   const studios = allStudios.filter((s) => s.danceStyles.includes(STYLE_KEY as any));
 
   // Get unique cities for the sidebar

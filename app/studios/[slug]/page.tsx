@@ -13,8 +13,8 @@ export const revalidate = 3600;
 // Static params
 
 export async function generateStaticParams() {
-  const slugs = await getAllStudioSlugs();
-  return slugs.map((slug) => ({ slug }));
+  // 4,000+ pages render on-demand via ISR (revalidate=3600) to keep builds fast.
+  return [];
 }
 
 // Metadata
