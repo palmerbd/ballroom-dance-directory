@@ -35,6 +35,26 @@ export interface Claim {
   created_at:             string;
 }
 
+// ── Competition Claim ──────────────────────────────────────────────────────────
+export type CompetitionClaimStatus = "pending" | "verified" | "approved" | "rejected";
+export type CompetitionClaimTier   = "free" | "featured";
+
+export interface CompetitionClaim {
+  id:                     string;
+  competition_slug:       string;
+  competition_name:       string;
+  organizer_name:         string;
+  organizer_email:        string;
+  organizer_phone:        string;
+  user_id:                string;
+  status:                 CompetitionClaimStatus;
+  tier:                   CompetitionClaimTier;
+  stripe_customer_id:     string | null;
+  stripe_subscription_id: string | null;
+  created_at:             string;
+  updated_at:             string;
+}
+
 // ── Studio Profile (owner-editable Featured content) ──────────────────────────
 export interface StudioProfile {
   id?:                  string;

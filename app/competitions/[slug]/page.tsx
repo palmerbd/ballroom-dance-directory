@@ -17,6 +17,7 @@ import {
   MONTHS,
 } from "@/types/competition";
 import { CompetitionCard } from "@/components/CompetitionCard";
+import { supabaseAdmin }   from "@/lib/supabase-admin";
 
 export const revalidate = 3600;
 
@@ -138,6 +139,15 @@ export default async function CompetitionDetailPage({
   const badge    = ORG_BADGE[comp.organization] ?? ORG_BADGE["Independent"];
   const heroSrc  = (comp.styles[0] && STYLE_IMAGE[comp.styles[0]]) || "/images/competition.png";
   const dateStr  = formatDateRange(comp.dateStart, comp.dateEnd, comp.typicalMonth);
+
+  // Check if this competition has an approved claim (for Verified Organizer badge)
+  const { data: claimRow } = await supabaseAdmin
+    .from("competition_claims")
+    .select("status, tier")
+    .eq("competition_slug", slug)
+    .eq("status", "approved")
+    .maybeSingle();
+  const isVerified = !!claimRow;
   const related  = sortedByDate(
     getByRegion(comp.region).filter((c) => c.slug !== comp.slug)
   ).slice(0, 3);
@@ -177,6 +187,12 @@ export default async function CompetitionDetailPage({
               {comp.isRecurring && (
                 <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-white">
                   Annual Event
+                </span>
+              )}
+              {isVerified && (
+                <span className="px-3 py-1 rounded-full text-xs font-bold"
+                  style={{ background: "rgba(29,78,216,0.85)", color: "#fff" }}>
+                  ✓ Verified Organizer
                 </span>
               )}
             </div>
@@ -291,13 +307,23 @@ export default async function CompetitionDetailPage({
                   </a>
                 )}
 
-                <Link
-                  href={`/competitions/claim?slug=${comp.slug}`}
-                  className="block w-full text-center py-2 text-sm text-gray-400 hover:text-gray-600
-                             transition-colors border border-gray-200 rounded-lg"
-                >
-                  Are you the organizer? Claim this listing
-                </Link>
+                {isVerified ? (
+                  <Link
+                    href="/competitions/dashboard"
+                    className="block w-full text-center py-2 text-sm font-semibold transition-colors
+                               border border-blue-200 rounded-lg text-blue-700 hover:bg-blue-50"
+                  >
+                    ✓ Verified — Manage Your Listing
+                  </Link>
+                ) : (
+                  <Link
+                    href={`/competitions/claim?slug=${comp.slug}`}
+                    className="block w-full text-center py-2 text-sm text-gray-400 hover:text-gray-600
+                               transition-colors border border-gray-200 rounded-lg"
+                  >
+                    Are you the organizer? Claim this listing
+                  </Link>
+                )}
               </div>
             </div>
           </div>
