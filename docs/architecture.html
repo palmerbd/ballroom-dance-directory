@@ -436,8 +436,8 @@
 
   <div class="overall-bar">
     <h2>Ballroom Dance Directory — Project Pipeline</h2>
-    <div class="big-progress-bar"><div class="big-progress-fill" style="width:98%"></div></div>
-    <div class="you-are-here">▲ ~98% Complete — You are here &nbsp;·&nbsp; Updated Apr 7, 2026</div>
+    <div class="big-progress-bar"><div class="big-progress-fill" style="width:99%"></div></div>
+    <div class="you-are-here">▲ ~99% Complete — You are here &nbsp;·&nbsp; Updated Apr 14, 2026</div>
     <div style="display:grid; grid-template-columns:repeat(6,1fr); gap:8px; margin-top:16px;">
       <div class="progress-bar-wrap">
         <div class="progress-label"><span style="color:#4ade80">Phase 1</span><span>100%</span></div>
@@ -550,6 +550,7 @@
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Lead capture form on studio detail pages (paid tier feature — requires Stripe)</span></div>
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Related studios section (same city) — shows up to 3 studios in the same city at bottom of detail page. ✅ Apr 4</span></div>
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Breadcrumb structured data (Schema.org BreadcrumbList) on studio + city pages — 4-level breadcrumb on detail pages, 3-level on city pages. ✅ Apr 4</span></div>
+      <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Competition section — Stage 1 complete: <code>types/competition.ts</code>, <code>lib/competitions-data.ts</code> (29 events, fully QA'd), CompetitionCard, CompetitionFilters (client-side search + URL sync), /competitions, /competitions/[slug], /competitions/region/[region], /competitions/style/[style], /competitions/claim stub. SiteNav + sitemap updated. Next.js 16 params Promise fix applied. All 29 competition URLs + city/state/venue/month data verified via web search. Commits 5edb423 + e69e3da. ✅ Apr 13</span></div>
       <div class="phase-item"><span class="check check-todo">○</span><span class="item-todo">URL-synced filter state on /studios (filters reset on page refresh)</span></div>
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Server-side pagination — getStudiosPage() + StudiosPageResult added to lib/wordpress.ts. Reads X-WP-Total + X-WP-TotalPages headers. 48 per page. ✅ Apr 5</span></div>
       <div class="phase-item"><span class="check check-done">✓</span><span class="item-done">Suburb + extra city content — CITY_CONTENT expanded to 24 markets: added Austin, San Antonio, Tampa, Orlando, Frisco, Plano, Scottsdale, Bellevue + 16 more. "Browse Other Cities" sidebar expanded to 17 links. ✅ Apr 4</span></div>
@@ -759,8 +760,25 @@
         <span style="font-size:13px; color:#6b7280; line-height:1.5; text-decoration:line-through;"><strong>Custom Dance Style Images — All Unsplash Placeholders Replaced</strong> — 8 custom photos added to /public/images/: ballroom.png, waltz.png, latin.png, salsa.png, tango.png, wedding.png, swing.png, competition.png. UnsplashPhoto type extended with optional <code>localSrc</code> field. <code>photoUrl()</code> helper returns local asset when present. StudioGallery + StudioSearch updated. All style + chain mappings now use local photos. Commits 0d2b34b + f0b7fc7. ✅ Apr 12</span>
       </div>
 
-      <!-- NEXT 5 DEVELOPMENT TASKS -->
-      <div style="margin:16px 0 8px; font-size:11px; font-weight:700; color:#e8c560; text-transform:uppercase; letter-spacing:1px;">⬇ Next Tasks — Priority Order (Updated Apr 12)</div>
+      <!-- NEXT TASKS -->
+      <div style="display:flex; align-items:flex-start; gap:12px;">
+        <span style="background:#065f46; color:#d1fae5; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">✓</span>
+        <span style="font-size:13px; color:#6b7280; line-height:1.5; text-decoration:line-through;"><strong>State Filter — Bidirectional Normalization</strong> — Added <code>normalizeState()</code> + <code>stateMatches()</code> helpers to StudioSearch.tsx. Normalizes both the user's input AND WP's stored value to a canonical 2-letter abbreviation before comparing — handles "Texas", "TX", "tx", full names, mixed case, any format. 16/16 unit test cases pass. Commit 9bceb62. ✅ Apr 14</span>
+      </div>
+      <div style="display:flex; align-items:flex-start; gap:12px;">
+        <span style="background:#065f46; color:#d1fae5; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">✓</span>
+        <span style="font-size:13px; color:#6b7280; line-height:1.5; text-decoration:line-through;"><strong>Hero Search Layout — CSS Module Fix</strong> — Desktop (1024px+): City / State / Style in one row + full-width button below. State column is half the width of city (2fr / 1fr / 1.5fr). Tailwind v4 was silently ignoring arbitrary grid-template-columns values; fixed with <code>hero-search.module.css</code> which Next.js processes independently. Mobile/tablet 2×2 grid unchanged. Commits bc6c81d → 1c5cafe. ✅ Apr 14</span>
+      </div>
+      <div style="display:flex; align-items:flex-start; gap:12px;">
+        <span style="background:#065f46; color:#d1fae5; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">✓</span>
+        <span style="font-size:13px; color:#6b7280; line-height:1.5; text-decoration:line-through;"><strong>Vercel Usage Weekly Monitor</strong> — Scheduled task created in Cowork (every Monday 9 AM CT). Checks Fluid Active CPU usage vs. 4-hour free tier limit. Reports GREEN/YELLOW/ORANGE/RED status + days remaining in billing month. Notifies in Cowork on completion. ✅ Apr 14</span>
+      </div>
+      <div style="display:flex; align-items:flex-start; gap:12px;">
+        <span style="background:#065f46; color:#d1fae5; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">✓</span>
+        <span style="font-size:13px; color:#6b7280; line-height:1.5; text-decoration:line-through;"><strong>Competition Stage 2 — Claim Flow</strong> — Full organizer claim wizard: 3-step claim flow (/competitions/claim), magic link OTP via Supabase Auth, callback handler (/competitions/claim/callback), Supabase <code>competition_claims</code> + <code>competition_overrides</code> tables (migration 005 run in prod), POST /api/competition-claim + GET /api/competition-claim/status API routes, organizer dashboard (/competitions/dashboard) with status cards + Stage 3 edit placeholder, Resend emails (admin + organizer, blue branding), "✓ Verified Organizer" badge on competition detail pages, "Claim this listing" CTA on all 29 competition detail pages. Commits 81eb28b. ✅ Apr 14</span>
+      </div>
+
+      <div style="margin:16px 0 8px; font-size:11px; font-weight:700; color:#e8c560; text-transform:uppercase; letter-spacing:1px;">⬇ Next Tasks — Priority Order (Updated Apr 14)</div>
 
       <div style="display:flex; align-items:flex-start; gap:12px; background:#1a0f00; border:1px solid #f59e0b; border-radius:10px; padding:14px 16px; margin-bottom:4px;">
         <span style="background:#d97706; color:#fff; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">1</span>
@@ -774,7 +792,7 @@
         <span style="background:#ea580c; color:#fff; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">2</span>
         <div>
           <span style="font-size:13px; color:#fed7aa; line-height:1.5; font-weight:700;">📊 Google Search Console Data Review — OVERDUE <span style="font-weight:400; font-size:11px; color:#fb923c;">[YOU]</span></span>
-          <span style="display:block; font-size:12px; color:#fdba74; line-height:1.6; margin-top:6px;">Sitemap submitted Apr 1 — data window is now open (Apr 12). Pull the Performance report in GSC: which studio/city pages are getting impressions? Which queries are driving clicks? Look for any near-page-1 terms (positions 6–15) to prioritize for content + outreach. This is the first real signal on where to focus investment.</span>
+          <span style="display:block; font-size:12px; color:#fdba74; line-height:1.6; margin-top:6px;">Sitemap submitted Apr 1 — data window is fully open (Apr 13+). Pull the Performance report in GSC: which studio/city pages are getting impressions? Which queries are driving clicks? Look for any near-page-1 terms (positions 6–15) to prioritize for content + outreach. This is the first real signal on where to focus investment.</span>
         </div>
       </div>
 
@@ -800,6 +818,32 @@
         <div>
           <span style="font-size:13px; color:#dbeafe; line-height:1.5; font-weight:700;">⚖️ Legal Baseline <span style="font-weight:400; font-size:11px; color:#93c5fd;">[YOU]</span></span>
           <span style="display:block; font-size:12px; color:#93c5fd; line-height:1.6; margin-top:6px;">(a) Register DMCA designated agent at copyright.gov ($6 one-time — required before marketing push). (b) Engage IP attorney for Terms + Privacy review before first paid subscriber. (c) Send franchise outreach emails to Arthur Murray, Fred Astaire, Dance With Me — drafts in <code>outreach-emails/</code>. All three are YOUR actions — no code needed.</span>
+        </div>
+      </div>
+
+      <div style="margin:16px 0 8px; font-size:11px; font-weight:700; color:#a78bfa; text-transform:uppercase; letter-spacing:1px;">🏆 Competition Feature — Stages 3–4 (Dev Queue)</div>
+
+      <div style="display:flex; align-items:flex-start; gap:12px; background:#065f46; border:1px solid #4ade80; border-radius:10px; padding:14px 16px; margin-bottom:4px; opacity:0.6;">
+        <span style="background:#16a34a; color:#fff; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">✓</span>
+        <div>
+          <span style="font-size:13px; color:#d1fae5; line-height:1.5; font-weight:700; text-decoration:line-through;">Competition Stage 2 — Claim Flow ✅ Apr 14</span>
+          <span style="display:block; font-size:12px; color:#a7f3d0; line-height:1.6; margin-top:6px; text-decoration:line-through;">3-step wizard, magic link OTP, Supabase competition_claims table (migration 005), callback page, organizer dashboard, API routes, Verified Organizer badge on detail pages, Resend emails. All 29 competitions claimable.</span>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:flex-start; gap:12px; background:#0d0a1f; border:2px solid #a78bfa; border-radius:10px; padding:14px 16px; margin-bottom:4px;">
+        <span style="background:#7c3aed; color:#fff; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">▶</span>
+        <div>
+          <span style="font-size:13px; color:#ede9fe; line-height:1.5; font-weight:700;">Competition Stage 3 — Organizer Edit Dashboard (~7 hrs) <span style="background:#7c3aed; color:#fff; font-size:10px; font-weight:700; padding:1px 8px; border-radius:10px; margin-left:6px;">NEXT</span></span>
+          <span style="display:block; font-size:12px; color:#c4b5fd; line-height:1.6; margin-top:6px;">Verified organizers can edit their competition listing from the dashboard: update dates, description, website URL, and registration link. Writes to Supabase <code>competition_overrides</code> table (already created in migration 005). Next.js ISR revalidation on save so changes are live within seconds. The dashboard stub already exists at /competitions/dashboard — this wires up the edit form that's currently a placeholder.</span>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:flex-start; gap:12px; background:#0d0a1f; border:1px solid #7c3aed; border-radius:10px; padding:14px 16px; margin-bottom:4px;">
+        <span style="background:#6d28d9; color:#fff; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">C</span>
+        <div>
+          <span style="font-size:13px; color:#ede9fe; line-height:1.5; font-weight:700;">Competition Stage 4 — Featured Upgrade + City Widget (~10 hrs)</span>
+          <span style="display:block; font-size:12px; color:#c4b5fd; line-height:1.6; margin-top:6px;">$199/year Stripe product for competition Featured tier. City landing pages get "Upcoming Competitions Near You" widget showing the nearest 3 competitions. Competition detail pages get a "Sponsor This Page" / city-ad slot for paid advertisers.</span>
         </div>
       </div>
     </div>
