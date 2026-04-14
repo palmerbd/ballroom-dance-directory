@@ -47,9 +47,9 @@ export default async function HomePage() {
             Browse Fred Astaire, Arthur Murray, Dance With Me, and elite independent
             studios offering private instruction across the United States.
           </p>
-          {/* Mobile: 1 col stacked → sm: 2×2 grid → lg: 3 inputs row + full-width button */}
+          {/* Mobile: 1 col stacked → sm: 2×2 grid → lg: 3 inputs row + full-width button below */}
           <form action="/studios" method="GET"
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[3fr_0.4fr_2fr] gap-3 max-w-2xl lg:w-3/4 mx-auto">
+            className="hero-search grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl lg:w-3/4 mx-auto">
             <input type="text" name="q" placeholder="City or studio name…"
               className="px-5 py-4 rounded-lg text-gray-900 text-base bg-white
                          border-2 border-transparent focus:outline-none focus:border-yellow-400
@@ -67,9 +67,9 @@ export default async function HomePage() {
               ))}
             </select>
             <button type="submit"
-              className="px-8 py-4 rounded-lg font-bold text-gray-900 text-base
+              className="hero-search-span px-8 py-4 rounded-lg font-bold text-gray-900 text-base
                          transition-all duration-200 hover:brightness-110
-                         sm:col-span-2 lg:col-span-3"
+                         sm:col-span-2"
               style={{ background: "linear-gradient(135deg, #b8922a, #e8c560)" }}>
               Find Studios
             </button>

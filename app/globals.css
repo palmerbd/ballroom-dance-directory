@@ -24,3 +24,13 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Hero search form — 3 inputs on one row, button spans full width below */
+@media (min-width: 1024px) {
+  .hero-search {
+    grid-template-columns: 2fr 1fr 1.5fr;
+  }
+  .hero-search-span {
+    grid-column: 1 / -1;
+  }
+}
