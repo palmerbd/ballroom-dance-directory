@@ -37,9 +37,11 @@ export async function generateMetadata({
   const { slug } = await params;
   const comp = getBySlug(slug);
   if (!comp) return {};
+  const pageUrl = `https://www.ballroomdancedirectory.com/competitions/${slug}`;
   return {
     title: `${comp.name} | Ballroom Dance Competition`,
     description: comp.description,
+    alternates: { canonical: pageUrl },
     openGraph: {
       title: `${comp.name} — ${comp.city}, ${comp.state}`,
       description: comp.description,
@@ -150,6 +152,26 @@ function EventSchema({ comp }: { comp: Competition }) {
   );
 }
 
+// ── Schema.org BreadcrumbList JSON-LD ────────────────────────────────────────
+
+function BreadcrumbSchema({ comp }: { comp: Competition }) {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type":    "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home",         item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Competitions", item: `${SITE_URL}/competitions` },
+      { "@type": "ListItem", position: 3, name: comp.name,      item: `${SITE_URL}/competitions/${comp.slug}` },
+    ],
+  };
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
 // ── Org badge colours ─────────────────────────────────────────────────────────
 
 const ORG_BADGE: Record<string, { color: string; bg: string }> = {
@@ -213,6 +235,7 @@ export default async function CompetitionDetailPage({
   return (
     <>
       <EventSchema comp={comp} />
+      <BreadcrumbSchema comp={comp} />
 
       <main>
         {/* ── Hero ────────────────────────────────────────────────────────── */}

@@ -8,6 +8,24 @@ import {
 
 export const revalidate = 3600;
 
+const SITE_URL = "https://www.ballroomdancedirectory.com";
+
+// ── Style → OG image mapping ──────────────────────────────────────────────────
+
+const STYLE_OG_IMAGE: Record<DanceStyle, string> = {
+  ballroom:     "/images/ballroom.png",
+  latin:        "/images/latin.png",
+  tango:        "/images/tango.png",
+  salsa:        "/images/salsa.png",
+  swing:        "/images/swing.png",
+  waltz:        "/images/waltz.png",
+  foxtrot:      "/images/ballroom.png",
+  cha_cha:      "/images/latin.png",
+  rumba:        "/images/latin.png",
+  wedding_dance: "/images/wedding.png",
+  competition:  "/images/competition.png",
+};
+
 // ── Style slug helpers ────────────────────────────────────────────────────────
 // URL uses hyphens (wedding-dance), DanceStyle uses underscores (wedding_dance)
 
@@ -57,12 +75,15 @@ export async function generateMetadata({
 
   if (!filtered.length) return { title: "Not Found" };
 
+  const ogImagePath = STYLE_OG_IMAGE[styleType] ?? "/images/ballroom.png";
   return {
     title: `${styleName} Dance Studios in ${cityName} | Ballroom Dance Directory`,
     description: `Find the best ${styleName.toLowerCase()} dance studios in ${cityName}. ${filtered.length} studio${filtered.length !== 1 ? "s" : ""} offering expert private ${styleName.toLowerCase()} instruction. Book your first lesson today.`,
+    alternates: { canonical: `${SITE_URL}/studios/city/${city}/${style}` },
     openGraph: {
       title: `${styleName} Dance Studios in ${cityName}`,
       description: `Discover ${filtered.length} top-rated ${styleName.toLowerCase()} dance studios in ${cityName} offering private lessons.`,
+      images: [{ url: `${SITE_URL}${ogImagePath}`, width: 1200, height: 630, alt: `${styleName} dance studios in ${cityName}` }],
     },
   };
 }

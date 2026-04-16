@@ -44,9 +44,11 @@ export async function generateMetadata({
   const { style } = await params;
   const label = COMP_STYLE_LABELS[style as CompStyle];
   if (!label) return {};
+  const pageUrl = `https://www.ballroomdancedirectory.com/competitions/style/${style}`;
   return {
     title: `${label} Ballroom Dance Competitions`,
     description: STYLE_DESCRIPTION[style as CompStyle],
+    alternates: { canonical: pageUrl },
     openGraph: {
       title: `${label} Competitions`,
       description: STYLE_DESCRIPTION[style as CompStyle],
@@ -56,6 +58,8 @@ export async function generateMetadata({
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────────
+
+const SITE_URL = "https://www.ballroomdancedirectory.com";
 
 export default async function StylePage({
   params,
@@ -72,8 +76,23 @@ export default async function StylePage({
   const description = STYLE_DESCRIPTION[typedStyle];
   const otherStyles = VALID_STYLES.filter((s) => s !== typedStyle);
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type":    "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home",         item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Competitions", item: `${SITE_URL}/competitions` },
+      { "@type": "ListItem", position: 3, name: `${label} Competitions` },
+    ],
+  };
+
   return (
-    <main>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <main>
       {/* Hero */}
       <section className="text-white py-14 px-4 sm:px-6 text-center"
         style={{ background: "linear-gradient(135deg, #0c1428 0%, #1a2d5a 100%)" }}>
@@ -126,5 +145,6 @@ export default async function StylePage({
         </div>
       </nav>
     </main>
+    </>
   );
 }

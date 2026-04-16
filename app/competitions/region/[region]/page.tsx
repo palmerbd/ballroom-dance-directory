@@ -32,9 +32,11 @@ export async function generateMetadata({
   const { region } = await params;
   const label = COMP_REGION_LABELS[region as CompRegion];
   if (!label) return {};
+  const pageUrl = `https://www.ballroomdancedirectory.com/competitions/region/${region}`;
   return {
     title: `${label} Ballroom Dance Competitions`,
     description: `Find ballroom dance competitions in the ${label} United States. NDCA, USA Dance, WDSF, and Independent events.`,
+    alternates: { canonical: pageUrl },
     openGraph: {
       title: `${label} Ballroom Dance Competitions`,
       description: `Upcoming ballroom dance competitions in the ${label} region.`,
@@ -44,6 +46,8 @@ export async function generateMetadata({
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────────
+
+const SITE_URL = "https://www.ballroomdancedirectory.com";
 
 export default async function RegionPage({
   params,
@@ -59,8 +63,23 @@ export default async function RegionPage({
   const comps = sortedByDate(getByRegion(region));
   const otherRegions = VALID_REGIONS.filter((r) => r !== typedRegion);
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type":    "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home",         item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Competitions", item: `${SITE_URL}/competitions` },
+      { "@type": "ListItem", position: 3, name: `${label} Competitions` },
+    ],
+  };
+
   return (
-    <main>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <main>
       {/* Hero */}
       <section className="text-white py-14 px-4 sm:px-6 text-center"
         style={{ background: "linear-gradient(135deg, #0c1428 0%, #1a2d5a 100%)" }}>
@@ -111,5 +130,6 @@ export default async function RegionPage({
         </div>
       </nav>
     </main>
+    </>
   );
 }
