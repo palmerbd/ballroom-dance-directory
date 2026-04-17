@@ -12,6 +12,15 @@ export const metadata: Metadata = {
   title: "Find Private Dance Studios Near You",
   description:
     "Browse 3,400+ private dance studios across America. Filter by city, dance style, and rating. Fred Astaire, Arthur Murray, Dance With Me, and elite independent studios offering ballroom, Latin, tango, and wedding dance lessons.",
+  alternates: { canonical: "https://www.ballroomdancedirectory.com/studios" },
+};
+
+const studiosPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "SearchResultsPage",
+  name: "Find Private Dance Studios Near You",
+  description: "Search and filter 3,400+ private ballroom dance studios across the United States.",
+  url: "https://www.ballroomdancedirectory.com/studios",
 };
 
 // ── Loading skeleton shown while useSearchParams resolves ─────────────────────
@@ -67,7 +76,12 @@ export default async function StudiosPage({
   const styleLabel = isStyleFiltered ? STYLE_LABELS[styleParam as DanceStyle] : "";
 
   return (
-    <main>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(studiosPageSchema) }}
+      />
+      <main>
       {/* ── Header ──────────────────────────────────────────────────────── */}
       <section
         className="py-16 px-6"
@@ -161,5 +175,6 @@ export default async function StudiosPage({
         </div>
       </footer>
     </main>
+    </>
   );
 }

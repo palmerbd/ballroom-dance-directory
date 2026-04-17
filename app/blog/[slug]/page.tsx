@@ -22,6 +22,7 @@ export async function generateMetadata({
   return {
     title: `${post.title} | Ballroom Dance Directory`,
     description: post.excerpt,
+    alternates: { canonical: `https://www.ballroomdancedirectory.com/blog/${slug}` },
     openGraph: {
       title: post.title,
       description: post.excerpt,

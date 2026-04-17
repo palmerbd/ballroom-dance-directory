@@ -3,6 +3,7 @@ import { getAllStudios, getBlogSlugs } from "@/lib/wordpress";
 import { COMPETITIONS } from "@/lib/competitions-data";
 import { COMP_REGION_LABELS, COMP_STYLE_LABELS } from "@/types/competition";
 import { DANCE_STYLES } from "@/types/studio";
+import { CITY_CONFIGS } from "@/lib/neighborhoods";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.ballroomdancedirectory.com";
 
@@ -47,12 +48,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.75,
   }));
 
+  // ── Neighborhood pages ─────────────────────────────────────────────────────
+  const neighborhoodEntries: MetadataRoute.Sitemap = CITY_CONFIGS.flatMap((city) =>
+    city.neighborhoods.map((n) => ({
+      url: `${BASE_URL}/studios/city/${city.slug}/${n.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    }))
+  );
+
   // ── Competition routes ──────────────────────────────────────────────────────
   const competitionEntries: MetadataRoute.Sitemap = COMPETITIONS.map((c) => ({
     url: `${BASE_URL}/competitions/${c.slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
-    priority: 0.75,
+    priority: 0.8,  // D15: bumped from 0.75 to match studio priority
   }));
 
   const competitionRegionEntries: MetadataRoute.Sitemap = Object.keys(COMP_REGION_LABELS).map((r) => ({
@@ -100,6 +111,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...staticEntries,
     ...cityEntries,
     ...cityStyleEntries,
+    ...neighborhoodEntries,
     ...studioEntries,
     ...blogEntries,
     ...competitionEntries,

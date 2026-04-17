@@ -35,6 +35,25 @@ export async function generateMetadata({
 
   const location = [studio.city, studio.state].filter(Boolean).join(", ");
   const canonicalUrl = `https://www.ballroomdancedirectory.com/studios/${slug}`;
+
+  // Pick OG image based on primary dance style — falls back to ballroom
+  const STUDIO_OG_IMAGE: Partial<Record<DanceStyle, string>> = {
+    ballroom:      "/images/ballroom.png",
+    latin:         "/images/latin.png",
+    tango:         "/images/tango.png",
+    salsa:         "/images/salsa.png",
+    swing:         "/images/swing.png",
+    waltz:         "/images/waltz.png",
+    foxtrot:       "/images/ballroom.png",
+    cha_cha:       "/images/latin.png",
+    rumba:         "/images/latin.png",
+    wedding_dance: "/images/wedding.png",
+    competition:   "/images/competition.png",
+  };
+  const primaryStyle  = studio.danceStyles[0] as DanceStyle | undefined;
+  const ogImagePath   = (primaryStyle && STUDIO_OG_IMAGE[primaryStyle]) ?? "/images/ballroom.png";
+  const ogImageUrl    = `https://www.ballroomdancedirectory.com${ogImagePath}`;
+
   return {
     title: `${studio.title}${location ? " \u2014 " + location : ""} | Ballroom Dance Directory`,
     description:
@@ -46,6 +65,7 @@ export async function generateMetadata({
     openGraph: {
       title: studio.title,
       description: studio.tagline || studio.description,
+      images: [{ url: ogImageUrl, width: 1200, height: 630, alt: `${studio.title} — private dance lessons` }],
     },
   };
 }

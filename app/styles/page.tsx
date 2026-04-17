@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "Browse Studios by Dance Style | Ballroom Dance Directory",
   description:
     "Find private dance studios by style — ballroom, Latin, tango, salsa, swing, wedding dance, and more. Browse 4,000+ studios filtered by your preferred dance style.",
+  alternates: { canonical: "https://www.ballroomdancedirectory.com/styles" },
 };
 
 // Style metadata: description, emoji, and link destination

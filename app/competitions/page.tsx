@@ -16,6 +16,7 @@ export const metadata: Metadata = {
   title: "Ballroom Dance Competitions | US Competition Calendar",
   description:
     "Find upcoming ballroom dance competitions across the United States. Browse by region, style, or organization — NDCA, USA Dance, WDSF, and Independent events.",
+  alternates: { canonical: "https://www.ballroomdancedirectory.com/competitions" },
   openGraph: {
     title: "Ballroom Dance Competitions | US Competition Calendar",
     description:
@@ -104,11 +105,33 @@ function BrowseLinks() {
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
+const SITE_URL = "https://www.ballroomdancedirectory.com";
+
 export default function CompetitionsPage() {
   const all = sortedByDate(COMPETITIONS);
 
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Ballroom Dance Competitions — US Calendar",
+    description: "Upcoming NDCA, USA Dance, WDSF, and Independent ballroom dance competitions across the United States.",
+    url: `${SITE_URL}/competitions`,
+    numberOfItems: all.length,
+    itemListElement: all.slice(0, 20).map((c, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: c.name,
+      url: `${SITE_URL}/competitions/${c.slug}`,
+    })),
+  };
+
   return (
-    <main>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
+      <main>
       {/* Hero */}
       <section className="text-white py-16 px-4 sm:px-6 text-center"
         style={{ background: "linear-gradient(135deg, #0c1428 0%, #1a2d5a 100%)" }}>
@@ -154,5 +177,6 @@ export default function CompetitionsPage() {
         </Suspense>
       </div>
     </main>
+    </>
   );
 }

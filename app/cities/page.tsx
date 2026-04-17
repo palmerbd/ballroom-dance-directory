@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Browse Dance Studios by City | Ballroom Dance Directory",
   description:
     "Find private ballroom dance studios in your city. Browse our directory of 4,000+ studios across hundreds of US cities — from New York to Los Angeles and everywhere in between.",
+  alternates: { canonical: "https://www.ballroomdancedirectory.com/cities" },
 };
 
 // US state name lookup
