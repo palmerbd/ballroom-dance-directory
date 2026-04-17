@@ -305,11 +305,109 @@ export function citySlugToName(slug: string): string {
     .join(" ");
 }
 
-/** Studios filtered by city slug */
+// ── Metro area groupings ──────────────────────────────────────────────────────
+// Maps metro hub slug → display names of satellite cities in the metro.
+//
+// Used by:
+//   getStudiosByCity  — expands city hub searches to include suburb studios
+//   getMetroSuburbs   — city hub page "Also in the metro area" link widget
+//   getMetroSlug      — resolves any city (hub or suburb) to its parent metro slug
+
+export const METRO_ALIASES: Record<string, string[]> = {
+  "los-angeles":   ["Santa Monica", "Burbank", "Glendale", "Pasadena", "Long Beach",
+                    "Torrance", "Beverly Hills", "Culver City", "West Hollywood",
+                    "Studio City", "Sherman Oaks", "Encino", "Woodland Hills",
+                    "Chatsworth", "Reseda", "Van Nuys", "North Hollywood"],
+  "new-york-city": ["Brooklyn", "Queens", "Bronx", "Staten Island", "Jersey City",
+                    "Hoboken", "Astoria", "Flushing", "Jamaica", "Yonkers",
+                    "White Plains", "Stamford"],
+  "chicago":       ["Naperville", "Schaumburg", "Arlington Heights", "Evanston",
+                    "Oak Park", "Aurora", "Joliet", "Waukegan", "Skokie",
+                    "Palatine", "Elgin", "Bolingbrook", "Downers Grove"],
+  "houston":       ["Sugar Land", "The Woodlands", "Katy", "Pearland",
+                    "Friendswood", "Pasadena", "Missouri City", "Stafford",
+                    "Spring", "Cypress", "League City"],
+  "dallas":        ["Frisco", "Plano", "Allen", "Irving", "Garland", "Richardson",
+                    "McKinney", "Mesquite", "Denton", "Arlington", "Fort Worth",
+                    "Carrollton", "Lewisville", "Grand Prairie", "Flower Mound",
+                    "Southlake", "Colleyville", "Coppell"],
+  "miami":         ["Miami Beach", "Coral Gables", "Aventura", "Fort Lauderdale",
+                    "Boca Raton", "Hallandale Beach", "Pompano Beach", "Doral",
+                    "Hialeah", "Hollywood", "Kendall", "Plantation"],
+  "phoenix":       ["Scottsdale", "Tempe", "Mesa", "Chandler", "Gilbert",
+                    "Glendale", "Peoria", "Surprise", "Avondale", "Goodyear",
+                    "Queen Creek", "Fountain Hills", "Cave Creek"],
+  "san-antonio":   ["Leon Valley", "Converse", "Universal City", "Schertz",
+                    "New Braunfels", "Boerne", "Helotes", "Live Oak"],
+  "san-diego":     ["La Jolla", "Chula Vista", "Oceanside", "Escondido",
+                    "El Cajon", "National City", "Carlsbad", "Vista",
+                    "Santee", "Poway", "Encinitas"],
+  "atlanta":       ["Buckhead", "Marietta", "Sandy Springs", "Alpharetta",
+                    "Dunwoody", "Roswell", "Smyrna", "Decatur", "Kennesaw",
+                    "Peachtree City", "Norcross", "Lawrenceville", "Cumming"],
+  "austin":        ["Round Rock", "Cedar Park", "Georgetown", "Pflugerville",
+                    "Kyle", "Buda", "Leander", "Manor", "Dripping Springs",
+                    "Lakeway", "Cedar Creek"],
+  "denver":        ["Aurora", "Boulder", "Englewood", "Lakewood", "Westminster",
+                    "Arvada", "Thornton", "Broomfield", "Littleton", "Longmont",
+                    "Centennial", "Parker", "Castle Rock"],
+  "seattle":       ["Bellevue", "Kirkland", "Redmond", "Renton", "Tacoma",
+                    "Everett", "Bothell", "Lynnwood", "Issaquah", "Sammamish",
+                    "Kent", "Federal Way", "Shoreline"],
+  "portland":      ["Beaverton", "Gresham", "Hillsboro", "Lake Oswego",
+                    "Tigard", "Vancouver", "Tualatin", "Wilsonville",
+                    "Oregon City", "Clackamas"],
+  "boston":        ["Cambridge", "Somerville", "Brookline", "Newton",
+                    "Watertown", "Waltham", "Quincy", "Dedham", "Natick",
+                    "Framingham", "Malden", "Medford"],
+  "las-vegas":     ["Henderson", "North Las Vegas", "Summerlin", "Boulder City",
+                    "Paradise", "Spring Valley", "Enterprise", "Whitney"],
+  "orlando":       ["Kissimmee", "Altamonte Springs", "Winter Park", "Maitland",
+                    "Lake Mary", "Sanford", "Ocoee", "Apopka", "Oviedo",
+                    "Longwood", "Clermont"],
+  "tampa":         ["St. Petersburg", "Clearwater", "Brandon", "Riverview",
+                    "Largo", "Dunedin", "Sarasota", "New Port Richey",
+                    "Wesley Chapel", "Land O Lakes"],
+  "charlotte":     ["Concord", "Gastonia", "Rock Hill", "Huntersville",
+                    "Matthews", "Cornelius", "Mooresville", "Monroe",
+                    "Indian Trail"],
+  "nashville":     ["Brentwood", "Franklin", "Murfreesboro", "Hendersonville",
+                    "Smyrna", "Antioch", "Nolensville", "Gallatin",
+                    "Spring Hill"],
+  "minneapolis":   ["St. Paul", "Bloomington", "Eden Prairie", "Plymouth",
+                    "Maple Grove", "Burnsville", "Lakeville", "Edina",
+                    "Eagan", "Minnetonka", "Apple Valley", "Woodbury"],
+};
+
+/**
+ * Return the metro hub slug for any city slug (hub or suburb).
+ * e.g. "frisco" → "dallas", "scottsdale" → "phoenix", "dallas" → "dallas"
+ */
+export function getMetroSlug(citySlug: string): string {
+  if (METRO_ALIASES[citySlug]) return citySlug; // already a metro hub
+  const cityName = citySlugToName(citySlug).toLowerCase();
+  for (const [metro, suburbs] of Object.entries(METRO_ALIASES)) {
+    if (suburbs.some((s) => s.toLowerCase() === cityName)) return metro;
+  }
+  return citySlug; // standalone city — return self
+}
+
+/**
+ * Return display names of suburbs/satellite cities for a metro hub slug.
+ * Used for the "Also in the [city] metro area:" link widget on city hub pages.
+ */
+export function getMetroSuburbs(citySlug: string): string[] {
+  return METRO_ALIASES[citySlug] ?? [];
+}
+
+/** Studios filtered by city slug — metro hub slugs include suburb studios */
 export async function getStudiosByCity(citySlug: string): Promise<StudioCard[]> {
   const cityName = citySlugToName(citySlug).toLowerCase();
+  // Metro hubs expand to include all satellite city studios
+  const suburbs  = METRO_ALIASES[citySlug] ?? [];
+  const metroNames = new Set([cityName, ...suburbs.map((s) => s.toLowerCase())]);
   const all = await getAllStudios(100);
-  return all.filter((s) => s.city.toLowerCase() === cityName);
+  return all.filter((s) => metroNames.has(s.city.toLowerCase()));
 }
 
 /** Studios filtered by dance style — fetches ALL studios to search across full directory */
