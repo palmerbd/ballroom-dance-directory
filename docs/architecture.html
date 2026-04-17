@@ -809,35 +809,35 @@
 
       <div style="margin:20px 0 8px; font-size:11px; font-weight:700; color:#4ade80; text-transform:uppercase; letter-spacing:1px;">🤖 Autonomous Dev Queue (No Input Needed)</div>
 
-      <div style="display:flex; align-items:flex-start; gap:12px; background:#0a1a0f; border:1px solid #22c55e; border-radius:10px; padding:14px 16px; margin-bottom:4px;">
+      <div style="display:flex; align-items:flex-start; gap:12px; background:#0a1a0f; border:1px solid #22c55e; border-radius:10px; padding:14px 16px; margin-bottom:4px; opacity:0.55;">
         <span style="background:#15803d; color:#fff; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">D1</span>
         <div>
-          <span style="font-size:13px; color:#f0fdf4; line-height:1.5; font-weight:700;">Metro City Grouping</span>
-          <span style="display:block; font-size:12px; color:#86efac; line-height:1.6; margin-top:6px;">Add <code>METRO_ALIASES</code> map to <code>lib/wordpress.ts</code> so city filter searches include suburbs: Dallas → Frisco, Plano, Allen; Phoenix → Scottsdale, Tempe, Mesa; Seattle → Bellevue, Kirkland; Chicago → Naperville, Schaumburg. Pure code change, no data entry.</span>
+          <span style="font-size:13px; color:#f0fdf4; line-height:1.5; font-weight:700; text-decoration:line-through;">Metro City Grouping</span>
+          <span style="display:block; font-size:11px; color:#4ade80; margin-top:4px;">✓ Done Apr 16 — METRO_ALIASES (21 metros, 200+ suburbs), getMetroSuburbs, getMetroSlug exported. getStudiosByCity expands metro hub searches to include satellite cities. Also fixed build error (functions were imported but undefined). ✅ Apr 16</span>
         </div>
       </div>
 
-      <div style="display:flex; align-items:flex-start; gap:12px; background:#0a1a0f; border:1px solid #22c55e; border-radius:10px; padding:14px 16px; margin-bottom:4px;">
+      <div style="display:flex; align-items:flex-start; gap:12px; background:#0a1a0f; border:1px solid #22c55e; border-radius:10px; padding:14px 16px; margin-bottom:4px; opacity:0.55;">
         <span style="background:#15803d; color:#fff; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">D2</span>
         <div>
-          <span style="font-size:13px; color:#f0fdf4; line-height:1.5; font-weight:700;">City × Style SEO Landing Pages</span>
-          <span style="display:block; font-size:12px; color:#86efac; line-height:1.6; margin-top:6px;">New dynamic route <code>/studios/city/[city]/[style]</code> (e.g. "Ballroom Dance Studios in Dallas, TX"). 24 cities × 11 styles = 264 high-intent pages. All data already in WP — no scraping needed. Each page auto-populated from existing studio filter. Strong SEO targets.</span>
+          <span style="font-size:13px; color:#f0fdf4; line-height:1.5; font-weight:700; text-decoration:line-through;">City × Style SEO Landing Pages</span>
+          <span style="display:block; font-size:11px; color:#4ade80; margin-top:4px;">✓ Already done — app/studios/city/[city]/[style]/page.tsx live, 20 cities × 11 styles pre-built, OG images + canonical added Apr 16.</span>
         </div>
       </div>
 
-      <div style="display:flex; align-items:flex-start; gap:12px; background:#0a1a0f; border:1px solid #22c55e; border-radius:10px; padding:14px 16px; margin-bottom:4px;">
+      <div style="display:flex; align-items:flex-start; gap:12px; background:#0a1a0f; border:1px solid #22c55e; border-radius:10px; padding:14px 16px; margin-bottom:4px; opacity:0.55;">
         <span style="background:#15803d; color:#fff; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">D3</span>
         <div>
-          <span style="font-size:13px; color:#f0fdf4; line-height:1.5; font-weight:700;">Style-Based Internal Linking on Detail Pages</span>
-          <span style="display:block; font-size:12px; color:#86efac; line-height:1.6; margin-top:6px;">Extend the existing "Related Studios" section on studio detail pages to cross-link by style within the same city (e.g. "Other Latin dance studios in Dallas"). Current section only groups by city. Deeper crawl links + better SEO relevance.</span>
+          <span style="font-size:13px; color:#f0fdf4; line-height:1.5; font-weight:700; text-decoration:line-through;">Style-Based Internal Linking on Detail Pages</span>
+          <span style="display:block; font-size:11px; color:#4ade80; margin-top:4px;">✓ Already done — styleRelated logic + "Other [Style] Studios in [City]" section live on studio detail pages, links through to city×style pages.</span>
         </div>
       </div>
 
-      <div style="display:flex; align-items:flex-start; gap:12px; background:#0a1a0f; border:1px solid #22c55e; border-radius:10px; padding:14px 16px; margin-bottom:4px;">
+      <div style="display:flex; align-items:flex-start; gap:12px; background:#0a1a0f; border:1px solid #22c55e; border-radius:10px; padding:14px 16px; margin-bottom:4px; opacity:0.55;">
         <span style="background:#15803d; color:#fff; font-weight:800; font-size:11px; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">D4</span>
         <div>
-          <span style="font-size:13px; color:#f0fdf4; line-height:1.5; font-weight:700;">Competition Stage 2 — Full Claim Flow</span>
-          <span style="display:block; font-size:12px; color:#86efac; line-height:1.6; margin-top:6px;">Build out from the existing <code>/competitions/claim</code> stub (on GitHub — do a <code>git pull</code> first). Supabase <code>competition_claims</code> table + RLS. Magic link OTP auth. Resend confirmation emails. Organizer dashboard at <code>/competitions/dashboard</code>. Mirrors studio claim flow exactly.</span>
+          <span style="font-size:13px; color:#f0fdf4; line-height:1.5; font-weight:700; text-decoration:line-through;">Competition Stage 2 — Full Claim Flow</span>
+          <span style="display:block; font-size:11px; color:#4ade80; margin-top:4px;">✓ Already done and beyond — competition_claims migration live, magic link OTP, organizer dashboard, Stages 3 (edit overrides) and 4 (Featured upgrade) all complete.</span>
         </div>
       </div>
 
