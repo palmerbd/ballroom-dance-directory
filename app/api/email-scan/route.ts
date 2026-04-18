@@ -1,9 +1,9 @@
 /**
  * /api/email-scan
  * ===============
- * Uses the same Google Places nearbysearch → Place Details pipeline
- * as fetch-studios.mjs, then scrapes each studio website for email
- * addresses (mailto: links + regex).
+ * Uses Google Places textsearch for "ballroom dance studio in [city]"
+ * → Place Details to get website/phone, then scrapes each studio website
+ * for email addresses (mailto: links + regex).
  *
  * GET /api/email-scan?city=chicago
  * GET /api/email-scan?city=los-angeles
@@ -14,20 +14,19 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const PLACES_KEY = process.env.PLACES_API_KEY!;
-const RADIUS_METERS = 30_000;
 const DETAIL_FIELDS = "name,formatted_address,formatted_phone_number,website,rating,url,business_status";
 
-const CITIES: Record<string, { lat: number; lng: number; label: string }> = {
-  "chicago":       { lat: 41.8781,  lng: -87.6298,  label: "Chicago, IL" },
-  "los-angeles":   { lat: 34.0522,  lng: -118.2437, label: "Los Angeles, CA" },
-  "new-york":      { lat: 40.7128,  lng: -74.0060,  label: "New York, NY" },
-  "houston":       { lat: 29.7604,  lng: -95.3698,  label: "Houston, TX" },
-  "dallas":        { lat: 32.7767,  lng: -96.7970,  label: "Dallas, TX" },
-  "miami":         { lat: 25.7617,  lng: -80.1918,  label: "Miami, FL" },
-  "atlanta":       { lat: 33.7490,  lng: -84.3880,  label: "Atlanta, GA" },
-  "phoenix":       { lat: 33.4484,  lng: -112.0740, label: "Phoenix, AZ" },
-  "seattle":       { lat: 47.6062,  lng: -122.3321, label: "Seattle, WA" },
-  "denver":        { lat: 39.7392,  lng: -104.9903, label: "Denver, CO" },
+const CITIES: Record<string, { label: string; searchLabel: string }> = {
+  "chicago":       { label: "Chicago, IL",        searchLabel: "Chicago, IL" },
+  "los-angeles":   { label: "Los Angeles, CA",    searchLabel: "Los Angeles, CA" },
+  "new-york":      { label: "New York, NY",        searchLabel: "New York, NY" },
+  "houston":       { label: "Houston, TX",         searchLabel: "Houston, TX" },
+  "dallas":        { label: "Dallas, TX",          searchLabel: "Dallas, TX" },
+  "miami":         { label: "Miami, FL",           searchLabel: "Miami, FL" },
+  "atlanta":       { label: "Atlanta, GA",         searchLabel: "Atlanta, GA" },
+  "phoenix":       { label: "Phoenix, AZ",         searchLabel: "Phoenix, AZ" },
+  "seattle":       { label: "Seattle, WA",         searchLabel: "Seattle, WA" },
+  "denver":        { label: "Denver, CO",          searchLabel: "Denver, CO" },
 };
 
 const EMAIL_RE = /[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/g;
@@ -39,16 +38,18 @@ const SKIP_DOMAINS = new Set([
 
 // ── Places helpers ────────────────────────────────────────────────────────────
 
-async function nearbySearch(lat: number, lng: number): Promise<any[]> {
+async function textSearch(cityLabel: string): Promise<any[]> {
   const params = new URLSearchParams({
-    location: `${lat},${lng}`,
-    radius: String(RADIUS_METERS),
-    type: "dance_studio",
+    query: `ballroom dance studio in ${cityLabel}`,
+    type: "establishment",
     key: PLACES_KEY,
   });
-  const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?${params}`;
+  const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?${params}`;
   const res = await fetch(url);
   const data = await res.json();
+  if (data.status !== "OK" && data.status !== "ZERO_RESULTS") {
+    console.error("Places textsearch error:", data.status, data.error_message);
+  }
   return data.results ?? [];
 }
 
@@ -153,8 +154,8 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "PLACES_API_KEY not set" }, { status: 500 });
   }
 
-  // 1. Nearby search for dance studios
-  const places = await nearbySearch(city.lat, city.lng);
+  // 1. Text search for ballroom dance studios in the city
+  const places = await textSearch(city.searchLabel);
 
   // 2. Place Details in parallel (website, phone, etc.)
   const detailResults = await Promise.allSettled(
