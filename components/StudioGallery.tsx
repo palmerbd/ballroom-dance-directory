@@ -112,6 +112,31 @@ export default function StudioGallery({
     );
   }
 
+  // ── No real photos yet — show upload prompt instead of demo images ───────
+  const hasRealPhotos = hasUploaded || !!featuredImageUrl;
+
+  if (!hasRealPhotos) {
+    return (
+      <section className="mb-8">
+        <div className="flex items-center justify-center h-64 sm:h-80 rounded-xl bg-gradient-to-br from-[#0c1428] to-[#1a2d5a] border border-white/10">
+          <div className="text-center px-6">
+            <div className="text-4xl mb-3">📷</div>
+            <p className="text-white font-semibold text-lg mb-1">No photos uploaded yet</p>
+            <p className="text-gray-400 text-sm mb-4">
+              Photos help potential students discover your studio.
+            </p>
+            <a
+              href="/dashboard"
+              className="inline-block px-5 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-white text-sm font-semibold transition-colors"
+            >
+              Upload Studio Photos →
+            </a>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="mb-8">
       {/* ── Grid: 1 hero + 2 smaller side-by-side ── */}
@@ -150,37 +175,9 @@ export default function StudioGallery({
       </div>
 
       {/* ── Attribution ── */}
-      {hasUploaded ? (
-        <p className="text-xs text-gray-400 mt-2 text-right italic">
-          Photos provided by the studio owner
-        </p>
-      ) : !placeholders.hero.localSrc ? (
-        <p className="text-xs text-gray-400 mt-2 text-right">
-          Photos via{" "}
-          <a
-            href="https://unsplash.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-gray-600 transition-colors"
-          >
-            Unsplash
-          </a>
-          {" "}(free license) ·{" "}
-          <span className="italic">
-            Studio owners can{" "}
-            <a href="/dashboard" className="underline hover:text-gray-600">
-              upload their own photos
-            </a>
-          </span>
-        </p>
-      ) : (
-        <p className="text-xs text-gray-400 mt-2 text-right italic">
-          Studio owners can{" "}
-          <a href="/dashboard" className="underline hover:text-gray-600">
-            upload their own photos
-          </a>
-        </p>
-      )}
+      <p className="text-xs text-gray-400 mt-2 text-right italic">
+        Photos provided by the studio owner
+      </p>
     </section>
   );
 }
