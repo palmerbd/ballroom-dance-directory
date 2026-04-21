@@ -3,7 +3,7 @@ import { notFound }  from "next/navigation";
 import Link          from "next/link";
 import { Suspense }  from "react";
 import {
-  getByRegion,
+  COMPETITIONS,
   sortedByDate,
 } from "@/lib/competitions-data";
 import {
@@ -60,7 +60,8 @@ export default async function RegionPage({
   if (!VALID_REGIONS.includes(typedRegion)) notFound();
 
   const label = COMP_REGION_LABELS[typedRegion];
-  const comps = sortedByDate(getByRegion(region));
+  const allComps = sortedByDate(COMPETITIONS);
+  const regionCount = allComps.filter((c) => c.region === typedRegion).length;
   const otherRegions = VALID_REGIONS.filter((r) => r !== typedRegion);
 
   const breadcrumbSchema = {
@@ -97,7 +98,7 @@ export default async function RegionPage({
           {label} Competitions
         </h1>
         <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-6">
-          {comps.length} ballroom dance competition{comps.length !== 1 ? "s" : ""} in the {label} region.
+          {regionCount} ballroom dance competition{regionCount !== 1 ? "s" : ""} in the {label} region.
           Filter by style, level, or organization.
         </p>
         <div className="flex flex-wrap gap-2 justify-center">
@@ -116,7 +117,7 @@ export default async function RegionPage({
 
       {/* Filter + grid */}
       <Suspense fallback={<div className="py-24 text-center text-gray-400">Loading…</div>}>
-        <CompetitionFilters competitions={comps} />
+        <CompetitionFilters competitions={allComps} defaultRegion={typedRegion} />
       </Suspense>
 
       {/* Breadcrumb */}

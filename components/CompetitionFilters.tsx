@@ -40,16 +40,24 @@ function sortDate(a: Competition, b: Competition): number {
 
 // ── Main component ────────────────────────────────────────────────────────────
 
-export function CompetitionFilters({ competitions }: { competitions: Competition[] }) {
+export function CompetitionFilters({
+  competitions,
+  defaultRegion = "",
+  defaultStyle  = "",
+}: {
+  competitions: Competition[];
+  defaultRegion?: string;
+  defaultStyle?:  string;
+}) {
   const searchParams = useSearchParams();
   const router       = useRouter();
   const pathname     = usePathname();
 
   const [query,  setQuery]  = useState(() => searchParams.get("q")      ?? "");
-  const [style,  setStyle]  = useState(() => searchParams.get("style")  ?? "");
+  const [style,  setStyle]  = useState(() => searchParams.get("style")  ?? defaultStyle);
   const [org,    setOrg]    = useState(() => searchParams.get("org")    ?? "");
   const [level,  setLevel]  = useState(() => searchParams.get("level")  ?? "");
-  const [region, setRegion] = useState(() => searchParams.get("region") ?? "");
+  const [region, setRegion] = useState(() => searchParams.get("region") ?? defaultRegion);
   const [month,  setMonth]  = useState(() => searchParams.get("month")  ?? "");
   const [sortBy, setSortBy] = useState(() => searchParams.get("sort")   ?? "date");
   const [page,   setPage]   = useState(() => Math.max(1, Number(searchParams.get("page") ?? "1")));

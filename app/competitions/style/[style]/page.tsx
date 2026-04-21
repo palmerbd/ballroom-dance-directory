@@ -3,7 +3,7 @@ import { notFound }  from "next/navigation";
 import Link          from "next/link";
 import { Suspense }  from "react";
 import {
-  getByStyle,
+  COMPETITIONS,
   sortedByDate,
 } from "@/lib/competitions-data";
 import {
@@ -72,7 +72,8 @@ export default async function StylePage({
   if (!VALID_STYLES.includes(typedStyle)) notFound();
 
   const label       = COMP_STYLE_LABELS[typedStyle];
-  const comps       = sortedByDate(getByStyle(style));
+  const allComps    = sortedByDate(COMPETITIONS);
+  const styleCount  = allComps.filter((c) => c.styles.includes(typedStyle)).length;
   const description = STYLE_DESCRIPTION[typedStyle];
   const otherStyles = VALID_STYLES.filter((s) => s !== typedStyle);
 
@@ -113,7 +114,7 @@ export default async function StylePage({
           {description}
         </p>
         <p className="text-sm text-gray-400 mb-6">
-          {comps.length} competition{comps.length !== 1 ? "s" : ""} featuring {label}
+          {styleCount} competition{styleCount !== 1 ? "s" : ""} featuring {label}
         </p>
         <div className="flex flex-wrap gap-2 justify-center">
           {otherStyles.map((s) => (
@@ -131,7 +132,7 @@ export default async function StylePage({
 
       {/* Filter + grid */}
       <Suspense fallback={<div className="py-24 text-center text-gray-400">Loading…</div>}>
-        <CompetitionFilters competitions={comps} />
+        <CompetitionFilters competitions={allComps} defaultStyle={typedStyle} />
       </Suspense>
 
       {/* Breadcrumb */}
