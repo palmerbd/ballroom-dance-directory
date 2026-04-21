@@ -22,7 +22,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const GHL_BASE    = "https://services.leadconnectorhq.com";
-const GHL_TOKEN   = process.env.GHL_API_TOKEN ?? "pit-2544feeb-2cfb-411e-a7cd-0612e99f3461";
+const GHL_TOKEN   = process.env.GHL_API_TOKEN!;
 const LOCATION_ID = "gKAwJUdSQ6QMlAc0QXWb";
 const GHL_VERSION = "2021-07-28";
 
