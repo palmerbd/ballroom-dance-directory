@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Competition Dance Lessons — Train to Compete Near You",
   description:
     "Find private competition dance training studios near you. Ballroom, Latin, and formation competition coaching from expert instructors at top-rated studios.",
+  alternates: { canonical: "https://www.ballroomdancedirectory.com/competition-dance-lessons" },
 };
 
 const FAQ = [

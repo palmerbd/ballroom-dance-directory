@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "Ballroom Dance Lessons — Find Private Instruction Near You",
   description:
     "Find the best private ballroom dance lesson studios near you. Browse Fred Astaire, Arthur Murray, Dance With Me, and elite independent studios offering expert ballroom instruction.",
+  alternates: { canonical: "https://www.ballroomdancedirectory.com/ballroom-dance-lessons" },
 };
 
 const STYLE_KEY = "ballroom";

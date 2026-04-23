@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Swing Dance Lessons — Find Private Instruction Near You",
   description:
     "Find private swing dance lesson studios near you. East Coast Swing, West Coast Swing, Lindy Hop, Jive, and more. Browse top-rated studios.",
+  alternates: { canonical: "https://www.ballroomdancedirectory.com/swing-dance-lessons" },
 };
 
 const FAQ = [

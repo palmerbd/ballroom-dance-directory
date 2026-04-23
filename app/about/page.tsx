@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "About",
   description:
     "Ballroom Dance Directory is an independent consumer resource for finding private dance instruction studios across the United States. Learn about our mission and how we operate.",
+  alternates: { canonical: "https://www.ballroomdancedirectory.com/about" },
 };
 
 export default function AboutPage() {

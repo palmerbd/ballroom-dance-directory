@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Tango Dance Lessons — Find Private Instruction Near You",
   description:
     "Find private tango dance lesson studios near you. Argentine Tango, Ballroom Tango, and more. Browse expert studios offering one-on-one tango instruction.",
+  alternates: { canonical: "https://www.ballroomdancedirectory.com/tango-dance-lessons" },
 };
 
 const FAQ = [

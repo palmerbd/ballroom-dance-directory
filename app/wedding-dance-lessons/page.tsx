@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Wedding Dance Lessons — First Dance Instruction Near You",
   description:
     "Find private wedding dance lesson studios near you. Make your first dance unforgettable with expert one-on-one instruction. Browse top-rated studios.",
+  alternates: { canonical: "https://www.ballroomdancedirectory.com/wedding-dance-lessons" },
 };
 
 const FAQ = [

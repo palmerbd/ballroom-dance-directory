@@ -3,6 +3,7 @@ import "./globals.css";
 import SiteNav from "@/components/SiteNav";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.ballroomdancedirectory.com"),
   title: {
     default: "Private Dance Lessons Directory — Find Elite Studios Near You",
     template: "%s | Ballroom Dance Directory",

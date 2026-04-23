@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Contact",
   description:
     "Contact Ballroom Dance Directory — listing corrections, removal requests, claiming your studio, or partnership inquiries.",
+  alternates: { canonical: "https://www.ballroomdancedirectory.com/contact" },
 };
 
 export default function ContactPage() {

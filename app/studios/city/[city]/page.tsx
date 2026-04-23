@@ -39,6 +39,9 @@ export async function generateMetadata({
   return {
     title: `Ballroom Dance Studios in ${cityName} | Ballroom Dance Directory`,
     description: `Find the best private dance studios in ${cityName}. ${studios.length} top-rated ${cityName} studios offering ballroom, Latin, tango, wedding dance, and more. Book your first lesson today.`,
+    alternates: {
+      canonical: `https://www.ballroomdancedirectory.com/studios/city/${city}`,
+    },
     openGraph: {
       title: `Private Dance Lessons in ${cityName}`,
       description: `Discover ${studios.length} elite dance studios in ${cityName} offering private instruction across all styles.`,

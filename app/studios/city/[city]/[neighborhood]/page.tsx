@@ -38,6 +38,9 @@ export async function generateMetadata({
   return {
     title: `Ballroom Dance Studios in ${neighborhood.name}, ${city.name} | Ballroom Dance Directory`,
     description: `Find the best private dance studios in the ${neighborhood.name} area of ${city.name}, ${city.stateAbbr}. Top-rated studios offering ballroom, Latin, salsa, tango, and wedding dance lessons near ${neighborhood.name}.`,
+    alternates: {
+      canonical: `https://www.ballroomdancedirectory.com/studios/city/${citySlug}/${hoodSlug}`,
+    },
     openGraph: {
       title: `Dance Studios in ${neighborhood.name}, ${city.name}`,
       description: `Private dance lesson studios in the ${neighborhood.name} neighborhood of ${city.name}. Book your first lesson today.`,

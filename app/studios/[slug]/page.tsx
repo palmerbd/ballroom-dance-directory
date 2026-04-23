@@ -41,6 +41,9 @@ export async function generateMetadata({
       `Private dance lessons at ${studio.title}${location ? ` in ${location}` : ""}. ${
         studio.danceStyles.map((s) => STYLE_LABELS[s as DanceStyle]).join(", ")
       } instruction available.`,
+    alternates: {
+      canonical: `https://www.ballroomdancedirectory.com/studios/${slug}`,
+    },
     openGraph: {
       title: studio.title,
       description: studio.tagline || studio.description,

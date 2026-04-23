@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "Private Dance Lessons Directory — Find Elite Studios Near You",
   description:
     "Discover the finest private dance instruction studios across the United States. Fred Astaire, Arthur Murray, Dance With Me, and elite independent studios.",
+  alternates: {
+    canonical: "https://www.ballroomdancedirectory.com",
+  },
 };
 
 const FEATURED_STYLES = [

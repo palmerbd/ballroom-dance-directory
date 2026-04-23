@@ -4,6 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Terms of Service",
   description: "Terms of Service for Ballroom Dance Directory — an independent online dance studio directory.",
+  alternates: { canonical: "https://www.ballroomdancedirectory.com/terms" },
 };
 
 const EFFECTIVE_DATE = "April 1, 2026";
