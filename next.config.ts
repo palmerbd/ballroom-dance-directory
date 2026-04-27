@@ -97,6 +97,20 @@ const nextConfig: NextConfig = {
         destination: "/studios/city/las-vegas",
         permanent: true,
       },
+
+      // ── Misc stale / malformed root routes ───────────────────────────────
+      // Doubled slug — correct page is /wedding-dance-lessons
+      {
+        source: "/wedding-dance-dance-lessons",
+        destination: "/wedding-dance-lessons",
+        permanent: true,
+      },
+      // Non-US studio (Tijuana, MX) — scraped near San Diego border
+      {
+        source: "/studios/academia-sm-tango-tijuana",
+        destination: "/studios",
+        permanent: true,
+      },
     ];
   },
 
