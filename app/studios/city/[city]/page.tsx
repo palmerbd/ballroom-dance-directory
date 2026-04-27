@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import {
   getStudiosByCity, citySlugToName, getAllStudios,
   getMetroSlug, getMetroSuburbs,
@@ -282,7 +282,9 @@ export default async function CityPage({
   const cityName = citySlugToName(city);
   const studios  = await getStudiosByCity(city);
 
-  if (!studios.length) notFound();
+  // No studios in this city — redirect to the main directory rather than serving
+  // a 404. Handles invalid / unsupported city slugs gracefully.
+  if (!studios.length) permanentRedirect("/studios");
 
   // Split featured (paid/claimed) from standard for display priority
   const featuredStudios = studios

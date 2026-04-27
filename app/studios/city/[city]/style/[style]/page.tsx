@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { getStudiosByCity, citySlugToName } from "@/lib/wordpress";
 import {
   StudioCard, CHAIN_CONFIG, STYLE_LABELS, DanceStyle, DANCE_STYLES,
@@ -56,7 +56,7 @@ export async function generateMetadata({
   const studios   = await getStudiosByCity(city);
   const filtered  = studios.filter((s) => s.danceStyles.includes(styleType));
 
-  if (!filtered.length) return { title: "Not Found" };
+  if (!filtered.length) return { title: `Dance Studios in ${cityName}` };
 
   return {
     title: `${styleName} Dance Studios in ${cityName} | Ballroom Dance Directory`,
@@ -165,7 +165,9 @@ export default async function CityStylePage({
       return (b.rating ?? 0) - (a.rating ?? 0);
     });
 
-  if (!studios.length) notFound();
+  // No studios offer this style in this city — redirect to the city page rather
+  // than serving a 404. This keeps GSC coverage clean for all city×style combos.
+  if (!studios.length) permanentRedirect(`/studios/city/${city}`);
 
   const state = studios[0]?.state || "";
 
