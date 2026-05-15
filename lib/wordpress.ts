@@ -19,7 +19,7 @@ async function fetchWP<T>(
     Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
   }
   const res = await fetch(url.toString(), {
-    cache: "no-store",
+    next: { revalidate: 86400 },
     headers: { "Content-Type": "application/json" },
   });
   if (!res.ok) throw new Error(`WP API ${res.status}: ${endpoint}`);
