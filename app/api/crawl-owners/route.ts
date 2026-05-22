@@ -98,6 +98,13 @@ const COMMON_FIRST_NAMES = new Set([
   "allison","gillian","lorraine","sherri","marcia","jenna","dana","faith","penny","kristin",
   "marlene","sheila","elaine","ann","sue","peggy","ruth","eileen","georgia","ellen","linda",
   "leann","kathryn","petra","lana","gail","carol","fiona","valerie","dee","lisa",
+  // Short names often missing from top-400 lists
+  "kim","pat","kay","joy","sue","jan","gay","bev","pam","deb","jen","val","mae",
+  "lee","lou","ray","bob","jim","tom","ron","ken","don","ed","al","bill","rick",
+  "mike","dave","steve","jeff","tony","dan","mark","larry","scott","kevin","brian",
+  "rob","chad","brad","drew","jay","neil","dean","carl","dale","duane","glen","hal",
+  "ivan","jack","jake","lance","leon","marc","max","neil","noel","robb","ross","roy",
+  "rudy","russ","skip","stan","ted","tim","todd","troy","vince","wade","walt","zach",
 ]);
 
 function isLikelyFirstName(word: string): boolean {
