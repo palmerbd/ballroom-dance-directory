@@ -165,6 +165,30 @@ interface OwnerResult {
   source_page: string;
 }
 
+// Business type words that often follow an owner name in a studio name
+const BUSINESS_SUFFIXES =
+  /\s+(?:dance|dancing|ballroom|studio|studios|school|academy|center|centre|arts|ballet|movement|fitness|instruction|lessons|training|inc|llc)[\s,.]*/i;
+
+/**
+ * Strategy -1: Extract owner name directly from the studio business name.
+ * "Nancy Thompson Dance Studio" → "Nancy Thompson"
+ * "Kim Lesher Ballroom" → "Kim Lesher"
+ * Only fires if the name leads with a valid person name before a known suffix.
+ */
+function tryStudioName(studioName: string): string | null {
+  const cleaned = studioName
+    .replace(/\bby\b/i, "")  // "Dance Studio by Sandra" → skip (format not handled)
+    .trim();
+
+  // Pattern: starts with "First Last" followed by a business suffix
+  const m = cleaned.match(/^([A-Z][a-z'\-]{1,17}\s+[A-Z][a-z'\-]{1,17})(?:'s?)?\s+(?:dance|dancing|ballroom|studio|studios|school|academy|center|centre|arts|ballet|movement|fitness)/i);
+  if (m) {
+    const candidate = m[1].trim();
+    if (isValidPersonName(candidate)) return candidate;
+  }
+  return null;
+}
+
 /**
  * Strategy 0: HTML class/id attribute scan
  * Looks for elements whose class or id contains known name-container patterns.
@@ -324,7 +348,14 @@ function extractOwner(html: string, isAboutPage: boolean): string | null {
   return null;
 }
 
-async function findOwnerForStudio(website: string): Promise<OwnerResult | null> {
+async function findOwnerForStudio(studioName: string, website: string): Promise<OwnerResult | null> {
+  // Strategy -1: extract name from the studio business name (zero network cost)
+  const fromTitle = tryStudioName(studioName);
+  if (fromTitle) {
+    const { first, last } = splitName(fromTitle);
+    return { owner_name: fromTitle, owner_first: first, owner_last: last, source_page: "studio_name" };
+  }
+
   if (!website || !website.startsWith("http")) return null;
 
   let base: string;
@@ -384,7 +415,7 @@ export async function POST(req: NextRequest) {
 
   const results = await Promise.allSettled(
     studios.map(async (s) => {
-      const result = await findOwnerForStudio(s.website);
+      const result = await findOwnerForStudio(s.name, s.website);
       return {
         name: s.name,
         website: s.website,
