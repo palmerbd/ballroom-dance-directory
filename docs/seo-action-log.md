@@ -146,3 +146,39 @@ Weekly Google Search Console review log. Each entry is appended from the schedul
    - `/competitions/houston-dancesport` ✅ (already indexed; re-requested, clean green status)
 
 **Note:** The 3 studio pages and competition page were already indexed prior to this deploy — all confirmed "Page is indexed" in URL Inspection. Re-submitting pushes the updated content (Trending This Week internal links + expanded descriptions) into Google's priority crawl queue.
+
+## 2026-05-18 Weekly GSC Review
+- **Clicks (28d):** 50
+- **Impressions:** 1,687
+- **Avg CTR:** 3.0%
+- **Avg Position:** 6.9
+- **Date range:** 2026-04-17 → 2026-05-15
+
+### Top Pages
+1. `/studios/lets-dance-austin-round-rock-3` — 6 clicks, 51 impr, 11.8% CTR, pos 2.3
+2. `/competitions/houston-dancesport` — 4 clicks, 181 impr, 2.2% CTR, pos 7.3
+3. `/studios/bugalu-dance-co-the-mambo-factory-pharr` — 3 clicks, 80 impr, 3.8% CTR, pos 2.3
+4. `/studios/dance-fitness-salsa-studio-mesa-mesa` — 3 clicks, 35 impr, 8.6% CTR, pos 1.9
+5. `/studios/the-dance-company-odessa` — 3 clicks, 36 impr, 8.3% CTR, pos 4.1
+
+### Action Items
+1. **[Title & Meta Optimization — Low effort / High impact]** Rewrite page title + meta description for `arthur murray dance studio of williston park` page (79 impr, 0.0% CTR). High visibility, zero clicks — pure CTR play.
+2. **[Content & Internal Linking — Medium effort / High impact]** Expand content + add 2–3 internal links from high-traffic pages to queries ranking positions 4–15: `arthur murray dance studio of williston park` (pos 11.0), `texas challenge dancesport` (pos 7.3), `art dance education child care madison wi` (pos 7.9). All sit just off page 1.
+3. **[On-Page SEO — Medium effort / Medium impact]** Improve H1/H2 structure and add FAQ schema to `/competitions/houston-dancesport` (181 impr, pos 7.3, 2.2% CTR). Highest-impression page underperforming on CTR.
+4. **[Structured Data — Medium effort / Medium impact]** Add breadcrumb + review schema to all studio listing pages. Site CTR (3.0%) is below 4% target; rich-result eligibility typically lifts CTR 20–30%.
+
+### Low-CTR Opportunities
+- `arthur murray dance studio of williston park` — 79 impr, 0.0% CTR (pos 11.0)
+
+### Close to Page 1 (pos 4–15)
+- `arthur murray dance studio of williston park` — pos 11.0, 79 impr
+- `texas challenge dancesport` — pos 7.3, 66 impr
+- `art dance education child care madison wi` — pos 7.9, 40 impr
+- `dance with me franchise ballroom` — pos 6.4, 27 impr
+- `infinity dance` — pos 9.3, 25 impr
+
+### Week-over-Week (vs 2026-05-12 baseline)
+- Clicks: 49 → 50 (+1)
+- Impressions: 1,673 → 1,687 (+14)
+- Houston DanceSport: still 181 impr / pos 7.3 — last week's content expansion not yet showing CTR lift (Google still re-crawling).
+- Williston Park: still 79 impr / 0.0% CTR — title/meta rewrite from last week's plan either not deployed or not yet re-indexed; verify.

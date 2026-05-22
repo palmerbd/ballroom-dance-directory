@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BDD — SEO Punchlist</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f1117; color: #e2e8f0; min-height: 100vh; padding: 32px 24px; }
+
+  .page-header { max-width: 900px; margin: 0 auto 32px; }
+  .page-title { font-size: 26px; font-weight: 800; color: #e8c560; margin-bottom: 6px; }
+  .page-sub { font-size: 13px; color: #718096; }
+  .page-sub strong { color: #a0aec0; }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap { max-width: 900px; margin: 0 auto 32px; background: #1a1f2e; border-radius: 12px; padding: 18px 20px; border: 1px solid #2d3748; }
+  .progress-row { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
+  .progress-label { font-size: 13px; color: #a0aec0; min-width: 120px; }
+  .progress-bar-bg { flex: 1; background: #2d3748; border-radius: 99px; height: 8px; }
+  .progress-bar-fill { height: 8px; border-radius: 99px; background: linear-gradient(90deg, #b8922a, #e8c560); transition: width .4s; }
+  .progress-pct { font-size: 12px; font-weight: 700; color: #e8c560; min-width: 36px; text-align: right; }
+  .progress-counts { font-size: 12px; color: #4a5568; margin-top: 4px; }
+
+  /* ── SECTIONS ── */
+  .section { max-width: 900px; margin: 0 auto 24px; background: #141824; border: 1px solid #2d3748; border-radius: 14px; overflow: hidden; }
+  .section-header { padding: 14px 20px; background: #1a1f2e; border-bottom: 1px solid #2d3748; display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+  .section-icon { font-size: 18px; }
+  .section-title { font-size: 15px; font-weight: 700; color: #e2e8f0; flex: 1; }
+  .section-badge { font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 20px; }
+  .badge-impact-high  { background: #7f1d1d; color: #fca5a5; }
+  .badge-impact-med   { background: #1e3a5f; color: #93c5fd; }
+  .badge-impact-low   { background: #1a1f2e; color: #718096; border: 1px solid #2d3748; }
+  .badge-done         { background: #064e3b; color: #6ee7b7; }
+  .section-toggle { font-size: 12px; color: #4a5568; }
+  .section-body { padding: 4px 0; }
+
+  /* ── ITEMS ── */
+  .item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 20px; border-bottom: 1px solid #1a1f2e; cursor: pointer; transition: background .15s; }
+  .item:last-child { border-bottom: none; }
+  .item:hover { background: #1a1f2e; }
+  .item.done { opacity: 0.45; }
+  .item.done .item-title { text-decoration: line-through; color: #4a5568; }
+
+  .cb { width: 18px; height: 18px; border: 2px solid #4a5568; border-radius: 4px; flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+  .item.done .cb { background: #065f46; border-color: #065f46; }
+  .cb-check { display: none; font-size: 11px; color: #fff; font-weight: 900; }
+  .item.done .cb-check { display: block; }
+
+  .item-content { flex: 1; }
+  .item-title { font-size: 13px; font-weight: 600; color: #e2e8f0; line-height: 1.4; margin-bottom: 4px; }
+  .item-desc { font-size: 12px; color: #718096; line-height: 1.6; }
+  .item-desc code { background: #2d3748; padding: 1px 5px; border-radius: 3px; font-size: 11px; color: #a0aec0; }
+  .item-tag { display: inline-block; font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 20px; margin-top: 5px; text-transform: uppercase; letter-spacing: .5px; }
+  .tag-build   { background: #1e3a5f; color: #93c5fd; }
+  .tag-content { background: #3b1f00; color: #fdba74; }
+  .tag-links   { background: #2d1f00; color: #fcd34d; }
+  .tag-config  { background: #1a1f2e; color: #a0aec0; border: 1px solid #2d3748; }
+  .tag-you     { background: #3b0f3b; color: #e879f9; }
+  .tag-data    { background: #0f2a1a; color: #86efac; }
+
+  /* ── STATE GRID ── */
+  .state-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; padding: 16px 20px; }
+  .state-chip { padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .state-chip.covered  { background: #0a1a10; border: 1px solid #15803d; color: #86efac; }
+  .state-chip.zero     { background: #1f0d0d; border: 1px solid #991b1b; color: #fca5a5; }
+  .state-chip .dot     { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .state-chip.covered .dot { background: #22c55e; }
+  .state-chip.zero    .dot  { background: #ef4444; }
+
+  .legend { display: flex; gap: 20px; padding: 0 20px 16px; font-size: 12px; color: #718096; align-items: center; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+
+  /* ── MISC ── */
+  .divider { border: none; border-top: 1px solid #1a1f2e; margin: 0; }
+  .section-note { padding: 10px 20px; font-size: 12px; color: #4a5568; font-style: italic; border-bottom: 1px solid #1a1f2e; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">🎯 BDD SEO Punchlist</div>
+  <div class="page-sub">Ballroom Dance Directory &nbsp;·&nbsp; <strong>ballroomdancedirectory.com</strong> &nbsp;·&nbsp; Updated Apr 27, 2026 &nbsp;·&nbsp; Check items off as you complete them</div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-row">
+    <span class="progress-label">Overall Progress</span>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="fill-overall" style="width:0%"></div></div>
+    <span class="progress-pct" id="pct-overall">0%</span>
+  </div>
+  <div class="progress-counts" id="counts-overall">0 of 0 items complete</div>
+</div>
+
+
+<!-- ── SECTION 1: CONTENT ENGINE ──────────────────────────────────────── -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="section-icon">📝</span>
+    <span class="section-title">Content Engine — Blog & Informational Pages</span>
+    <span class="section-badge badge-impact-high">🔥 Highest Impact</span>
+    <span class="section-toggle">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="section-note">Biggest untapped lever. No content = no informational traffic. One post/week compounds fast. Target questions people actually type before booking lessons.</div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Set up WordPress blog post type + Next.js blog route</div>
+        <div class="item-desc">The blog section exists in the code (<code>/blog</code>) but has zero published posts. Confirm the WP blog post type is configured and the Next.js route renders correctly. Seed with first post before doing anything else in this section.</div>
+        <span class="item-tag tag-build">Build</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">"How much do ballroom dance lessons cost?" — pillar post</div>
+        <div class="item-desc">High volume, commercial intent, perfect for capturing people who are researching before booking. Include price ranges by chain (Arthur Murray, Fred Astaire) vs. independent, by city tier, and by lesson type (group vs. private). This post alone will drive more traffic than 50 studio pages.</div>
+        <span class="item-tag tag-content">Content</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">"Arthur Murray vs Fred Astaire vs Dance With Me — Which Is Right for You?"</div>
+        <div class="item-desc">One of the most-searched questions in the niche. Comparison posts are high-trust and high-CTR. This also positions BDD as the authoritative resource on the franchise landscape, which is the directory's core value prop.</div>
+        <span class="item-tag tag-content">Content</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">"Best cities for ballroom dancing in America" — linkable asset</div>
+        <div class="item-desc">Data-driven post using the directory's own studio counts and ratings. Rankings, maps, highlights per city. Highly shareable and linkable from dance blogs, local news, and tourism sites. This type of content earns backlinks passively over time.</div>
+        <span class="item-tag tag-content">Content</span>
+        <span class="item-tag tag-links">Link Bait</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">"What to expect at your first ballroom dance lesson"</div>
+        <div class="item-desc">Top-of-funnel content for absolute beginners. People who have never taken a lesson search this exact phrase. Links naturally to studio listing pages at the bottom — high-converting internal link opportunity.</div>
+        <span class="item-tag tag-content">Content</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Publish 1 blog post per week on a rolling editorial calendar</div>
+        <div class="item-desc">Consistency matters more than volume for new sites. Potential topics: "Best ballroom dance studios in [city]" (one per major city), dance style guides (tango, salsa, swing), wedding dance prep timelines, competition prep guide, beginner FAQ. Claude can draft all of these — just needs the blog post type wired up.</div>
+        <span class="item-tag tag-content">Content</span>
+        <span class="item-tag tag-you">Ongoing</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Add Google News sitemap for blog posts</div>
+        <div class="item-desc">Once the blog has content, a <code>news-sitemap.xml</code> gets posts discovered within hours of publish rather than waiting for Googlebot's crawl cycle. Only meaningful once regular publishing starts.</div>
+        <span class="item-tag tag-build">Build</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── SECTION 2: STATE PAGES ─────────────────────────────────────────── -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="section-icon">🗺️</span>
+    <span class="section-title">State-Level Landing Pages</span>
+    <span class="section-badge badge-impact-high">🔥 Highest Impact</span>
+    <span class="section-toggle">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="section-note">You have data in 45 states but zero state pages. "Ballroom dance studios in Texas" and "dance lessons in Florida" are high-volume queries your city pages can't rank for. This is the fastest path to new page-1 rankings — all the data already exists.</div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Build <code>/studios/state/[state]</code> route in Next.js</div>
+        <div class="item-desc">Page component pulls all studios for a given state from WordPress, renders a filterable grid similar to the city page. Needs <code>getAllStudios()</code> filtered by <code>studio_address_state</code> + a <code>stateSlugToName()</code> helper. Include a state intro paragraph, studio count, top cities in state as navigation links, and proper <code>canonical</code> + schema.</div>
+        <span class="item-tag tag-build">Build</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Add all 45 covered states to sitemap.ts</div>
+        <div class="item-desc">Same pattern as the CITIES array — a STATES array drives <code>/studios/state/[state]</code> sitemap entries. Priority 0.75, changeFrequency weekly. 45 new URLs submitted to Google the moment the code ships.</div>
+        <span class="item-tag tag-build">Build</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Add link to state pages from city pages ("Other cities in [State]" sidebar)</div>
+        <div class="item-desc">Internal links from existing city pages to the new state page pass authority upward and give users a natural navigation path. Every LA, San Diego, and SF city page should link to the California state page, etc.</div>
+        <span class="item-tag tag-build">Build</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Scrape the 5 zero-coverage states</div>
+        <div class="item-desc">See State Coverage table below. The 5 missing states are almost certainly: <strong>Alaska, Hawaii, North Dakota, South Dakota,</strong> and <strong>Montana or Wyoming</strong> — geographically isolated from every targeted city. Sparse markets but still worth having for completeness once Vercel Pro is active.</div>
+        <span class="item-tag tag-data">Data</span>
+        <span class="item-tag tag-you">YOU (Vercel Pro needed)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── STATE COVERAGE TABLE ───────────────────────────────────────────── -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="section-icon">📊</span>
+    <span class="section-title">State Coverage — 45 of 50 States + DC</span>
+    <span class="section-badge badge-impact-med">Reference</span>
+    <span class="section-toggle">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="legend" style="padding-top:14px;">
+      <span><span class="legend-dot" style="background:#22c55e;"></span>Covered (studios exist)</span>
+      <span><span class="legend-dot" style="background:#ef4444;"></span>Zero coverage — needs scrape</span>
+    </div>
+    <div class="state-grid">
+      <div class="state-chip covered"><span class="dot"></span>Alabama</div>
+      <div class="state-chip zero"><span class="dot"></span>Alaska ⚠️</div>
+      <div class="state-chip covered"><span class="dot"></span>Arizona</div>
+      <div class="state-chip covered"><span class="dot"></span>Arkansas</div>
+      <div class="state-chip covered"><span class="dot"></span>California</div>
+      <div class="state-chip covered"><span class="dot"></span>Colorado</div>
+      <div class="state-chip covered"><span class="dot"></span>Connecticut</div>
+      <div class="state-chip covered"><span class="dot"></span>Delaware</div>
+      <div class="state-chip covered"><span class="dot"></span>Florida</div>
+      <div class="state-chip covered"><span class="dot"></span>Georgia</div>
+      <div class="state-chip zero"><span class="dot"></span>Hawaii ⚠️</div>
+      <div class="state-chip covered"><span class="dot"></span>Idaho</div>
+      <div class="state-chip covered"><span class="dot"></span>Illinois</div>
+      <div class="state-chip covered"><span class="dot"></span>Indiana</div>
+      <div class="state-chip covered"><span class="dot"></span>Iowa</div>
+      <div class="state-chip covered"><span class="dot"></span>Kansas</div>
+      <div class="state-chip covered"><span class="dot"></span>Kentucky</div>
+      <div class="state-chip covered"><span class="dot"></span>Louisiana</div>
+      <div class="state-chip covered"><span class="dot"></span>Maine</div>
+      <div class="state-chip covered"><span class="dot"></span>Maryland</div>
+      <div class="state-chip covered"><span class="dot"></span>Massachusetts</div>
+      <div class="state-chip covered"><span class="dot"></span>Michigan</div>
+      <div class="state-chip covered"><span class="dot"></span>Minnesota</div>
+      <div class="state-chip covered"><span class="dot"></span>Mississippi</div>
+      <div class="state-chip covered"><span class="dot"></span>Missouri</div>
+      <div class="state-chip zero"><span class="dot"></span>Montana ⚠️</div>
+      <div class="state-chip covered"><span class="dot"></span>Nebraska</div>
+      <div class="state-chip covered"><span class="dot"></span>Nevada</div>
+      <div class="state-chip covered"><span class="dot"></span>New Hampshire</div>
+      <div class="state-chip covered"><span class="dot"></span>New Jersey</div>
+      <div class="state-chip covered"><span class="dot"></span>New Mexico</div>
+      <div class="state-chip covered"><span class="dot"></span>New York</div>
+      <div class="state-chip covered"><span class="dot"></span>North Carolina</div>
+      <div class="state-chip zero"><span class="dot"></span>North Dakota ⚠️</div>
+      <div class="state-chip covered"><span class="dot"></span>Ohio</div>
+      <div class="state-chip covered"><span class="dot"></span>Oklahoma</div>
+      <div class="state-chip covered"><span class="dot"></span>Oregon</div>
+      <div class="state-chip covered"><span class="dot"></span>Pennsylvania</div>
+      <div class="state-chip covered"><span class="dot"></span>Rhode Island</div>
+      <div class="state-chip covered"><span class="dot"></span>South Carolina</div>
+      <div class="state-chip zero"><span class="dot"></span>South Dakota ⚠️</div>
+      <div class="state-chip covered"><span class="dot"></span>Tennessee</div>
+      <div class="state-chip covered"><span class="dot"></span>Texas</div>
+      <div class="state-chip covered"><span class="dot"></span>Utah</div>
+      <div class="state-chip covered"><span class="dot"></span>Vermont</div>
+      <div class="state-chip covered"><span class="dot"></span>Virginia</div>
+      <div class="state-chip covered"><span class="dot"></span>Washington</div>
+      <div class="state-chip covered"><span class="dot"></span>West Virginia</div>
+      <div class="state-chip covered"><span class="dot"></span>Wisconsin</div>
+      <div class="state-chip covered"><span class="dot"></span>Wyoming</div>
+      <div class="state-chip covered"><span class="dot"></span>DC</div>
+    </div>
+    <div class="section-note" style="border-top:1px solid #1a1f2e; border-bottom:none;">⚠️ 5 zero states are estimated based on scrape targets and proximity. Confirm via WP admin → Studios → Filter by state. Alaska, Hawaii, Montana, North Dakota, South Dakota were never near any targeted city.</div>
+  </div>
+</div>
+
+
+<!-- ── SECTION 3: SCHEMA / RICH RESULTS ──────────────────────────────── -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="section-icon">⭐</span>
+    <span class="section-title">Schema Markup — Rich Results & CTR Boosts</span>
+    <span class="section-badge badge-impact-high">🔥 High Impact</span>
+    <span class="section-toggle">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="section-note">Already have: LocalBusiness, FAQPage, BreadcrumbList, ItemList, Event. These are the gaps that generate rich results in SERPs (stars, prices, FAQs) and meaningfully increase CTR at the same position.</div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Add <code>aggregateRating</code> to studio detail page schema</div>
+        <div class="item-desc">Every studio already has a <code>rating</code> field in WordPress from the Google Places scrape. Expose this in the LocalBusiness JSON-LD as <code>aggregateRating</code> with <code>ratingValue</code>, <code>ratingCount</code>, and <code>bestRating: 5</code>. Google shows gold stars in search results — significantly higher CTR. This is a 30-minute code change with immediate SEO impact.</div>
+        <span class="item-tag tag-build">Build</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Add <code>priceRange</code> to studio LocalBusiness schema</div>
+        <div class="item-desc">Studios with a <code>privateLessonRate</code> field should include <code>"priceRange": "$$$"</code> (or the actual range) in the JSON-LD. Shows up in Google Maps and Knowledge Panel results, signals to price-conscious searchers before they click.</div>
+        <span class="item-tag tag-build">Build</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Add <code>OfferCatalog</code> / <code>Service</code> schema to studio pages</div>
+        <div class="item-desc">For each dance style the studio offers, add a <code>hasOfferCatalog</code> with individual <code>Offer</code> items (e.g., "Private Ballroom Lessons — $120/hour"). This adds rich product-like display for local service searches.</div>
+        <span class="item-tag tag-build">Build</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Add <code>Event</code> schema to all competition pages</div>
+        <div class="item-desc">The 29 competition pages have date, venue, city, and organizer data. Wrap each in an <code>Event</code> JSON-LD block with <code>startDate</code>, <code>location</code>, <code>organizer</code>, and <code>url</code>. Competition pages with Event schema appear in Google's event carousels — free placement above organic results.</div>
+        <span class="item-tag tag-build">Build</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Add <code>SiteLinksSearchBox</code> schema to homepage</div>
+        <div class="item-desc">Tells Google to show a search box directly in the SERP result for BDD when users search the brand name. One JSON-LD block on the homepage. Requires a working <code>/studios/search</code> route (which already exists via <code>/studios?q=</code>).</div>
+        <span class="item-tag tag-build">Build</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── SECTION 4: EXPAND CITY COVERAGE ──────────────────────────────── -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="section-icon">🏙️</span>
+    <span class="section-title">Expand City Page Coverage</span>
+    <span class="section-badge badge-impact-high">🔥 High Impact</span>
+    <span class="section-toggle">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="section-note">Currently only 20 cities have SEO landing pages even though studios exist in hundreds of cities. Every new city page is a standalone ranking opportunity for "[city] ballroom dance studios" — one of the highest-intent queries in the niche.</div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Activate Vercel Pro trial + run Tier 6 scrapes (SF, Fort Lauderdale, St. Pete)</div>
+        <div class="item-desc">Already in the main priority queue. Unblocks the next 400–600 studios and creates addressable new city pages. Prerequisite for most of the expansion below.</div>
+        <span class="item-tag tag-data">Data</span>
+        <span class="item-tag tag-you">YOU (Vercel UI)</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Expand CITIES array to 50+ markets + add to sitemap</div>
+        <div class="item-desc">The <code>CITIES</code> array in <code>sitemap.ts</code> and <code>generateStaticParams()</code> currently has 20 cities. Add: Philadelphia, Pittsburgh, Baltimore, Kansas City, Cincinnati, Cleveland, Columbus, Tampa (already in sitemap but check city page), St. Louis, Charlotte, Raleigh, Richmond, Sacramento, Salt Lake City, Indianapolis, Louisville, Hartford, Providence. Each new city pre-builds at deploy time — instant SEO presence.</div>
+        <span class="item-tag tag-build">Build</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Write unique intro copy for each new city page</div>
+        <div class="item-desc">The current <code>getCityIntroCopy()</code> function covers 24 markets. Extend it to cover the new cities. Generic copy for unconfigured cities is a soft duplicate signal — each new city should have a 2–3 sentence intro unique to that market (dance scene, notable venues, typical pricing). Claude can generate all of these in one pass.</div>
+        <span class="item-tag tag-content">Content</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── SECTION 5: BACKLINKS ───────────────────────────────────────────── -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="section-icon">🔗</span>
+    <span class="section-title">Backlink Building</span>
+    <span class="section-badge badge-impact-high">🔥 High Impact (but slow)</span>
+    <span class="section-toggle">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="section-note">Domain authority is the primary bottleneck at avg position 13.2. The site has near-zero inbound links. Even 10–20 quality backlinks would move rankings meaningfully. These take effort but compound indefinitely.</div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Submit to NDCA, USADS, and regional ballroom association directories</div>
+        <div class="item-desc">National Dance Council of America (NDCA), USA Dance (USADS), and regional ballroom associations often list partner resources on their websites. These are the highest-authority links in the niche — topically relevant and free. Contact: ndca.org, usadance.org.</div>
+        <span class="item-tag tag-links">Links</span>
+        <span class="item-tag tag-you">YOU</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Reach out to dance blogs and YouTube channels for resource mentions</div>
+        <div class="item-desc">Large dance channels (WorldDance, DanceSport Total, etc.) and blog writers often link to relevant directories in their "find a studio near you" content. A brief email offering to be listed as a resource is a high-conversion outreach pitch — they already want this resource, you've just built it.</div>
+        <span class="item-tag tag-links">Links</span>
+        <span class="item-tag tag-you">YOU</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Local newspaper / city lifestyle blog outreach in top 5 cities</div>
+        <div class="item-desc">Local publications love "find a [thing] near you" stories. Pitch the directory as a news angle: "Abilene developer builds national dance studio directory" or "New resource helps [City] residents find local dance lessons." Even one local news link from a .com or .edu domain moves the needle dramatically.</div>
+        <span class="item-tag tag-links">Links</span>
+        <span class="item-tag tag-you">YOU</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Get listed on general directory sites (Crunchbase, Product Hunt, AlternativeTo)</div>
+        <div class="item-desc">Free submissions to business/product directories. Not topically relevant but they create baseline DA and indexable citations that tell Google the site is a legitimate business. Product Hunt launch also generates referral traffic. Takes 30 minutes total.</div>
+        <span class="item-tag tag-links">Links</span>
+        <span class="item-tag tag-you">YOU</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Build the "Best cities for ballroom dancing" post as a linkable asset</div>
+        <div class="item-desc">Data-driven posts with rankings earn passive backlinks over months and years. The directory has unique data (studio density per capita, ratings distribution by city) that no other site has. This is the content marketing version of a backlink strategy.</div>
+        <span class="item-tag tag-links">Links</span>
+        <span class="item-tag tag-content">Content</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Contact Arthur Murray, Fred Astaire, and Dance With Me national offices for partner links</div>
+        <div class="item-desc">The directory is effectively free marketing for their franchises — every chain's studios are prominently listed. Pitch the PR or marketing team for each brand. A link from arthurmurray.com or fredastaire.com would be exceptionally high-authority and topically perfect.</div>
+        <span class="item-tag tag-links">Links</span>
+        <span class="item-tag tag-you">YOU</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── SECTION 6: NEAR ME + LOCAL ────────────────────────────────────── -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="section-icon">📍</span>
+    <span class="section-title">"Near Me" & Local Search Optimization</span>
+    <span class="section-badge badge-impact-med">Medium Impact</span>
+    <span class="section-toggle">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="section-note">"Ballroom dance lessons near me" is the #1 query in this niche. It's location-aware so it can't be targeted with a single page — but these moves improve how the site appears for all local searches.</div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Create a Google Business Profile for BallroomDanceDirectory.com</div>
+        <div class="item-desc">The directory itself should have a GBP listing as a "Dance Studio Directory" or "Information Services" business. This creates a Knowledge Panel when people search the brand name and adds another indexable citation. Set the website to ballroomdancedirectory.com, add a description, photos, and services.</div>
+        <span class="item-tag tag-config">Config</span>
+        <span class="item-tag tag-you">YOU</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Add a <code>/studios/near-me</code> landing page</div>
+        <div class="item-desc">A page that explains the directory, links to all major city pages, and uses copy like "Find ballroom dance studios near you — browse by city or search by zip code." This page won't rank for "near me" directly but it consolidates internal link equity and can capture brand+location searches. Include a JavaScript-based geolocation prompt to redirect users to their nearest city page.</div>
+        <span class="item-tag tag-build">Build</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Ensure all studio pages have complete address + phone in schema</div>
+        <div class="item-desc">Google uses NAP (Name, Address, Phone) consistency as a local ranking signal. Every studio with a known address and phone number should have these in the LocalBusiness JSON-LD. Studios with missing phone/address fields should be flagged for data enrichment (can pull from GBP API or Clearbit).</div>
+        <span class="item-tag tag-build">Build</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── SECTION 7: INTERNAL LINKING ───────────────────────────────────── -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="section-icon">🕸️</span>
+    <span class="section-title">Internal Linking Architecture</span>
+    <span class="section-badge badge-impact-med">Medium Impact</span>
+    <span class="section-toggle">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="section-note">Good internal linking passes authority from high-DA pages (homepage, city pages) down to individual studio pages, and reinforces the topical hierarchy Google uses to understand the site. Current linking is decent but has gaps.</div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Add state page links to every city page ("More cities in [State]" sidebar)</div>
+        <div class="item-desc">Once state pages are built, every city page should link up to its state page. This creates a clean 3-tier hierarchy: Homepage → State page → City page → Studio detail. Google loves clear hierarchies. Currently the link chain stops at the city level.</div>
+        <span class="item-tag tag-build">Build</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Link from blog posts to relevant city and studio pages</div>
+        <div class="item-desc">Every blog post should have 3–5 contextual links to the most relevant studio pages and city pages. A post about "best studios in Miami" should link to a dozen specific studio detail pages. This is the most natural way to distribute link equity from content to listings.</div>
+        <span class="item-tag tag-content">Content</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Add a "Dance Styles" index page linking to all style landing pages</div>
+        <div class="item-desc">There are 6 style landing pages (/ballroom-dance-lessons, /latin-dance-lessons, etc.) but no index page that links to all of them. A <code>/dance-styles</code> hub page consolidates link equity and gives Google a clean entry point to the style taxonomy.</div>
+        <span class="item-tag tag-build">Build</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Add footer links to top 10 city pages on every page</div>
+        <div class="item-desc">The footer currently has minimal links. Adding the top 10 cities (NYC, LA, Chicago, Miami, etc.) as footer links means every page in the site passes a small amount of authority to those high-value city pages. Common pattern on all major directory sites (Yelp, TripAdvisor, etc.).</div>
+        <span class="item-tag tag-build">Build</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── SECTION 8: TECHNICAL SEO ───────────────────────────────────────── -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="section-icon">⚙️</span>
+    <span class="section-title">Technical SEO</span>
+    <span class="section-badge badge-impact-med">Medium Impact</span>
+    <span class="section-toggle">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="section-note">Next.js + Vercel is already an excellent technical foundation (fast, SSR, ISR). These are the remaining gaps.</div>
+
+    <div class="item done" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Fix GSC 404s — all 12 redirected</div>
+        <div class="item-desc">Done Apr 27. 301 redirects added in next.config.ts for all 12 dead URLs. Commits f40b7d1, d753944, ba6d269.</div>
+        <span class="item-tag tag-build">Done ✅</span>
+      </div>
+    </div>
+
+    <div class="item done" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Fix soft 404 (/studios?city=X) + noindex /claim, /dashboard, /upgrade</div>
+        <div class="item-desc">Done Apr 27. noindex layouts deployed; soft 404 redirect added; robots.ts domain bug fixed. 941 "Duplicate without canonical" count will drop as Google re-crawls.</div>
+        <span class="item-tag tag-build">Done ✅</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Run Core Web Vitals audit + fix any LCP/CLS issues</div>
+        <div class="item-desc">Check GSC's Core Web Vitals report. LCP (Largest Contentful Paint) issues on studio pages are the most common problem — usually caused by above-the-fold images not being preloaded. Add <code>priority</code> prop to the hero image on studio detail and city pages. CLS issues are usually layout shifts from font loading — check if font-display: swap is set.</div>
+        <span class="item-tag tag-build">Build</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Add Open Graph images to state pages and blog posts</div>
+        <div class="item-desc">Studio and city pages already have OG images. State pages and blog posts will need them too for social sharing CTR. Can use a dynamic OG image route (<code>/api/og?title=X</code>) with the Vercel @vercel/og library to generate them programmatically — no manual design needed.</div>
+        <span class="item-tag tag-build">Build</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Verify all 2.22K indexed pages have unique, keyword-rich title tags</div>
+        <div class="item-desc">Run a quick export from GSC → Pages and spot-check that no two pages share a title. The studio slug format (<code>[Studio Name] | Ballroom Dance Directory</code>) should be unique by definition, but state pages, blog posts, and competition pages need the same treatment. Duplicate titles are a soft ranking signal issue.</div>
+        <span class="item-tag tag-config">Config</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Set up Ahrefs or SEMrush rank tracking for top 50 target keywords</div>
+        <div class="item-desc">Without a rank tracker you're flying blind on whether positions are improving or declining week-over-week. Track: "[city] ballroom dance studios" for top 10 cities, "ballroom dance lessons cost", "arthur murray vs fred astaire", and the top 20 queries already showing up in GSC impressions data.</div>
+        <span class="item-tag tag-config">Config</span>
+        <span class="item-tag tag-you">YOU</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── SECTION 9: E-E-A-T ─────────────────────────────────────────────── -->
+<div class="section">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="section-icon">🏆</span>
+    <span class="section-title">E-E-A-T Signals (Trust & Authority)</span>
+    <span class="section-badge badge-impact-low">Lower Priority</span>
+    <span class="section-toggle">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="section-note">Google weights Experience, Expertise, Authoritativeness, and Trustworthiness signals for YMYL-adjacent content. A business directory is moderately YMYL — these moves strengthen trust scores over time.</div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Add an "About" page explaining the directory's data sources and methodology</div>
+        <div class="item-desc">An About page that explains how studios are sourced (Google Places + verification), how ratings are calculated, and what the claim/verification process looks like signals editorial standards. Google's Quality Rater Guidelines specifically look for this on directory sites. Currently the site has an About page — make sure it has substantive content, not just marketing copy.</div>
+        <span class="item-tag tag-content">Content</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Add author bylines to blog posts with a short bio</div>
+        <div class="item-desc">Blog posts written by a named author with expertise signals (dance background, years teaching, etc.) rank better than anonymous posts in 2024+ Google. Even a simple author box ("Don Palmer, founder") with a 2-sentence bio adds an E-E-A-T signal Google's crawlers explicitly look for.</div>
+        <span class="item-tag tag-content">Content</span>
+      </div>
+    </div>
+
+    <div class="item" onclick="toggleItem(this)">
+      <div class="cb"><span class="cb-check">✓</span></div>
+      <div class="item-content">
+        <div class="item-title">Display claimed/verified badge on studio listings in search results</div>
+        <div class="item-desc">Claimed studios with owner-verified content (photos, description, social links) should show a "Verified" badge in their listing card. This differentiates BDD from scraped-only directories and signals data quality to both users and Google. Every claimed studio is a stronger ranking signal than a scraped placeholder.</div>
+        <span class="item-tag tag-build">Build</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+// ── CHECKBOX TOGGLE ────────────────────────────────────────────────────
+function toggleItem(el) {
+  el.classList.toggle('done');
+  saveState();
+  updateProgress();
+}
+
+function toggleSection(header) {
+  const body = header.nextElementSibling;
+  const toggle = header.querySelector('.section-toggle');
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  toggle.textContent = isOpen ? '▸' : '▾';
+}
+
+// ── PROGRESS ───────────────────────────────────────────────────────────
+function updateProgress() {
+  const all  = document.querySelectorAll('.item');
+  const done = document.querySelectorAll('.item.done');
+  const pct  = all.length ? Math.round((done.length / all.length) * 100) : 0;
+  document.getElementById('fill-overall').style.width = pct + '%';
+  document.getElementById('pct-overall').textContent = pct + '%';
+  document.getElementById('counts-overall').textContent = `${done.length} of ${all.length} items complete`;
+}
+
+// ── PERSISTENCE ────────────────────────────────────────────────────────
+function saveState() {
+  const state = {};
+  document.querySelectorAll('.item').forEach((el, i) => {
+    state[i] = el.classList.contains('done');
+  });
+  try { localStorage.setItem('bdd-seo-punchlist', JSON.stringify(state)); } catch(e) {}
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem('bdd-seo-punchlist');
+    if (!raw) return;
+    const state = JSON.parse(raw);
+    document.querySelectorAll('.item').forEach((el, i) => {
+      if (state[i]) el.classList.add('done');
+    });
+  } catch(e) {}
+}
+
+// ── INIT ───────────────────────────────────────────────────────────────
+loadState();
+updateProgress();
+</script>
+</body>
+</html>
