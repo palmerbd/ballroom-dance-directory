@@ -25,17 +25,13 @@ export async function OPTIONS() {
 }
 
 // Pages to try in order — most likely to have owner names first
+// Kept short to stay within Vercel's 60s serverless timeout
 const ABOUT_PATHS = [
   "/about",
   "/about-us",
   "/our-team",
-  "/meet-the-team",
   "/staff",
   "/instructors",
-  "/our-instructors",
-  "/meet-your-instructor",
-  "/team",
-  "/meet-us",
   "", // homepage last
 ];
 
@@ -261,7 +257,7 @@ function tryHeadings(html: string): string | null {
 async function fetchPage(url: string): Promise<string | null> {
   try {
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 6000);
+    const timer = setTimeout(() => controller.abort(), 4000);
     const res = await fetch(url, {
       signal: controller.signal,
       headers: {
