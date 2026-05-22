@@ -50,14 +50,17 @@ const OWNER_TRIGGERS = [
   "principal",
 ];
 
-// Words that must never be the LAST word in a valid person name (job titles, business nouns)
-const NOT_SURNAME = new Set([
-  "manager","director","owner","instructor","teacher","coach","trainer",
-  "studio","school","academy","dance","ballroom","latin","staff","team",
-  "member","admin","assistant","coordinator","specialist","consultant",
+// Words that must NEVER appear as any word in a valid person name
+// (business nouns, job titles, abstract words)
+const NOT_IN_NAME = new Set([
+  "manager","director","instructor","teacher","coach","trainer",
+  "staff","admin","assistant","coordinator","specialist","consultant",
   "professional","development","scholarship","class","classes","lessons",
-  "lesson","program","programs","center","centre","foundation","group",
-  "company","inc","llc","corp","services","solutions",
+  "lesson","program","programs","foundation","services","solutions",
+  "sales","membership","marketing","support","service","representative",
+  "rep","executive","associate","partner","agent","advisor","liaison",
+  "specialist","technician","analyst","operations","communications",
+  "media","digital","creative","events","production","management",
 ]);
 
 // CSS class/id fragments that typically wrap a person's name in team/bio sections
@@ -137,9 +140,8 @@ function isValidPersonName(candidate: string): boolean {
   if (!allTitleCase) return false;
   // First word must be a real first name
   if (!isLikelyFirstName(words[0])) return false;
-  // Last word must not be a job title or business noun
-  const last = words[words.length - 1];
-  return !NOT_SURNAME.has(last.toLowerCase());
+  // No word in the name can be a business noun / job title
+  return !words.some(w => NOT_IN_NAME.has(w.toLowerCase()));
 }
 
 /**
