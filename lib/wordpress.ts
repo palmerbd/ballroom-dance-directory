@@ -1,4 +1,4 @@
-// âââ WordPress Headless API Client âââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ WordPress Headless API Client Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 // Fetches data from WordPress REST API on the Hetzner server (5.78.144.42).
 // ACF field names match the "Dance Studio Details" field group (imported 2026-03-30).
 
@@ -8,7 +8,7 @@ import { supabaseAdmin } from "@/lib/supabase-admin";
 const WP_API_URL =
   process.env.NEXT_PUBLIC_WP_API_URL || "http://5.78.144.42/wp-json";
 
-// ââ Fetch helper âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂ Fetch helper Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 
 async function fetchWP<T>(
   endpoint: string,
@@ -26,7 +26,7 @@ async function fetchWP<T>(
   return res.json() as T;
 }
 
-// ââ HTML entity decoder âââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂ HTML entity decoder Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 // WordPress REST API returns HTML entities in title.rendered (e.g. &#8217; for ').
 // Decode them so JSX renders clean text instead of literal entity strings.
 
@@ -47,22 +47,26 @@ function decodeHtmlEntities(str: string): string {
     .replace(/&mdash;/g, "\u2014");
 }
 
-// ── Hours sanitizer ─────────────────────────────────────────────────────────
-// Mojibake fix: ΓÇô (U+0393 U+00C7 U+00F4) = en-dash → " - "; strip rest.
-function sanitizeHours(val) {
+// ââ Hours sanitizer âââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// Mojibake fix: ÎÃÃ´ (U+0393 U+00C7 U+00F4) = en-dash â " - "; strip rest.
+function sanitizeHours(val: string | undefined): string | undefined {
   if (!val) return val;
-  let s = val
-    .replace(/ΓÇô/g, " - ")
-    .replace(/ΓÇ[-
-]/g, " ")
-    .replace(/[^ -~]/g, " ")
-    .replace(/s*-s*/g, " - ")
-    .replace(/s+/g, " ")
-    .trim();
-  return s || undefined;
+  // Walk char-by-char: replace mojibake triplet (en-dash) with " - ", other non-ASCII with space
+  let out = "";
+  for (let i = 0; i < val.length; i++) {
+    const c = val.charCodeAt(i);
+    if (c === 0x0393 && val.charCodeAt(i+1) === 0x00C7 && val.charCodeAt(i+2) === 0x00F4) {
+      out += " - "; i += 2;
+    } else if (c >= 32 && c <= 126) {
+      out += val[i];
+    } else {
+      out += " ";
+    }
+  }
+  return out.replace(/ *- */g, " - ").replace(/  +/g, " ").trim() || undefined;
 }
 
-// ââ Chain detection âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂ Chain detection Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 
 function detectChain(title: string): StudioChain {
   const t = title.toLowerCase();
@@ -72,7 +76,7 @@ function detectChain(title: string): StudioChain {
   return "independent";
 }
 
-// ââ ACF dance style â our DanceStyle union âââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂ ACF dance style Ã¢ÂÂ our DanceStyle union Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 
 const STYLE_MAP: Record<string, DanceStyle> = {
   ballroom:    "ballroom",
@@ -88,7 +92,7 @@ const STYLE_MAP: Record<string, DanceStyle> = {
   // Note: cha_cha and rumba are not valid ACF checkbox values in WP
 };
 
-// ââ Raw WP REST post â Studio âââââââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂ Raw WP REST post Ã¢ÂÂ Studio Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 
 function mapWPPost(post: Record<string, unknown>): Studio {
   const acf   = (post.acf   as Record<string, unknown>) || {};
@@ -185,16 +189,16 @@ function toCard(s: Studio): StudioCard {
   };
 }
 
-// ââ Shared REST params ââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂ Shared REST params Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 
 const FIELDS = "_fields=id,slug,title,excerpt,acf";
 
-// ââ Public API ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂ Public API Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 
-/** All published studios as lightweight cards â fetches all pages automatically */
+/** All published studios as lightweight cards Ã¢ÂÂ fetches all pages automatically */
 export async function getAllStudios(perPage = 100): Promise<StudioCard[]> {
   try {
-    // First page â also tells us how many total pages exist
+    // First page Ã¢ÂÂ also tells us how many total pages exist
     const url = new URL(`${WP_API_URL}/wp/v2/dance_studio?${FIELDS}`);
     url.searchParams.set("per_page", String(perPage));
     url.searchParams.set("status", "publish");
@@ -228,7 +232,7 @@ export async function getAllStudios(perPage = 100): Promise<StudioCard[]> {
   }
 }
 
-// ââ Paginated studio fetch result âââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂ Paginated studio fetch result Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 
 export interface StudiosPageResult {
   studios: StudioCard[];
@@ -237,7 +241,7 @@ export interface StudiosPageResult {
 }
 
 /**
- * Fetches a single page of studios â used by the /studios listing page.
+ * Fetches a single page of studios Ã¢ÂÂ used by the /studios listing page.
  * Replaces getAllStudios() for the browse view to avoid shipping the full
  * 3,400+ studio dataset to the client on every request.
  */
@@ -269,7 +273,7 @@ export async function getStudiosPage(
   }
 }
 
-/** Single studio by slug â full detail */
+/** Single studio by slug Ã¢ÂÂ full detail */
 export async function getStudio(slug: string): Promise<Studio | null> {
   try {
     const posts = await fetchWP<Record<string, unknown>[]>(
@@ -279,7 +283,7 @@ export async function getStudio(slug: string): Promise<Studio | null> {
     if (!posts.length) return null;
     const studio = mapWPPost(posts[0]);
 
-    // Override tier from Supabase claims â single source of truth for claim status.
+    // Override tier from Supabase claims Ã¢ÂÂ single source of truth for claim status.
     // WP ACF studio_tier field is a best-effort sync; Supabase is authoritative.
     try {
       const { data: claim } = await supabaseAdmin
@@ -297,7 +301,7 @@ export async function getStudio(slug: string): Promise<Studio | null> {
         studio.tier = (["free","claimed","paid"].includes(rawTier) ? rawTier as ListingTier : "claimed");
       }
     } catch {
-      // Non-fatal â fall back to WP tier value
+      // Non-fatal Ã¢ÂÂ fall back to WP tier value
     }
 
     return studio;
@@ -312,7 +316,7 @@ export async function getAllStudioSlugs(): Promise<string[]> {
   return studios.map((s) => s.slug);
 }
 
-/** Convert URL city slug â display name (e.g. "los-angeles" â "Los Angeles") */
+/** Convert URL city slug Ã¢ÂÂ display name (e.g. "los-angeles" Ã¢ÂÂ "Los Angeles") */
 export function citySlugToName(slug: string): string {
   return slug
     .split("-")
@@ -320,13 +324,13 @@ export function citySlugToName(slug: string): string {
     .join(" ");
 }
 
-// ââ Metro area groupings ââââââââââââââââââââââââââââââââââââââââââââââââââââââ
-// Maps metro hub slug â display names of satellite cities in the metro.
+// Ã¢ÂÂÃ¢ÂÂ Metro area groupings Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
+// Maps metro hub slug Ã¢ÂÂ display names of satellite cities in the metro.
 //
 // Used by:
-//   getStudiosByCity  â expands city hub searches to include suburb studios
-//   getMetroSuburbs   â city hub page "Also in the metro area" link widget
-//   getMetroSlug      â resolves any city (hub or suburb) to its parent metro slug
+//   getStudiosByCity  Ã¢ÂÂ expands city hub searches to include suburb studios
+//   getMetroSuburbs   Ã¢ÂÂ city hub page "Also in the metro area" link widget
+//   getMetroSlug      Ã¢ÂÂ resolves any city (hub or suburb) to its parent metro slug
 
 export const METRO_ALIASES: Record<string, string[]> = {
   "los-angeles":   ["Santa Monica", "Burbank", "Glendale", "Pasadena", "Long Beach",
@@ -396,7 +400,7 @@ export const METRO_ALIASES: Record<string, string[]> = {
 
 /**
  * Return the metro hub slug for any city slug (hub or suburb).
- * e.g. "frisco" â "dallas", "scottsdale" â "phoenix", "dallas" â "dallas"
+ * e.g. "frisco" Ã¢ÂÂ "dallas", "scottsdale" Ã¢ÂÂ "phoenix", "dallas" Ã¢ÂÂ "dallas"
  */
 export function getMetroSlug(citySlug: string): string {
   if (METRO_ALIASES[citySlug]) return citySlug; // already a metro hub
@@ -404,7 +408,7 @@ export function getMetroSlug(citySlug: string): string {
   for (const [metro, suburbs] of Object.entries(METRO_ALIASES)) {
     if (suburbs.some((s) => s.toLowerCase() === cityName)) return metro;
   }
-  return citySlug; // standalone city â return self
+  return citySlug; // standalone city Ã¢ÂÂ return self
 }
 
 /**
@@ -415,7 +419,7 @@ export function getMetroSuburbs(citySlug: string): string[] {
   return METRO_ALIASES[citySlug] ?? [];
 }
 
-/** Studios filtered by city slug â metro hub slugs include suburb studios */
+/** Studios filtered by city slug Ã¢ÂÂ metro hub slugs include suburb studios */
 export async function getStudiosByCity(citySlug: string): Promise<StudioCard[]> {
   const cityName = citySlugToName(citySlug).toLowerCase();
   // Metro hubs expand to include all satellite city studios
@@ -425,13 +429,13 @@ export async function getStudiosByCity(citySlug: string): Promise<StudioCard[]> 
   return all.filter((s) => metroNames.has(s.city.toLowerCase()));
 }
 
-/** Studios filtered by dance style â fetches ALL studios to search across full directory */
+/** Studios filtered by dance style Ã¢ÂÂ fetches ALL studios to search across full directory */
 export async function getStudiosByStyle(style: string): Promise<StudioCard[]> {
   const all = await getAllStudios(100);
   return all.filter((s) => s.danceStyles.includes(style as DanceStyle));
 }
 
-/** All cities with studio counts â used for the city browsing page */
+/** All cities with studio counts Ã¢ÂÂ used for the city browsing page */
 export async function getAllCities(): Promise<{ city: string; state: string; count: number; slug: string }[]> {
   const all = await getAllStudios(100);
   const map = new Map<string, { city: string; state: string; count: number; slug: string }>();
@@ -452,7 +456,7 @@ export async function getAllCities(): Promise<{ city: string; state: string; cou
   return Array.from(map.values()).sort((a, b) => b.count - a.count);
 }
 
-// âââ Blog Post API ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ Blog Post API Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
 // Uses WordPress's built-in /wp/v2/posts endpoint (no custom post type needed).
 
 export interface BlogPost {
@@ -489,7 +493,7 @@ function decodeBlogHtml(str: string): string {
     .replace(/&#8216;/g, "'")
     .replace(/&#8220;/g, "\u201c")
     .replace(/&#8221;/g, "\u201d")
-    .replace(/&#8230;/g, "â¦");
+    .replace(/&#8230;/g, "Ã¢ÂÂ¦");
 }
 
 function mapWPBlogPost(p: WPPost): BlogPost {
@@ -537,10 +541,10 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
   }
 }
 
-/** All published post slugs â used for generateStaticParams */
+/** All published post slugs Ã¢ÂÂ used for generateStaticParams */
 export async function getBlogSlugs(): Promise<string[]> {
   const posts = await getBlogPosts(100);
   return posts.map((p) => p.slug);
 }
 
-// Cache-bust deploy: 2026-05-15T20:46 UTC â clears ISR caches after crawl-induced 404s
+// Cache-bust deploy: 2026-05-15T20:46 UTC Ã¢ÂÂ clears ISR caches after crawl-induced 404s
