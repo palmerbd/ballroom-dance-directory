@@ -43,6 +43,8 @@ interface Claim {
   ghlMessage?:   string;
   reviewStatus?: "idle" | "approving" | "rejecting" | "approved" | "rejected" | "error";
   reviewMessage?: string;
+  featureStatus?:  "idle" | "loading" | "success" | "error";
+  featureMessage?: string;
 }
 
 interface ClaimsData {
@@ -325,12 +327,30 @@ function ClaimRow({
   claim,
   adminToken,
   onGhlUpdate,
+  onFeature,
 }: {
   claim: Claim;
   adminToken: string;
-  onGhlUpdate: (id: string, status: Claim["ghlStatus"], msg: string) => void;
+  onGhlUpdate: (id: string, status: Claim["ghlStatus"],    msg: string) => void;
+  onFeature:   (id: string, status: Claim["featureStatus"], msg: string) => void;
 }) {
   const days = daysSince(claim.created_at);
+
+  async function makeFeature() {
+    onFeature(claim.id, "loading", "");
+    try {
+      const res = await fetch("/api/admin/make-featured", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${adminToken}` },
+        body: JSON.stringify({ claim_id: claim.id }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Unknown error");
+      onFeature(claim.id, "success", "Upgraded to Featured");
+    } catch (err: any) {
+      onFeature(claim.id, "error", err.message);
+    }
+  }
 
   async function pushToGHL() {
     onGhlUpdate(claim.id, "loading", "");
@@ -393,6 +413,29 @@ function ClaimRow({
             </a>
           </div>
         )}
+        {claim.tier === "claimed" && (
+          <div className="mt-2">
+            {claim.featureStatus === "success" ? (
+              <span className="text-xs text-amber-600 font-semibold">⭐ Upgraded!</span>
+            ) : claim.featureStatus === "error" ? (
+              <div className="space-y-1">
+                <div className="text-xs text-red-500 max-w[130px] truncate">{claim.featureMessage}</div>
+                <button onClick={makeFeature} className="text-xs text-blue-500 hover:underline">Retry</button>
+              </div>
+            ) : (
+              <button
+                onClick={makeFeature}
+                disabled={claim.featureStatus === "loading"}
+                className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-semibold bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 transition-colors disabled:opacity-50"
+              >
+                {claim.featureStatus === "loading"
+                  ? <><span className="animate-spin text-sm">⟳</span> Upgrading…</>
+                  : <>⭚ Make Featured</>
+                }
+              </button>
+            )}
+          </div>
+        )}
       </td>
 
       {/* Owner */}
@@ -452,11 +495,13 @@ function ClaimsTable({
   claims,
   adminToken,
   onGhlUpdate,
+  onFeature,
   emptyMsg,
 }: {
   claims: Claim[];
   adminToken: string;
-  onGhlUpdate: (id: string, status: Claim["ghlStatus"], msg: string) => void;
+  onGhlUpdate: (id: string, status: Claim["ghlStatus"],    msg: string) => void;
+  onFeature:   (id: string, status: Claim["featureStatus"], msg: string) => void;
   emptyMsg: string;
 }) {
   if (claims.length === 0) {
@@ -483,6 +528,7 @@ function ClaimsTable({
               claim={claim}
               adminToken={adminToken}
               onGhlUpdate={onGhlUpdate}
+              onFeature={onFeature}
             />
           ))}
         </tbody>
@@ -550,7 +596,7 @@ function LoginScreen({ onLogin }: { onLogin: (token: string) => void }) {
   );
 }
 
-// ── Main dashboard ────────────────────────────────────────────────────────────
+// ── Main dashboard ─────────────────────────────────────────────────────────────
 
 function Dashboard({ adminToken }: { adminToken: string }) {
   const [data,      setData]      = useState<ClaimsData | null>(null);
@@ -569,8 +615,9 @@ function Dashboard({ adminToken }: { adminToken: string }) {
       const json = await res.json();
       const addState = (c: Claim): Claim => ({
         ...c,
-        ghlStatus:    "idle",
-        reviewStatus: "idle",
+        ghlStatus:     "idle",
+        reviewStatus:  "idle",
+        featureStatus: "idle",
       });
       setData({
         pending:  (json.pending  ?? []).map(addState),
@@ -599,12 +646,35 @@ function Dashboard({ adminToken }: { adminToken: string }) {
     });
   }
 
-  function updateGhl(id: string, status: Claim["ghlStatus"], msg: string) {
+  functionn updateGhl(id: string, status: Claim["ghlStatus"], msg: string) {
     setData(prev => {
       if (!prev) return prev;
       const update = (list: Claim[]) =>
         list.map(c => c.id === id ? { ...c, ghlStatus: status, ghlMessage: msg } : c);
       return { ...prev, claimed: update(prev.claimed), featured: update(prev.featured) };
+    });
+  }
+
+  function updateFeature(id: string, status: Claim["featureStatus"], msg: string) {
+    setData(prev => {
+      if (!prev) return prev;
+      if (status === "success") {
+        // Move claim from claimed → featured list
+        const claim = prev.claimed.find(c => c.id === id);
+        if (!claim) return prev;
+        const upgraded: Claim = { ...claim, tier: "paid", featureStatus: "success", featureMessage: msg };
+        return {
+          ...prev,
+          claimed:  prev.claimed.filter(c => c.id !== id),
+          featured: [...prev.featured, upgraded],
+        };
+      }
+      return {
+        ...prev,
+        claimed: prev.claimed.map(c =>
+          c.id === id ? { ...c, featureStatus: status, featureMessage: msg } : c
+        ),
+      };
     });
   }
 
@@ -750,6 +820,7 @@ function Dashboard({ adminToken }: { adminToken: string }) {
                 claims={activeTab === "claimed" ? data.claimed : data.featured}
                 adminToken={adminToken}
                 onGhlUpdate={updateGhl}
+                onFeature={updateFeature}
                 emptyMsg={
                   activeTab === "claimed"
                     ? "No approved studios yet. Approve pending claims first."
@@ -785,3 +856,4 @@ export default function AdminPage() {
 
   return <Dashboard adminToken={adminToken} />;
 }
+
