@@ -419,7 +419,7 @@ function ClaimRow({
               <span className="text-xs text-amber-600 font-semibold">⭐ Upgraded!</span>
             ) : claim.featureStatus === "error" ? (
               <div className="space-y-1">
-                <div className="text-xs text-red-500 max-w[130px] truncate">{claim.featureMessage}</div>
+                <div className="text-xs text-red-500 max-w-[130px] truncate">{claim.featureMessage}</div>
                 <button onClick={makeFeature} className="text-xs text-blue-500 hover:underline">Retry</button>
               </div>
             ) : (
@@ -430,7 +430,7 @@ function ClaimRow({
               >
                 {claim.featureStatus === "loading"
                   ? <><span className="animate-spin text-sm">⟳</span> Upgrading…</>
-                  : <>⭚ Make Featured</>
+                  : <>⭐ Make Featured</>
                 }
               </button>
             )}
@@ -646,7 +646,7 @@ function Dashboard({ adminToken }: { adminToken: string }) {
     });
   }
 
-  functionn updateGhl(id: string, status: Claim["ghlStatus"], msg: string) {
+  function updateGhl(id: string, status: Claim["ghlStatus"], msg: string) {
     setData(prev => {
       if (!prev) return prev;
       const update = (list: Claim[]) =>
