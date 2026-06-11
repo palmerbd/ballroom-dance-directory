@@ -14,12 +14,13 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const brand = getBySlug(params.slug);
+  const { slug } = await params;
+  const brand = getBySlug(slug);
   if (!brand) return { title: "Brand Not Found" };
 
-  const catLabels = brand.categories.map((c) => DANCEWEAR_CATEGORY_LABELS[c]).join(" & ");
+  const catLabels = brand!.categories.map((c) => DANCEWEAR_CATEGORY_LABELS[c]).join(" & ");
   return {
     title:       `${brand.name} | ${catLabels} | Ballroom Dance Directory`,
     description: brand.description,
@@ -77,12 +78,13 @@ function InfoRow({ icon, label, value, href }: {
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
-export default function DancewearBrandPage({
+export default async function DancewearBrandPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const brand = getBySlug(params.slug);
+  const { slug } = await params;
+  const brand = getBySlug(slug);
   if (!brand) notFound();
 
   const catLabel = brand.categories.map((c) => DANCEWEAR_CATEGORY_LABELS[c]).join(" & ");
@@ -208,7 +210,7 @@ export default function DancewearBrandPage({
               </div>
             </section>
 
-            {/* Visit CTA — mobile only; sidebar has it on desktop */}
+            {/* Visit CTA (visible on mobile; sidebar version on desktop) */}
             <div className="lg:hidden">
               <a
                 href={brand.website}
@@ -295,7 +297,7 @@ export default function DancewearBrandPage({
             </h2>
             <p className="text-gray-500 text-sm mb-6">
               Other {DANCEWEAR_CATEGORY_LABELS[primaryCat].toLowerCase()} brands in the directory
-              &nbsp;&middot;&nbsp;
+              &nbsp;·&nbsp;
               <Link
                 href={`/dance-wear/${primaryCat === "practice" ? "practice-wear" : "competition-wear"}`}
                 className="text-amber-700 font-semibold hover:underline"
