@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { href: "/competitions", label: "Competitions" },
   { href: "/styles",       label: "By Style" },
   { href: "/cities",       label: "By City" },
+  { href: "/dance-wear",   label: "Dance Wear" },
   { href: "/blog",         label: "Tips & Guides" },
 ];
 
