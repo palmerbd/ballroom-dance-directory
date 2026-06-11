@@ -1,3 +1,4 @@
+// Dance Wear hub page
 import type { Metadata } from "next";
 import Link from "next/link";
 import { DANCEWEAR_BRANDS } from "@/lib/dancewear-data";
