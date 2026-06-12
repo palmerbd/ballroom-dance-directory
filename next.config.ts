@@ -27,6 +27,13 @@ const nextConfig: NextConfig = {
   // 2. Tell Google not to index the Vercel preview URL
   // 3. 301 redirects for GSC "Not found (404)" URLs — studios renamed/removed,
   //    duplicate-city-suffix slugs created during early scrape, and stale city routes.
+  // Serve the Petrosyan Designs landing mockup at /petrosyan
+  async rewrites() {
+    return [
+      { source: "/petrosyan", destination: "/petrosyan.html" },
+    ];
+  },
+
   async redirects() {
     return [
       // ── Non-www → www ─────────────────────────────────────────────────────
