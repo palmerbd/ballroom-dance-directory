@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Petrosyan Designs — Couture Dancewear for the Competition Floor | New York</title>
+<meta name="description" content="Professional custom dance costumes for ballroom competition & stage shows. Designed in New York by Erik Petro & Maga Taryan. By private consultation only.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   PETROSYAN DESIGNS — Landing Page Mockup
+   Couture / high-fashion aesthetic · single page
+   NOTE: All photography is editorial placeholder imagery,
+   to be replaced with client's own photos from
+   @petrosyandesigns (Instagram / Facebook).
+   ============================================================ */
+:root{
+  --ink:#0d0b09;
+  --ink-2:#15120e;
+  --ink-3:#1d1914;
+  --ivory:#f4efe6;
+  --ivory-dim:#cfc8ba;
+  --gold:#c9a35f;
+  --gold-soft:rgba(201,163,95,.35);
+  --crimson:#9e2433;
+  --serif:'Italiana',serif;
+  --garamond:'Cormorant Garamond',serif;
+  --sans:'Jost',sans-serif;
+  --script:'Pinyon Script',cursive;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--ivory);font-family:var(--sans);font-weight:300;line-height:1.7;overflow-x:hidden}
+::selection{background:var(--gold);color:var(--ink)}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+
+/* ---------- type helpers ---------- */
+.overline{font-family:var(--sans);font-size:.72rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem}
+h2.display{font-family:var(--serif);font-weight:400;font-size:clamp(2.4rem,5vw,4.2rem);line-height:1.08;letter-spacing:.02em}
+.lede{font-family:var(--garamond);font-size:clamp(1.15rem,1.6vw,1.45rem);font-style:italic;color:var(--ivory-dim);max-width:46ch}
+.section{padding:clamp(5rem,10vw,9rem) clamp(1.5rem,7vw,8rem);position:relative}
+.section-head{margin-bottom:clamp(2.5rem,5vw,4.5rem)}
+.rule{width:64px;height:1px;background:var(--gold);margin:1.6rem 0}
+.center{text-align:center}
+.center .rule{margin-left:auto;margin-right:auto}
+
+/* ---------- reveal animation ---------- */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity 1s cubic-bezier(.2,.6,.2,1),transform 1s cubic-bezier(.2,.6,.2,1)}
+.reveal.is-in{opacity:1;transform:none}
+.reveal[data-delay="1"]{transition-delay:.15s}
+.reveal[data-delay="2"]{transition-delay:.3s}
+.reveal[data-delay="3"]{transition-delay:.45s}
+
+/* ---------- navigation ---------- */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.4rem clamp(1.5rem,5vw,4rem);transition:background .45s,padding .45s,border-color .45s;border-bottom:1px solid transparent}
+nav.scrolled{background:rgba(13,11,9,.92);backdrop-filter:blur(14px);padding:.85rem clamp(1.5rem,5vw,4rem);border-bottom-color:rgba(201,163,95,.18)}
+.nav-logo{display:flex;align-items:center;gap:.8rem}
+.logo-disc{width:46px;height:46px;border-radius:50%;background:#000;border:1px solid rgba(201,163,95,.5);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+.logo-disc .ps{font-family:var(--script);font-size:1.05rem;color:#fff;line-height:1;margin-top:-2px}
+.logo-disc .pd{font-size:.28rem;letter-spacing:.32em;text-transform:uppercase;color:#bbb}
+.nav-word{font-family:var(--serif);font-size:1.15rem;letter-spacing:.22em;text-transform:uppercase}
+.nav-word span{color:var(--gold)}
+.nav-links{display:flex;gap:2.2rem;font-size:.72rem;letter-spacing:.28em;text-transform:uppercase}
+.nav-links a{position:relative;padding:.3rem 0;color:var(--ivory-dim);transition:color .3s}
+.nav-links a:hover{color:var(--ivory)}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--gold);transition:width .35s}
+.nav-links a:hover::after{width:100%}
+.nav-cta{font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;border:1px solid var(--gold);color:var(--gold);padding:.7rem 1.5rem;transition:all .35s}
+.nav-cta:hover{background:var(--gold);color:var(--ink)}
+@media(max-width:920px){.nav-links{display:none}}
+
+/* ---------- hero ---------- */
+.hero{height:100vh;min-height:640px;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;isolation:isolate}
+.hero-bg{position:absolute;inset:0;z-index:-2;background:url('https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=2000&q=80&auto=format&fit=crop') center 30%/cover no-repeat;animation:heroZoom 18s ease-out forwards}
+@keyframes heroZoom{from{transform:scale(1.12)}to{transform:scale(1)}}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(13,11,9,.55) 0%,rgba(13,11,9,.35) 40%,rgba(13,11,9,.92) 88%,var(--ink) 100%)}
+.hero-inner{max-width:1000px;padding:0 1.5rem}
+.hero .overline{animation:fadeUp 1.2s .3s both}
+.hero-script{font-family:var(--script);font-size:clamp(2.6rem,6vw,4.6rem);color:var(--gold);display:block;margin-bottom:-.6em;animation:fadeUp 1.2s .55s both}
+.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(3rem,8.5vw,7.2rem);line-height:1.02;letter-spacing:.015em;animation:fadeUp 1.2s .75s both}
+.hero p{font-family:var(--garamond);font-style:italic;font-size:clamp(1.1rem,1.8vw,1.5rem);color:var(--ivory-dim);margin:1.8rem auto 2.6rem;max-width:52ch;animation:fadeUp 1.2s 1s both}
+.hero-ctas{display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;animation:fadeUp 1.2s 1.2s both}
+.btn{display:inline-block;font-size:.74rem;letter-spacing:.32em;text-transform:uppercase;padding:1.05rem 2.6rem;border:1px solid var(--gold);transition:all .4s}
+.btn-solid{background:var(--gold);color:var(--ink)}
+.btn-solid:hover{background:transparent;color:var(--gold)}
+.btn-ghost{color:var(--ivory)}
+.btn-ghost:hover{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+.hero-scroll{position:absolute;bottom:2.2rem;left:50%;transform:translateX(-50%);font-size:.62rem;letter-spacing:.4em;text-transform:uppercase;color:var(--ivory-dim);animation:fadeUp 1.2s 1.6s both}
+.hero-scroll::after{content:"";display:block;width:1px;height:46px;background:linear-gradient(var(--gold),transparent);margin:.8rem auto 0;animation:drip 2.2s infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ---------- marquee ---------- */
+.marquee{border-top:1px solid rgba(201,163,95,.22);border-bottom:1px solid rgba(201,163,95,.22);padding:1.1rem 0;overflow:hidden;background:var(--ink-2)}
+.marquee-track{display:flex;gap:3.5rem;white-space:nowrap;animation:marquee 36s linear infinite;width:max-content}
+.marquee-track span{font-family:var(--serif);font-size:.95rem;letter-spacing:.42em;text-transform:uppercase;color:var(--ivory-dim)}
+.marquee-track i{color:var(--gold);font-style:normal}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* ---------- about ---------- */
+.about{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(2.5rem,6vw,6rem);align-items:center}
+.about-imgs{position:relative;min-height:520px}
+.about-imgs .ph-a{width:72%;aspect-ratio:3/4;object-fit:cover;filter:saturate(.88)}
+.about-imgs .ph-b{position:absolute;right:0;bottom:-3rem;width:48%;aspect-ratio:3/4;object-fit:cover;border:6px solid var(--ink);filter:saturate(.88)}
+.about-imgs::before{content:"";position:absolute;top:-2rem;left:-2rem;width:60%;height:70%;border:1px solid var(--gold-soft);z-index:-1}
+.about-copy p{color:var(--ivory-dim);margin-bottom:1.3rem;max-width:56ch}
+.about-stats{display:flex;gap:3rem;margin-top:2.6rem;flex-wrap:wrap}
+.stat .num{font-family:var(--serif);font-size:2.6rem;color:var(--gold);line-height:1}
+.stat .lbl{font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;color:var(--ivory-dim);margin-top:.5rem}
+@media(max-width:880px){.about{grid-template-columns:1fr}.about-imgs{min-height:0;margin-bottom:3rem}}
+
+/* ---------- what we do ---------- */
+.wwd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem}
+.wwd-card{position:relative;overflow:hidden;aspect-ratio:3/4.1;cursor:pointer}
+.wwd-card img{width:100%;height:100%;object-fit:cover;filter:saturate(.85) brightness(.82);transition:transform 1.1s cubic-bezier(.2,.6,.2,1),filter .6s}
+.wwd-card:hover img{transform:scale(1.06);filter:saturate(1) brightness(.95)}
+.wwd-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 38%,rgba(13,11,9,.93) 100%)}
+.wwd-meta{position:absolute;left:0;right:0;bottom:0;padding:2rem;z-index:2}
+.wwd-meta .no{font-family:var(--garamond);font-style:italic;color:var(--gold);font-size:1rem;letter-spacing:.2em}
+.wwd-meta h3{font-family:var(--serif);font-weight:400;font-size:1.7rem;margin:.35rem 0 .55rem;letter-spacing:.04em}
+.wwd-meta p{font-size:.88rem;color:var(--ivory-dim);max-width:34ch}
+@media(max-width:880px){.wwd-grid{grid-template-columns:1fr}.wwd-card{aspect-ratio:4/3}}
+
+/* ---------- gallery ---------- */
+.gallery{background:var(--ink-2)}
+.masonry{columns:3;column-gap:1.4rem}
+.gal-item{position:relative;overflow:hidden;margin-bottom:1.4rem;break-inside:avoid;cursor:pointer}
+.gal-item img{width:100%;filter:saturate(.85);transition:transform 1.1s cubic-bezier(.2,.6,.2,1),filter .6s}
+.gal-item:hover img{transform:scale(1.05);filter:saturate(1.05)}
+.gal-cap{position:absolute;inset:auto 0 0 0;padding:2.2rem 1.4rem 1.1rem;background:linear-gradient(transparent,rgba(13,11,9,.92));font-family:var(--garamond);font-style:italic;font-size:1.02rem;color:var(--ivory);opacity:0;transform:translateY(12px);transition:all .5s}
+.gal-item:hover .gal-cap{opacity:1;transform:none}
+@media(max-width:980px){.masonry{columns:2}}
+@media(max-width:620px){.masonry{columns:1}}
+
+/* ---------- video gallery ---------- */
+.video-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:1.4rem}
+.vid{position:relative;overflow:hidden;cursor:pointer;aspect-ratio:16/9}
+.vid.tall{aspect-ratio:auto;height:100%}
+.vid img{width:100%;height:100%;object-fit:cover;filter:brightness(.6) saturate(.85);transition:transform 1s,filter .5s}
+.vid:hover img{transform:scale(1.04);filter:brightness(.75) saturate(1)}
+.vid-side{display:grid;grid-template-rows:1fr 1fr;gap:1.4rem}
+.play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:74px;height:74px;border-radius:50%;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;background:rgba(13,11,9,.35);backdrop-filter:blur(4px);transition:all .4s}
+.vid:hover .play{background:var(--gold)}
+.play svg{width:20px;height:20px;fill:var(--gold);margin-left:4px;transition:fill .4s}
+.vid:hover .play svg{fill:var(--ink)}
+.vid-side .play{width:54px;height:54px}
+.vid-label{position:absolute;left:1.6rem;bottom:1.3rem;z-index:2}
+.vid-label .t{font-family:var(--serif);font-size:1.25rem;letter-spacing:.05em}
+.vid-label .s{font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+@media(max-width:880px){.video-grid{grid-template-columns:1fr}.vid-side{grid-template-rows:auto;grid-template-columns:1fr 1fr}.vid.tall{aspect-ratio:16/10}}
+@media(max-width:620px){.vid-side{grid-template-columns:1fr}}
+/* ---------- consultation process ---------- */
+.process{background:linear-gradient(180deg,var(--ink) 0%,var(--ink-2) 100%)}
+.steps{position:relative;max-width:880px;margin:0 auto}
+.steps::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:linear-gradient(var(--gold-soft),var(--gold),var(--gold-soft))}
+.step{position:relative;width:50%;padding:0 3.4rem 4.2rem 0;text-align:right}
+.step:nth-child(even){margin-left:50%;padding:0 0 4.2rem 3.4rem;text-align:left}
+.step:last-child{padding-bottom:0}
+.step .dot{position:absolute;top:.4rem;right:-7px;width:13px;height:13px;border-radius:50%;background:var(--ink);border:1px solid var(--gold)}
+.step:nth-child(even) .dot{right:auto;left:-6px}
+.step .no{font-family:var(--garamond);font-style:italic;color:var(--gold);font-size:1.05rem;letter-spacing:.18em}
+.step h3{font-family:var(--serif);font-weight:400;font-size:1.55rem;margin:.3rem 0 .55rem;letter-spacing:.04em}
+.step p{font-size:.92rem;color:var(--ivory-dim);max-width:38ch;display:inline-block}
+@media(max-width:720px){
+  .steps::before{left:8px}
+  .step,.step:nth-child(even){width:100%;margin-left:0;padding:0 0 3rem 2.6rem;text-align:left}
+  .step .dot,.step:nth-child(even) .dot{left:2px;right:auto}
+}
+
+/* ---------- reviews ---------- */
+.reviews{background:var(--ink-2)}
+.rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem}
+.rev-card{border:1px solid rgba(201,163,95,.18);padding:2.6rem 2.2rem;background:rgba(255,255,255,.012);display:flex;flex-direction:column;transition:border-color .4s,transform .4s}
+.rev-card:hover{border-color:rgba(201,163,95,.45);transform:translateY(-6px)}
+.stars{color:var(--gold);letter-spacing:.35em;font-size:.85rem;margin-bottom:1.4rem}
+.rev-quote{font-family:var(--garamond);font-style:italic;font-size:1.12rem;line-height:1.65;color:var(--ivory);flex:1}
+.rev-who{display:flex;align-items:center;gap:1rem;margin-top:1.8rem}
+.rev-who img{width:46px;height:46px;border-radius:50%;object-fit:cover;border:1px solid var(--gold-soft)}
+.rev-who .n{font-size:.8rem;letter-spacing:.18em;text-transform:uppercase}
+.rev-who .d{font-size:.7rem;color:var(--ivory-dim);letter-spacing:.08em}
+@media(max-width:880px){.rev-grid{grid-template-columns:1fr}}
+
+/* ---------- social feed ---------- */
+.social-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;margin-bottom:2.6rem}
+.ig-id{display:flex;align-items:center;gap:1.1rem}
+.ig-id .logo-disc{width:58px;height:58px}
+.ig-id .logo-disc .ps{font-size:1.3rem}
+.ig-id .h{font-family:var(--serif);font-size:1.4rem;letter-spacing:.06em}
+.ig-id .f{font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ivory-dim)}
+.ig-id .f b{color:var(--gold);font-weight:500}
+.feed{display:grid;grid-template-columns:repeat(6,1fr);gap:.6rem}
+.feed a{position:relative;aspect-ratio:1;overflow:hidden}
+.feed img{width:100%;height:100%;object-fit:cover;filter:saturate(.85);transition:transform .9s,filter .5s}
+.feed a:hover img{transform:scale(1.08);filter:saturate(1.1)}
+.feed a::after{content:"♥";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(13,11,9,.55);color:var(--gold);font-size:1.4rem;opacity:0;transition:opacity .4s}
+.feed a:hover::after{opacity:1}
+@media(max-width:880px){.feed{grid-template-columns:repeat(3,1fr)}}
+
+/* ---------- consultation form ---------- */
+.book{position:relative;isolation:isolate}
+.book::before{content:"";position:absolute;inset:0;z-index:-2;background:url('https://images.unsplash.com/photo-1545128485-c400e7702796?w=1800&q=70&auto=format&fit=crop') center/cover fixed no-repeat}
+.book::after{content:"";position:absolute;inset:0;z-index:-1;background:rgba(13,11,9,.93)}
+.book-inner{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(2.5rem,6vw,6rem);max-width:1200px;margin:0 auto}
+.book-copy p{color:var(--ivory-dim);margin:1.2rem 0;max-width:46ch}
+.book-list{list-style:none;margin-top:2rem}
+.book-list li{display:flex;gap:1rem;align-items:baseline;font-size:.92rem;color:var(--ivory-dim);padding:.55rem 0;border-bottom:1px solid rgba(201,163,95,.12)}
+.book-list li::before{content:"—";color:var(--gold)}
+form{border:1px solid rgba(201,163,95,.3);padding:clamp(1.8rem,3.5vw,3.2rem);background:rgba(13,11,9,.6);backdrop-filter:blur(6px)}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:1.3rem}
+.f-field{margin-bottom:1.3rem}
+label{display:block;font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem}
+input,select,textarea{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(244,239,230,.25);color:var(--ivory);font-family:var(--garamond);font-size:1.1rem;padding:.55rem 0;transition:border-color .3s;border-radius:0}
+input:focus,select:focus,textarea:focus{outline:none;border-bottom-color:var(--gold)}
+select{appearance:none;cursor:pointer}
+select option{background:var(--ink-2);color:var(--ivory)}
+textarea{resize:vertical;min-height:90px}
+.form-btn{width:100%;margin-top:1rem;background:var(--gold);color:var(--ink);border:1px solid var(--gold);padding:1.1rem;font-family:var(--sans);font-size:.74rem;letter-spacing:.34em;text-transform:uppercase;cursor:pointer;transition:all .4s}
+.form-btn:hover{background:transparent;color:var(--gold)}
+.form-note{font-size:.72rem;color:var(--ivory-dim);text-align:center;margin-top:1.1rem;letter-spacing:.05em}
+.form-success{display:none;text-align:center;padding:3rem 1rem}
+.form-success .ok{font-family:var(--script);font-size:2.6rem;color:var(--gold)}
+.form-success p{color:var(--ivory-dim);margin-top:.8rem}
+@media(max-width:880px){.book-inner{grid-template-columns:1fr}.f-row{grid-template-columns:1fr}}
+
+/* ---------- contact + footer ---------- */
+.contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;max-width:1100px;margin:0 auto}
+.c-block{text-align:center;padding:2.4rem 1.6rem;border:1px solid rgba(201,163,95,.16)}
+.c-block .ic{font-family:var(--garamond);font-style:italic;color:var(--gold);font-size:.95rem;letter-spacing:.25em;text-transform:uppercase;margin-bottom:1rem}
+.c-block .big{font-family:var(--serif);font-size:1.35rem;letter-spacing:.04em}
+.c-block .sub{font-size:.8rem;color:var(--ivory-dim);margin-top:.4rem}
+@media(max-width:880px){.contact-grid{grid-template-columns:1fr}}
+footer{border-top:1px solid rgba(201,163,95,.18);padding:3.5rem clamp(1.5rem,7vw,8rem) 2.5rem;text-align:center}
+.foot-logo{display:flex;justify-content:center;margin-bottom:1.4rem}
+.foot-logo .logo-disc{width:72px;height:72px}
+.foot-logo .logo-disc .ps{font-size:1.6rem}
+.foot-logo .logo-disc .pd{font-size:.34rem}
+.foot-nav{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:var(--ivory-dim);margin-bottom:1.6rem}
+.foot-nav a:hover{color:var(--gold)}
+.socials{display:flex;justify-content:center;gap:1.2rem;margin-bottom:1.8rem}
+.socials a{width:42px;height:42px;border:1px solid rgba(201,163,95,.4);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .35s}
+.socials a:hover{background:var(--gold)}
+.socials svg{width:16px;height:16px;fill:var(--gold);transition:fill .35s}
+.socials a:hover svg{fill:var(--ink)}
+.fineprint{font-size:.68rem;letter-spacing:.12em;color:rgba(244,239,230,.4)}
+.mock-tag{position:fixed;bottom:14px;left:14px;z-index:200;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(244,239,230,.5);background:rgba(13,11,9,.8);border:1px solid rgba(201,163,95,.25);padding:.45rem .8rem;backdrop-filter:blur(6px)}
+</style>
+</head>
+<body>
+
+<!-- ===== NAVIGATION ===== -->
+<nav id="nav">
+  <a class="nav-logo" href="#top">
+    <span class="logo-disc"><span class="ps">Petrosyan</span><span class="pd">Designs</span></span>
+    <span class="nav-word">Petrosyan <span>Designs</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="#about">House</a>
+    <a href="#wwd">Atelier</a>
+    <a href="#gallery">Collection</a>
+    <a href="#process">Consultation</a>
+    <a href="#reviews">Words</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <a class="nav-cta" href="#book">Book a Consultation</a>
+</nav>
+
+<!-- ===== HERO ===== -->
+<header class="hero" id="top">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div class="overline">New York City &nbsp;·&nbsp; Est. for the Competition Floor</div>
+    <span class="hero-script">Petrosyan</span>
+    <h1>COUTURE<br>DANCEWEAR</h1>
+    <p>Professional custom costumes for ballroom competition and stage shows — each piece imagined, cut, and crystalled by hand for the dancer who will wear it. Never off the rack. Never repeated.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-solid" href="#book">Begin Your Design</a>
+      <a class="btn btn-ghost" href="#gallery">View the Collection</a>
+    </div>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</header>
+
+<!-- ===== MARQUEE ===== -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Latin</span><i>✦</i><span>Standard</span><i>✦</i><span>Smooth</span><i>✦</i><span>Rhythm</span><i>✦</i><span>Showdance</span><i>✦</i><span>Stage &amp; Theatre</span><i>✦</i>
+    <span>Latin</span><i>✦</i><span>Standard</span><i>✦</i><span>Smooth</span><i>✦</i><span>Rhythm</span><i>✦</i><span>Showdance</span><i>✦</i><span>Stage &amp; Theatre</span><i>✦</i>
+  </div>
+</div>
+
+<!-- ===== ABOUT ===== -->
+<section class="section" id="about">
+  <div class="about">
+    <div class="about-imgs reveal">
+      <img class="ph-a" src="https://images.unsplash.com/photo-1568252542512-9fe8fe9c87bb?w=900&q=75&auto=format&fit=crop" alt="Couture gown — placeholder for Petrosyan Designs photography" onerror="phFix(this)">
+      <img class="ph-b" src="https://images.unsplash.com/photo-1594552072238-b8a33785b261?w=600&q=75&auto=format&fit=crop" alt="Atelier gown in progress — placeholder" onerror="phFix(this)">
+    </div>
+    <div class="about-copy">
+      <div class="overline reveal">About the House</div>
+      <h2 class="display reveal" data-delay="1">Born backstage.<br>Built for the floor.</h2>
+      <div class="rule reveal" data-delay="1"></div>
+      <p class="reveal" data-delay="2">Petrosyan Designs is a New York atelier devoted to one thing: professional dance costumes for ballroom competition and stage shows. Founded by designers <strong>Erik Petro</strong> and <strong>Maga Taryan</strong>, the house dresses champions, rising Pro-Am partnerships, and performers who refuse to blend into the ballroom.</p>
+      <p class="reveal" data-delay="2">Every gown and Latin dress is designed around the dancer — their silhouette, their movement, their music. Because nothing we make is sold off a rack, nothing we make exists twice.</p>
+      <div class="about-stats reveal" data-delay="3">
+        <div class="stat"><div class="num">100%</div><div class="lbl">Custom Made</div></div>
+        <div class="stat"><div class="num">700+</div><div class="lbl">Pieces Created</div></div>
+        <div class="stat"><div class="num">14.4K</div><div class="lbl">Followers Worldwide</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHAT WE DO ===== -->
+<section class="section" id="wwd">
+  <div class="section-head center">
+    <div class="overline reveal">What We Do</div>
+    <h2 class="display reveal" data-delay="1">One dancer. One design.</h2>
+    <div class="rule reveal" data-delay="1"></div>
+    <p class="lede reveal" data-delay="2" style="margin:0 auto">Our pieces are never listed for sale. Each costume begins as a private consultation and ends as a one-of-one work made for a single body in motion.</p>
+  </div>
+  <div class="wwd-grid">
+    <div class="wwd-card reveal">
+      <img src="https://images.unsplash.com/photo-1519925610903-381054cc2a1c?w=900&q=75&auto=format&fit=crop" alt="Latin dance — placeholder" onerror="phFix(this)">
+      <div class="wwd-meta">
+        <div class="no">No. 01</div>
+        <h3>Latin &amp; Rhythm</h3>
+        <p>Fringe, stones, and fearless cuts engineered for speed — costumes that finish every action you take.</p>
+      </div>
+    </div>
+    <div class="wwd-card reveal" data-delay="1">
+      <img src="https://images.unsplash.com/photo-1518834107812-67b0b7c58434?w=900&q=75&auto=format&fit=crop" alt="Flowing gown — placeholder" onerror="phFix(this)">
+      <div class="wwd-meta">
+        <div class="no">No. 02</div>
+        <h3>Standard &amp; Smooth</h3>
+        <p>Floats, godets, and architectural bodices — gowns that turn every sway into a photograph.</p>
+      </div>
+    </div>
+    <div class="wwd-card reveal" data-delay="2">
+      <img src="https://images.unsplash.com/photo-1545959570-a94084071b5d?w=900&q=75&auto=format&fit=crop" alt="Stage show — placeholder" onerror="phFix(this)">
+      <div class="wwd-meta">
+        <div class="no">No. 03</div>
+        <h3>Stage &amp; Show</h3>
+        <p>Theatrical pieces for showdance, exhibitions, and professional stage productions that demand drama.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PHOTO GALLERY ===== -->
+<section class="section gallery" id="gallery">
+  <div class="section-head center">
+    <div class="overline reveal">The Collection</div>
+    <h2 class="display reveal" data-delay="1">Recent work</h2>
+    <div class="rule reveal" data-delay="1"></div>
+    <p class="lede reveal" data-delay="2" style="margin:0 auto">A selection from the atelier — competition floors, stage lights, and fittings in between.<br><em style="font-size:.85em;opacity:.7">(Placeholder imagery — to be replaced with photography from @petrosyandesigns.)</em></p>
+  </div>
+  <div class="masonry reveal">
+    <div class="gal-item"><img src="https://images.unsplash.com/photo-1547153760-18fc86324498?w=800&q=75&auto=format&fit=crop" alt="" onerror="phFix(this)"><div class="gal-cap">Movement study — fitting week</div></div>
+    <div class="gal-item"><img src="https://images.unsplash.com/photo-1508807526345-15e9b5f4eaff?w=800&q=75&auto=format&fit=crop" alt="" onerror="phFix(this)"><div class="gal-cap">Corps in white — stage commission</div></div>
+    <div class="gal-item"><img src="https://images.unsplash.com/photo-1485518882345-15568b007407?w=800&q=75&auto=format&fit=crop" alt="" onerror="phFix(this)"><div class="gal-cap">Atelier window — works in progress</div></div>
+    <div class="gal-item"><img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=800&q=75&auto=format&fit=crop" alt="" onerror="phFix(this)"><div class="gal-cap">Stone &amp; shine — crystal color study</div></div>
+    <div class="gal-item"><img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=800&q=75&auto=format&fit=crop" alt="" onerror="phFix(this)"><div class="gal-cap">The rail — this season's commissions</div></div>
+    <div class="gal-item"><img src="https://images.unsplash.com/photo-1535525153412-5a42439a210d?w=800&q=75&auto=format&fit=crop" alt="" onerror="phFix(this)"><div class="gal-cap">City lights — showdance energy</div></div>
+  </div>
+</section>
+
+<!-- ===== VIDEO GALLERY ===== -->
+<section class="section" id="video">
+  <div class="section-head">
+    <div class="overline reveal">In Motion</div>
+    <h2 class="display reveal" data-delay="1">Costumes are finished<br>by movement</h2>
+    <div class="rule reveal" data-delay="1"></div>
+  </div>
+  <div class="video-grid reveal">
+    <div class="vid" onclick="mockVideo()">
+      <img src="https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=1400&q=75&auto=format&fit=crop" alt="" onerror="phFix(this)">
+      <span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+      <div class="vid-label"><div class="s">Featured Film</div><div class="t">On the Floor — Competition Reel ’26</div></div>
+    </div>
+    <div class="vid-side">
+      <div class="vid tall" onclick="mockVideo()">
+        <img src="https://images.unsplash.com/photo-1545128485-c400e7702796?w=800&q=75&auto=format&fit=crop" alt="" onerror="phFix(this)">
+        <span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+        <div class="vid-label"><div class="s">Atelier</div><div class="t">The Making of a Gown</div></div>
+      </div>
+      <div class="vid tall" onclick="mockVideo()">
+        <img src="https://images.unsplash.com/photo-1537274942065-eda9d00a6293?w=800&q=75&auto=format&fit=crop" alt="" onerror="phFix(this)">
+        <span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+        <div class="vid-label"><div class="s">Fittings</div><div class="t">First Try-On Moments</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONSULTATION PROCESS ===== -->
+<section class="section process" id="process">
+  <div class="section-head center">
+    <div class="overline reveal">The Consultation</div>
+    <h2 class="display reveal" data-delay="1">From first fitting<br>to final sparkle</h2>
+    <div class="rule reveal" data-delay="1"></div>
+    <p class="lede reveal" data-delay="2" style="margin:0 auto">Every commission follows the same couture ritual — unhurried, collaborative, and entirely about you.</p>
+  </div>
+  <div class="steps">
+    <div class="step reveal">
+      <span class="dot"></span>
+      <div class="no">Step 01</div>
+      <h3>Measurements Taken</h3>
+      <p>We begin with a complete set of professional measurements — in person at the New York atelier or guided remotely — so the costume moves as a second skin.</p>
+    </div>
+    <div class="step reveal">
+      <span class="dot"></span>
+      <div class="no">Step 02</div>
+      <h3>Styles Discussed</h3>
+      <p>Your discipline, your music, your competition calendar, your personality on the floor. We talk silhouettes, color under ballroom light, and what the judges should remember.</p>
+    </div>
+    <div class="step reveal">
+      <span class="dot"></span>
+      <div class="no">Step 03</div>
+      <h3>Examples Shown</h3>
+      <p>We walk through past commissions, sketches, fabrics, and stonework so you can see — and touch — the direction before a single cut is made.</p>
+    </div>
+    <div class="step reveal">
+      <span class="dot"></span>
+      <div class="no">Step 04</div>
+      <h3>Custom Design Created</h3>
+      <p>Erik and Maga design and build your one-of-one piece by hand: pattern, construction, and crystal by crystal.</p>
+    </div>
+    <div class="step reveal">
+      <span class="dot"></span>
+      <div class="no">Step 05</div>
+      <h3>Tweaked &amp; Finalized</h3>
+      <p>Fittings and refinements based on your feedback — on the body, in motion — until the costume is competition-ready and unmistakably yours.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== REVIEWS ===== -->
+<section class="section reviews" id="reviews">
+  <div class="section-head center">
+    <div class="overline reveal">Kind Words</div>
+    <h2 class="display reveal" data-delay="1">From the floor</h2>
+    <div class="rule reveal" data-delay="1"></div>
+  </div>
+  <div class="rev-grid">
+    <div class="rev-card reveal">
+      <div class="stars">★ ★ ★ ★ ★</div>
+      <p class="rev-quote">“The first time I wore my Petrosyan gown on the floor, three judges asked about it before the first heat. It fits like it was poured on — because it basically was.”</p>
+      <div class="rev-who">
+        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=70&auto=format&fit=crop" alt="" onerror="phFix(this)">
+        <div><div class="n">A. Morgan</div><div class="d">Pro-Am Smooth · New York</div></div>
+      </div>
+    </div>
+    <div class="rev-card reveal" data-delay="1">
+      <div class="stars">★ ★ ★ ★ ★</div>
+      <p class="rev-quote">“Erik and Maga listened to everything — my music, my choreography, even how I sweat under stage light. The final Latin dress moved better than I did.”</p>
+      <div class="rev-who">
+        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=70&auto=format&fit=crop" alt="" onerror="phFix(this)">
+        <div><div class="n">K. Alvarez</div><div class="d">Professional Latin · Miami</div></div>
+      </div>
+    </div>
+    <div class="rev-card reveal" data-delay="2">
+      <div class="stars">★ ★ ★ ★ ★</div>
+      <p class="rev-quote">“Worth every fitting. They tweaked the skirt twice after my feedback and had it perfect before Nationals. You don't buy a costume here — you commission one.”</p>
+      <div class="rev-who">
+        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&q=70&auto=format&fit=crop" alt="" onerror="phFix(this)">
+        <div><div class="n">D. Petrov</div><div class="d">Amateur Standard · Boston</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SOCIAL FEED ===== -->
+<section class="section" id="social">
+  <div class="social-head reveal">
+    <div class="ig-id">
+      <span class="logo-disc"><span class="ps">Petrosyan</span><span class="pd">Designs</span></span>
+      <div>
+        <div class="h">@petrosyandesigns</div>
+        <div class="f"><b>733</b> posts &nbsp;·&nbsp; <b>14.4K</b> followers</div>
+      </div>
+    </div>
+    <a class="btn btn-ghost" href="https://www.instagram.com/petrosyandesigns/" target="_blank" rel="noopener">Follow on Instagram</a>
+  </div>
+  <div class="feed reveal" data-delay="1">
+    <a href="https://www.instagram.com/petrosyandesigns/" target="_blank" rel="noopener"><img src="https://images.unsplash.com/photo-1568252542512-9fe8fe9c87bb?w=500&q=70&auto=format&fit=crop" alt="" onerror="phFix(this)"></a>
+    <a href="https://www.instagram.com/petrosyandesigns/" target="_blank" rel="noopener"><img src="https://images.unsplash.com/photo-1518834107812-67b0b7c58434?w=500&q=70&auto=format&fit=crop" alt="" onerror="phFix(this)"></a>
+    <a href="https://www.instagram.com/petrosyandesigns/" target="_blank" rel="noopener"><img src="https://images.unsplash.com/photo-1594552072238-b8a33785b261?w=500&q=70&auto=format&fit=crop" alt="" onerror="phFix(this)"></a>
+    <a href="https://www.instagram.com/petrosyandesigns/" target="_blank" rel="noopener"><img src="https://images.unsplash.com/photo-1519925610903-381054cc2a1c?w=500&q=70&auto=format&fit=crop" alt="" onerror="phFix(this)"></a>
+    <a href="https://www.instagram.com/petrosyandesigns/" target="_blank" rel="noopener"><img src="https://images.unsplash.com/photo-1545959570-a94084071b5d?w=500&q=70&auto=format&fit=crop" alt="" onerror="phFix(this)"></a>
+    <a href="https://www.instagram.com/petrosyandesigns/" target="_blank" rel="noopener"><img src="https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=500&q=70&auto=format&fit=crop" alt="" onerror="phFix(this)"></a>
+  </div>
+</section>
+
+<!-- ===== BOOK CONSULTATION ===== -->
+<section class="section book" id="book">
+  <div class="book-inner">
+    <div class="book-copy">
+      <div class="overline reveal">Private Commission</div>
+      <h2 class="display reveal" data-delay="1">Book your<br>consultation</h2>
+      <div class="rule reveal" data-delay="1"></div>
+      <p class="reveal" data-delay="2">Our costumes are not listed for sale. Each piece begins with a private consultation — tell us about you and your dancing, and we'll reach out to schedule your appointment.</p>
+      <ul class="book-list reveal" data-delay="3">
+        <li>In-atelier or remote consultations available</li>
+        <li>Ladies' &amp; men's competition costumes</li>
+        <li>Latin · Standard · Smooth · Rhythm · Showdance</li>
+        <li>Stage, theatre &amp; special performance commissions</li>
+      </ul>
+    </div>
+    <div class="reveal" data-delay="2">
+      <form id="consultForm" onsubmit="return mockSubmit(event)">
+        <div class="f-row">
+          <div class="f-field"><label for="fn">Full Name</label><input id="fn" type="text" placeholder="Your name" required></div>
+          <div class="f-field"><label for="em">Email</label><input id="em" type="email" placeholder="you@email.com" required></div>
+        </div>
+        <div class="f-row">
+          <div class="f-field"><label for="ph">Phone</label><input id="ph" type="tel" placeholder="(000) 000-0000"></div>
+          <div class="f-field"><label for="st">Dance Style</label>
+            <select id="st">
+              <option>International Latin</option>
+              <option>International Standard</option>
+              <option>American Smooth</option>
+              <option>American Rhythm</option>
+              <option>Showdance / Theatre</option>
+              <option>Stage Show / Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="f-row">
+          <div class="f-field"><label for="dt">Target Event / Date</label><input id="dt" type="text" placeholder="e.g., Ohio Star Ball, November"></div>
+          <div class="f-field"><label for="md">Consultation Type</label>
+            <select id="md"><option>In Atelier — New York</option><option>Remote / Video</option></select>
+          </div>
+        </div>
+        <div class="f-field"><label for="vs">Tell us about your vision</label><textarea id="vs" placeholder="Colors, silhouettes, inspiration, choreography — anything that helps us see it"></textarea></div>
+        <button class="form-btn" type="submit">Request Consultation</button>
+        <div class="form-note">Mock form — submissions are not sent. For demonstration only.</div>
+      </form>
+      <div class="form-success" id="formSuccess">
+        <div class="ok">Merci — request received</div>
+        <p>The atelier will contact you within 48 hours to arrange your private consultation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="section" id="contact">
+  <div class="section-head center">
+    <div class="overline reveal">Contact</div>
+    <h2 class="display reveal" data-delay="1">Visit the atelier</h2>
+    <div class="rule reveal" data-delay="1"></div>
+  </div>
+  <div class="contact-grid">
+    <div class="c-block reveal">
+      <div class="ic">Atelier</div>
+      <div class="big">New York, NY</div>
+      <div class="sub">Private appointments only<br>Address shared upon booking</div>
+    </div>
+    <div class="c-block reveal" data-delay="1">
+      <div class="ic">Write</div>
+      <div class="big">hello@petrosyandesigns.com</div>
+      <div class="sub">Replies within 48 hours<br>(placeholder address)</div>
+    </div>
+    <div class="c-block reveal" data-delay="2">
+      <div class="ic">Follow</div>
+      <div class="big">@petrosyandesigns</div>
+      <div class="sub">Instagram &amp; Facebook<br>New work posted weekly</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="foot-logo">
+    <span class="logo-disc"><span class="ps">Petrosyan</span><span class="pd">Designs</span></span>
+  </div>
+  <div class="foot-nav">
+    <a href="#about">House</a><a href="#wwd">Atelier</a><a href="#gallery">Collection</a><a href="#process">Consultation</a><a href="#reviews">Words</a><a href="#book">Book</a>
+  </div>
+  <div class="socials">
+    <a href="https://www.instagram.com/petrosyandesigns/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2m0 1.8c-3.1 0-3.5 0-4.8.1-1.1.1-1.4.2-1.7.3-.4.2-.7.4-1 .7-.3.3-.5.6-.7 1-.1.3-.3.6-.3 1.7-.1 1.2-.1 1.6-.1 4.8s0 3.5.1 4.8c.1 1.1.2 1.4.3 1.7.2.4.4.7.7 1 .3.3.6.5 1 .7.3.1.6.3 1.7.3 1.2.1 1.6.1 4.8.1s3.5 0 4.8-.1c1.1-.1 1.4-.2 1.7-.3.4-.2.7-.4 1-.7.3-.3.5-.6.7-1 .1-.3.3-.6.3-1.7.1-1.2.1-1.6.1-4.8s0-3.5-.1-4.8c-.1-1.1-.2-1.4-.3-1.7-.2-.4-.4-.7-.7-1-.3-.3-.6-.5-1-.7-.3-.1-.6-.3-1.7-.3-1.2-.1-1.6-.1-4.8-.1zm0 3.1a4.9 4.9 0 1 1 0 9.8 4.9 4.9 0 0 1 0-9.8zm0 8.1a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4zm6.2-8.3a1.1 1.1 0 1 1-2.3 0 1.1 1.1 0 0 1 2.3 0z"/></svg></a>
+    <a href="https://www.facebook.com/petrosyandesigns/" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12z"/></svg></a>
+  </div>
+  <div class="fineprint">© 2026 Petrosyan Designs · New York &nbsp;·&nbsp; Designers Erik Petro &amp; Maga Taryan &nbsp;·&nbsp; Website mockup for review — photography placeholders pending client assets</div>
+</footer>
+
+<div class="mock-tag">Design Mockup · For Client Review</div>
+
+<script>
+// nav scroll state
+const nav = document.getElementById('nav');
+addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 60), {passive:true});
+
+// reveal on scroll
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+}), {threshold:.12});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// graceful image fallback (elegant placeholder if a photo fails to load)
+function phFix(img){
+  const d = document.createElement('div');
+  d.style.cssText = 'width:100%;height:100%;min-height:260px;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#1d1914,#15120e);border:1px solid rgba(201,163,95,.25);color:#c9a35f;font-family:Pinyon Script,cursive;font-size:1.6rem;';
+  d.textContent = 'Petrosyan';
+  img.replaceWith(d);
+}
+
+// mock interactions
+function mockVideo(){ alert('Mockup: a brand film or competition reel would play here (hosted on Instagram, YouTube, or Vimeo).'); }
+function mockSubmit(ev){
+  ev.preventDefault();
+  document.getElementById('consultForm').style.display = 'none';
+  document.getElementById('formSuccess').style.display = 'block';
+  return false;
+}
+</script>
+</body>
+</html>
