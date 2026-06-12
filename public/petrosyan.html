@@ -74,7 +74,7 @@ nav.scrolled{background:rgba(13,11,9,.92);backdrop-filter:blur(14px);padding:.85
 
 /* ---------- hero ---------- */
 .hero{height:100vh;min-height:640px;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;isolation:isolate}
-.hero-bg{position:absolute;inset:0;z-index:-2;background:url('petrosyan-photos/petrosyan-hero.jpg') center 30%/cover no-repeat;animation:heroZoom 18s ease-out forwards}
+.hero-bg{position:absolute;inset:0;z-index:-2;background:url('petrosyan-photos/petrosyan-hero2.jpg') center 38%/cover no-repeat;animation:heroZoom 18s ease-out forwards}
 @keyframes heroZoom{from{transform:scale(1.12)}to{transform:scale(1)}}
 .hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(13,11,9,.55) 0%,rgba(13,11,9,.35) 40%,rgba(13,11,9,.92) 88%,var(--ink) 100%)}
 .hero-inner{max-width:1000px;padding:0 1.5rem}
@@ -378,20 +378,20 @@ footer{border-top:1px solid rgba(201,163,95,.18);padding:3.5rem clamp(1.5rem,7vw
   </div>
   <div class="video-grid reveal">
     <div class="vid" onclick="mockVideo()">
-      <img src="petrosyan-photos/petrosyan-film.jpg" alt="" onerror="phFix(this)" style="object-position:center 30%">
+      <img src="petrosyan-photos/petrosyan-hero.jpg" alt="" onerror="phFix(this)">
       <span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-      <div class="vid-label"><div class="s">Featured Film</div><div class="t">We Don’t Just Create Dresses — We Create Characters</div></div>
+      <div class="vid-label"><div class="s">Featured Film</div><div class="t">On the Floor — Competition Reel ’26</div></div>
     </div>
     <div class="vid-side">
+      <div class="vid tall" onclick="mockVideo()">
+        <img src="petrosyan-photos/petrosyan-film.jpg" alt="" onerror="phFix(this)" style="object-position:center 30%">
+        <span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+        <div class="vid-label"><div class="s">Brand Film</div><div class="t">We Create Characters</div></div>
+      </div>
       <div class="vid tall" onclick="mockVideo()">
         <img src="petrosyan-photos/petrosyan-v1.jpg" alt="" onerror="phFix(this)">
         <span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
         <div class="vid-label"><div class="s">On Television</div><div class="t">Petrosyan on the Show Stage</div></div>
-      </div>
-      <div class="vid tall" onclick="mockVideo()">
-        <img src="petrosyan-photos/petrosyan-v2.jpg" alt="" onerror="phFix(this)">
-        <span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-        <div class="vid-label"><div class="s">Music Video</div><div class="t">Custom Latex Commission</div></div>
       </div>
     </div>
   </div>
@@ -621,4 +621,4 @@ function mockSubmit(ev){
 </script>
 </body>
 </html>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
