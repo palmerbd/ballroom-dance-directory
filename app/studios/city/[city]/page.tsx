@@ -345,10 +345,51 @@ export default async function CityPage({
 
   const state = studios[0]?.state || "";
 
+  const topStyles = popularStyles.slice(0, 3).map((s) => STYLE_LABELS[s]).join(", ");
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": `How many ballroom dance studios are in ${cityName}?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `There are ${studios.length} dance studios listed in ${cityName} on Ballroom Dance Directory. These studios offer private lessons, group classes, and instruction across ballroom, Latin, and specialty dance styles.`,
+        },
+      },
+      ...(topStyles ? [{
+        "@type": "Question",
+        "name": `What dance styles are available in ${cityName}?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `${cityName} studios offer a range of dance styles including ${topStyles}. Many studios teach both ballroom (Waltz, Foxtrot, Tango, Quickstep) and Latin (Cha Cha, Salsa, Rumba, Samba) styles, as well as wedding dance choreography.`,
+        },
+      }] : []),
+      {
+        "@type": "Question",
+        "name": `How much do ballroom dance lessons cost in ${cityName}?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `Private ballroom dance lessons in ${cityName} typically cost $80–$150 per 45–60 minute session at independent studios. National chain studios (Arthur Murray, Fred Astaire, Dance With Me) often use package pricing. Many studios offer an introductory first lesson at a reduced rate of $30–$75.`,
+        },
+      },
+      {
+        "@type": "Question",
+        "name": `How do I find a good ballroom dance instructor in ${cityName}?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `Look for instructors with verifiable competition credentials, teaching experience, and positive student reviews. Schedule a trial lesson before committing to a package — a good instructor will assess your goals and natural movement before recommending a program. Ballroom Dance Directory lists top-rated studios in ${cityName} with verified contact information.`,
+        },
+      },
+    ],
+  };
+
   return (
     <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
       <section
