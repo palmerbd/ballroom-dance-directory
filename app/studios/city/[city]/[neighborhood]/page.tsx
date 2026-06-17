@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { getStudiosByCity, citySlugToName } from "@/lib/wordpress";
 import { StudioCard, CHAIN_CONFIG, STYLE_LABELS, DanceStyle } from "@/types/studio";
 import {
@@ -9,9 +9,9 @@ import {
   matchStudiosToNeighborhood,
 } from "@/lib/neighborhoods";
 
-export const revalidate = 86400; // 24 hours — neighborhood data is stable
+export const revalidate = 86400; // 24 hours â neighborhood data is stable
 
-// ── Static params ─────────────────────────────────────────────────────────────
+// ââ Static params âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 
 export async function generateStaticParams() {
   const params: { city: string; neighborhood: string }[] = [];
@@ -23,7 +23,7 @@ export async function generateStaticParams() {
   return params;
 }
 
-// ── Metadata ──────────────────────────────────────────────────────────────────
+// ââ Metadata ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 
 export async function generateMetadata({
   params,
@@ -38,6 +38,22 @@ export async function generateMetadata({
   };
 
   const { city, neighborhood } = result;
+
+  // Pre-check studio count to set canonical / robots correctly.
+  const cityStudiosCheck = await getStudiosByCity(citySlug);
+  const hoodStudiosCheck = matchStudiosToNeighborhood(
+    cityStudiosCheck as unknown as { address?: string; city?: string; [key: string]: unknown }[],
+    neighborhood.keywords
+  );
+
+  if (hoodStudiosCheck.length === 0) {
+    return {
+      title: `Ballroom Dance Studios in ${neighborhood.name}, ${city.name} | Ballroom Dance Directory`,
+      robots: { index: false, follow: true },
+      alternates: { canonical: `https://www.ballroomdancedirectory.com/studios/city/${citySlug}` },
+    };
+  }
+
   return {
     title: `Ballroom Dance Studios in ${neighborhood.name}, ${city.name} | Ballroom Dance Directory`,
     description: `Find the best private dance studios in the ${neighborhood.name} area of ${city.name}, ${city.stateAbbr}. Top-rated studios offering ballroom, Latin, salsa, tango, and wedding dance lessons near ${neighborhood.name}.`,
@@ -51,7 +67,7 @@ export async function generateMetadata({
   };
 }
 
-// ── Sub-components ────────────────────────────────────────────────────────────
+// ââ Sub-components ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 
 function Stars({ rating }: { rating: number }) {
   const full  = Math.floor(rating);
@@ -60,11 +76,11 @@ function Stars({ rating }: { rating: number }) {
   return (
     <span className="flex items-center gap-0.5 text-sm" aria-label={`${rating} out of 5 stars`}>
       {Array.from({ length: full  }).map((_, i) => (
-        <span key={`f${i}`} style={{ color: "#e8c560" }}>★</span>
+        <span key={`f${i}`} style={{ color: "#e8c560" }}>â</span>
       ))}
-      {half && <span style={{ color: "#e8c560" }}>½</span>}
+      {half && <span style={{ color: "#e8c560" }}>Â½</span>}
       {Array.from({ length: empty }).map((_, i) => (
-        <span key={`e${i}`} className="text-gray-300">★</span>
+        <span key={`e${i}`} className="text-gray-300">â</span>
       ))}
       <span className="ml-1 text-gray-500 text-xs">{rating.toFixed(1)}</span>
     </span>
@@ -150,7 +166,7 @@ function StudioListCard({ studio }: { studio: StudioCard }) {
 
         <div className="pt-3 border-t border-gray-100 flex justify-between items-center">
           <span className="text-sm font-bold" style={{ color: "#b8922a" }}>
-            View Studio →
+            View Studio â
           </span>
           {studio.privateLessonRate && (
             <span className="text-xs text-gray-500">From {studio.privateLessonRate}</span>
@@ -161,7 +177,7 @@ function StudioListCard({ studio }: { studio: StudioCard }) {
   );
 }
 
-// ── Page ──────────────────────────────────────────────────────────────────────
+// ââ Page ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 
 export default async function NeighborhoodPage({
   params,
@@ -180,6 +196,10 @@ export default async function NeighborhoodPage({
     cityStudios as unknown as { address?: string; city?: string; [key: string]: unknown }[],
     neighborhood.keywords
   ) as unknown as StudioCard[];
+
+  if (hoodStudios.length === 0) {
+    permanentRedirect(`/studios/city/${citySlug}`);
+  }
 
   // Studios to show: neighborhood matches first, then remaining city studios as "nearby"
   const hoodIds = new Set(hoodStudios.map((s: StudioCard) => s.id));
@@ -209,7 +229,7 @@ export default async function NeighborhoodPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
       />
 
-      {/* ── Hero ────────────────────────────────────────────────────────── */}
+      {/* ââ Hero ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */}
       <section
         className="py-16 px-6"
         style={{ background: "linear-gradient(135deg, #0c1428 0%, #1a2d5a 100%)" }}
@@ -247,25 +267,25 @@ export default async function NeighborhoodPage({
 
           <div className="flex flex-wrap gap-3">
             <span className="px-4 py-2 rounded-full text-sm font-semibold bg-white/10 text-white/80">
-              📍 {neighborhood.name}
+              ð {neighborhood.name}
             </span>
             <span className="px-4 py-2 rounded-full text-sm font-semibold bg-white/10 text-white/80">
-              🏙 {city.name}, {city.stateAbbr}
+              ð {city.name}, {city.stateAbbr}
             </span>
             {hoodStudios.length > 0 && (
               <span className="px-4 py-2 rounded-full text-sm font-semibold bg-white/10 text-white/80">
-                🎵 {hoodStudios.length} Studi{hoodStudios.length === 1 ? "o" : "os"}
+                ðµ {hoodStudios.length} Studi{hoodStudios.length === 1 ? "o" : "os"}
               </span>
             )}
           </div>
         </div>
       </section>
 
-      {/* ── Body ────────────────────────────────────────────────────────── */}
+      {/* ââ Body ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */}
       <div className="max-w-5xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-          {/* ── Main content ──────────────────────────────────────────── */}
+          {/* ââ Main content ââââââââââââââââââââââââââââââââââââââââââââ */}
           <div className="lg:col-span-2 space-y-10">
 
             {/* Neighborhood intro */}
@@ -294,15 +314,15 @@ export default async function NeighborhoodPage({
                 </div>
               </div>
             ) : (
-              /* No direct matches — show SEO-friendly message + city fallback */
+              /* No direct matches â show SEO-friendly message + city fallback */
               <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-8 text-center">
-                <div className="text-4xl mb-4">💃</div>
+                <div className="text-4xl mb-4">ð</div>
                 <h2 className="font-display font-bold text-gray-900 text-xl mb-2">
                   Expanding to {neighborhood.name} soon
                 </h2>
                 <p className="text-gray-600 mb-6 max-w-md mx-auto">
                   We&apos;re actively adding studios to the {neighborhood.name} area. In the meantime,
-                  explore all studios in {city.name} — many offer lessons convenient to {neighborhood.name}.
+                  explore all studios in {city.name} â many offer lessons convenient to {neighborhood.name}.
                 </p>
                 <Link
                   href={`/studios/city/${city.slug}`}
@@ -354,7 +374,7 @@ export default async function NeighborhoodPage({
               <p>
                 Private lessons give you one-on-one attention that group classes simply can&apos;t match.
                 Your instructor can adapt to your learning pace, correct technique in real time, and
-                design a curriculum around your specific goals — whether that&apos;s a particular dance style,
+                design a curriculum around your specific goals â whether that&apos;s a particular dance style,
                 a performance date, or a fitness target.
               </p>
               <p>
@@ -365,7 +385,7 @@ export default async function NeighborhoodPage({
             </div>
           </div>
 
-          {/* ── Sidebar ───────────────────────────────────────────────── */}
+          {/* ââ Sidebar âââââââââââââââââââââââââââââââââââââââââââââââââ */}
           <div className="space-y-6">
 
             {/* City tip */}
@@ -396,7 +416,7 @@ export default async function NeighborhoodPage({
                                  text-gray-700 hover:bg-yellow-50 hover:text-yellow-800 transition-colors"
                     >
                       <span>{n.name}</span>
-                      <span className="text-gray-300">→</span>
+                      <span className="text-gray-300">â</span>
                     </Link>
                   ))}
                 <Link
@@ -406,7 +426,7 @@ export default async function NeighborhoodPage({
                              border-t border-gray-100 pt-3"
                 >
                   <span>All {city.name} Studios</span>
-                  <span className="text-gray-300">→</span>
+                  <span className="text-gray-300">â</span>
                 </Link>
               </div>
             </div>
@@ -431,7 +451,7 @@ export default async function NeighborhoodPage({
                                  text-gray-700 hover:bg-yellow-50 hover:text-yellow-800 transition-colors"
                     >
                       <span>{c.name}</span>
-                      <span className="text-gray-300">→</span>
+                      <span className="text-gray-300">â</span>
                     </Link>
                   ))}
               </div>
@@ -441,13 +461,13 @@ export default async function NeighborhoodPage({
               href="/studios"
               className="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors"
             >
-              ← View all studios
+              â View all studios
             </Link>
           </div>
         </div>
       </div>
 
-      {/* ── Footer ──────────────────────────────────────────────────────── */}
+      {/* ââ Footer ââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */}
       <footer className="py-10 px-6 bg-white border-t border-gray-100 mt-8">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
           <div>
