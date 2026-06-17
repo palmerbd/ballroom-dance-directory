@@ -49,12 +49,12 @@ const nextConfig: NextConfig = {
       // slug deduplication ran; Google crawled them and now they 404.
       {
         source: "/studios/arthur-murray-dance-studio-temecula-temecula",
-        destination: "/studios/arthur-murray-dance-studio-temecula",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-ventura-ventura-4",
-        destination: "/studios/arthur-murray-dance-studio-ventura-4",
+        destination: "/studios",
         permanent: true,
       },
       // Canadian locations — never belonged in US directory; send to root
@@ -115,27 +115,27 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/studios/divadance-san-antonio-san-antonio-2",
-        destination: "/studios/divadance-san-antonio-2",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-vancouver-wa-vancouver-3",
-        destination: "/studios/arthur-murray-dance-studio-vancouver-wa-3",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-of-plano-plano",
-        destination: "/studios/arthur-murray-dance-studio-of-plano",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-of-stockton-stockton-3",
-        destination: "/studios/arthur-murray-dance-studio-of-stockton-3",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/dance-with-me-the-woodlands-the-woodlands-2",
-        destination: "/studios/dance-with-me-the-woodlands-2",
+        destination: "/studios",
         permanent: true,
       },
 
@@ -218,17 +218,17 @@ const nextConfig: NextConfig = {
       //   - "Crawled - currently not indexed": beaverton-beaverton-2, torrance-torrance-2
       {
         source: "/studios/arthur-murray-dance-studio-reno-reno-2",
-        destination: "/studios/arthur-murray-dance-studio-reno-2",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-beaverton-beaverton-2",
-        destination: "/studios/arthur-murray-dance-studio-beaverton-2",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-torrance-torrance-2",
-        destination: "/studios/arthur-murray-dance-studio-torrance-2",
+        destination: "/studios",
         permanent: true,
       },
 
@@ -272,7 +272,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/studios/the-dance-factory-tampa-bay-tampa-2",
-        destination: "/studios/the-dance-factory-tampa-bay-2",
+        destination: "/studios",
         permanent: true,
       },
       {
@@ -282,7 +282,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/studios/dance-with-me-austin-austin-3",
-        destination: "/studios/dance-with-me-austin-3",
+        destination: "/studios",
         permanent: true,
       },
       {
@@ -456,127 +456,127 @@ const nextConfig: NextConfig = {
       // ── Batch 4 (continued) — Pattern B: strip doubled city, keep -N ─────
       {
         source: "/studios/arthur-murray-dance-studio-of-richmond-richmond-2",
-        destination: "/studios/arthur-murray-dance-studio-of-richmond-2",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-center-of-pittsburgh-downtown-pittsburgh-3",
-        destination: "/studios/arthur-murray-dance-center-of-pittsburgh-downtown-3",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-of-charleston-charleston-2",
-        destination: "/studios/arthur-murray-dance-studio-of-charleston-2",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-of-danvers-danvers-3",
-        destination: "/studios/arthur-murray-dance-studio-of-danvers-3",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-vancouver-wa-vancouver-2",
-        destination: "/studios/arthur-murray-dance-studio-vancouver-wa-2",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-of-alexandria-alexandria-2",
-        destination: "/studios/arthur-murray-dance-studio-of-alexandria-2",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-charlotte-charlotte-2",
-        destination: "/studios/arthur-murray-dance-studio-charlotte-2",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-wildwood-wildwood-2",
-        destination: "/studios/arthur-murray-dance-studio-wildwood-2",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-of-folsom-folsom-2",
-        destination: "/studios/arthur-murray-dance-studio-of-folsom-2",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-of-rochester-rochester-2",
-        destination: "/studios/arthur-murray-dance-studio-of-rochester-2",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-st-augustine-st-augustine-2",
-        destination: "/studios/arthur-murray-dance-studio-st-augustine-2",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-monterey-monterey-2",
-        destination: "/studios/arthur-murray-dance-studio-monterey-2",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-of-merrick-merrick-2",
-        destination: "/studios/arthur-murray-dance-studio-of-merrick-2",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-temecula-temecula-3",
-        destination: "/studios/arthur-murray-dance-studio-temecula-3",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-bay-shore-ny-bay-shore-2",
-        destination: "/studios/arthur-murray-dance-studio-bay-shore-ny-2",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-sarasota-sarasota-3",
-        destination: "/studios/arthur-murray-dance-studio-sarasota-3",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-whitefish-bay-whitefish-bay-3",
-        destination: "/studios/arthur-murray-dance-studio-whitefish-bay-3",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-of-ormond-beach-ormond-beach-2",
-        destination: "/studios/arthur-murray-dance-studio-of-ormond-beach-2",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-albuquerque-albuquerque-2",
-        destination: "/studios/arthur-murray-dance-studio-albuquerque-2",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-centers-ocala-ocala-2",
-        destination: "/studios/arthur-murray-dance-centers-ocala-2",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-of-summerville-summerville-2",
-        destination: "/studios/arthur-murray-dance-studio-of-summerville-2",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-of-york-york-2",
-        destination: "/studios/arthur-murray-dance-studio-of-york-2",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-jacksonville-jacksonville-2",
-        destination: "/studios/arthur-murray-dance-studio-jacksonville-2",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/arthur-murray-dance-studio-ashburn-ashburn-2",
-        destination: "/studios/arthur-murray-dance-studio-ashburn-2",
+        destination: "/studios",
         permanent: true,
       },
       {
         source: "/studios/first-dance-charlotte-charlotte-2",
-        destination: "/studios/first-dance-charlotte-2",
+        destination: "/studios",
         permanent: true,
       },
     ];
