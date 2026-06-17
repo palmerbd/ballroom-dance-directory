@@ -58,12 +58,22 @@ export default async function BlogPostPage({
     "@type": "Article",
     "headline": post.title,
     "description": post.excerpt,
+    "url": `https://www.ballroomdancedirectory.com/blog/${post.slug}`,
     "datePublished": post.date,
     "dateModified": post.date,
+    "author": {
+      "@type": "Organization",
+      "name": "Ballroom Dance Directory",
+      "url": "https://www.ballroomdancedirectory.com",
+    },
     "publisher": {
       "@type": "Organization",
       "name": "Ballroom Dance Directory",
       "url": "https://www.ballroomdancedirectory.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.ballroomdancedirectory.com/logo.png",
+      },
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
@@ -71,11 +81,40 @@ export default async function BlogPostPage({
     },
   };
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.ballroomdancedirectory.com",
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://www.ballroomdancedirectory.com/blog",
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": post.title,
+        "item": `https://www.ballroomdancedirectory.com/blog/${post.slug}`,
+      },
+    ],
+  };
+
   return (
     <main>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
       {/* Hero */}
