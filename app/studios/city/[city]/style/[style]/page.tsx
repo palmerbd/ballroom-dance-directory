@@ -7,7 +7,7 @@ import {
 } from "@/types/studio";
 import { getStyleIntroCopy } from "@/lib/seo-copy";
 
-export const revalidate = 86400; // 24 hours — city+style pages are stable
+export const revalidate = 86400; // 24 hours \u2014 city+style pages are stable
 
 // ── Style slug helpers ────────────────────────────────────────────────────────
 // URL uses hyphens (wedding-dance), DanceStyle uses underscores (wedding_dance)
@@ -59,7 +59,7 @@ export async function generateMetadata({
   const studios   = await getStudiosByCity(city);
   const filtered  = studios.filter((s) => s.danceStyles.includes(styleType));
 
-  // 0 studios: page does permanentRedirect to city page — point canonical there too
+  // 0 studios: page does permanentRedirect to city page \u2014 point canonical there too
   if (!filtered.length) return {
     title: `Dance Studios in ${cityName}`,
     alternates: { canonical: `https://www.ballroomdancedirectory.com/studios/city/${city}` },
@@ -184,7 +184,7 @@ export default async function CityStylePage({
       return (b.rating ?? 0) - (a.rating ?? 0);
     });
 
-  // No studios offer this style in this city — redirect to the city page rather
+  // No studios offer this style in this city \u2014 redirect to the city page rather
   // than serving a 404. This keeps GSC coverage clean for all city×style combos.
   if (!studios.length) permanentRedirect(`/studios/city/${city}`);
 
