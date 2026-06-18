@@ -9,7 +9,7 @@ import { StudioCard, CHAIN_CONFIG, STYLE_LABELS, DanceStyle, DANCE_STYLES } from
 import { getCityConfig } from "@/lib/neighborhoods";
 import { getCityIntroCopy } from "@/lib/seo-copy";
 
-export const revalidate = 86400; // 24 hours — city data is stable; reduces ISR cost
+export const revalidate = 86400; // 24 hours \u2014 city data is stable; reduces ISR cost
 
 // ── Static params ─────────────────────────────────────────────────────────────
 
@@ -81,7 +81,7 @@ function StudioListCard({ studio, featured = false }: { studio: StudioCard; feat
           : "border-gray-200 hover:border-yellow-400 hover:shadow-xl"
         }`}
     >
-      {/* Gold accent bar — thicker for featured */}
+      {/* Gold accent bar \u2014 thicker for featured */}
       <div
         className={featured ? "h-2" : "h-1.5"}
         style={{ background: "linear-gradient(90deg, #b8922a, #e8c560)" }}
@@ -159,32 +159,32 @@ function StudioListCard({ studio, featured = false }: { studio: StudioCard; feat
 
 const CITY_CONTENT: Record<string, { intro: string; tip: string }> = {
   "los-angeles": {
-    intro: "Los Angeles is home to a thriving private dance scene — from Hollywood-adjacent ballrooms to beachside Latin studios in Santa Monica. Whether you're preparing for a wedding, competition, or just want to move with more confidence, LA's elite instructors bring world-class technique to every session.",
+    intro: "Los Angeles is home to a thriving private dance scene \u2014 from Hollywood-adjacent ballrooms to beachside Latin studios in Santa Monica. Whether you're preparing for a wedding, competition, or just want to move with more confidence, LA's elite instructors bring world-class technique to every session.",
     tip: "Many LA studios offer flexible scheduling and package deals. Ask about intro lesson specials to find the right fit before committing.",
   },
   "chicago": {
-    intro: "Chicago's dance studio scene reflects the city's deep artistic roots — from Magnificent Mile ballrooms to neighborhood gems in Lincoln Park and the South Loop. The city's diverse cultural fabric shows in the range of styles offered, with everything from competitive ballroom to Afro-Cuban rhythms.",
+    intro: "Chicago's dance studio scene reflects the city's deep artistic roots \u2014 from Magnificent Mile ballrooms to neighborhood gems in Lincoln Park and the South Loop. The city's diverse cultural fabric shows in the range of styles offered, with everything from competitive ballroom to Afro-Cuban rhythms.",
     tip: "Chicago winters mean studios can get booked quickly in January and February as people pursue indoor hobbies. Book ahead for prime evening slots.",
   },
   "dallas": {
     intro: "Dallas has a passionate dance community built around both the social scene and competitive circuit. From classic Texas Two-Step to sophisticated ballroom, Lone Star City studios offer world-class private instruction with Southern hospitality.",
-    tip: "Dallas studios often specialize in either social or competitive dancing — ask upfront which direction your instructor leans to make sure it aligns with your goals.",
+    tip: "Dallas studios often specialize in either social or competitive dancing \u2014 ask upfront which direction your instructor leans to make sure it aligns with your goals.",
   },
   "miami": {
-    intro: "Miami is the Latin dance capital of the United States. With deep Cuban, Colombian, and Caribbean cultural roots, the city's private dance studios offer authentic instruction in Salsa, Mambo, Bachata, and beyond — often from native instructors who grew up in these traditions.",
+    intro: "Miami is the Latin dance capital of the United States. With deep Cuban, Colombian, and Caribbean cultural roots, the city's private dance studios offer authentic instruction in Salsa, Mambo, Bachata, and beyond \u2014 often from native instructors who grew up in these traditions.",
     tip: "Many Miami studios stay open late and can accommodate evening sessions after 8pm. Mention your schedule when booking and they'll often accommodate.",
   },
   "houston": {
     intro: "Houston's remarkable cultural diversity makes it one of the most eclectic dance cities in America. From polished River Oaks ballet studios to inclusive Montrose neighborhood spaces, Houston offers private dance instruction across virtually every style and budget level.",
-    tip: "Houston traffic can be brutal. Many studios near the Galleria or Montrose offer dedicated parking or are accessible by Metro Rail — factor this into your studio choice.",
+    tip: "Houston traffic can be brutal. Many studios near the Galleria or Montrose offer dedicated parking or are accessible by Metro Rail \u2014 factor this into your studio choice.",
   },
   "new-york-city": {
-    intro: "New York City's dance studio landscape is unmatched in depth and prestige. From Lincoln Center–adjacent ballrooms on the Upper West Side to intimate salons in Greenwich Village, NYC attracts world-champion instructors and a student body that includes Broadway performers, socialites, and passionate beginners alike.",
-    tip: "NYC studios fill up fast, especially on evenings and weekends. Many top studios offer dedicated beginner tracks — don't be intimidated to book even if you have zero experience.",
+    intro: "New York City's dance studio landscape is unmatched in depth and prestige. From Lincoln Center\u2013adjacent ballrooms on the Upper West Side to intimate salons in Greenwich Village, NYC attracts world-champion instructors and a student body that includes Broadway performers, socialites, and passionate beginners alike.",
+    tip: "NYC studios fill up fast, especially on evenings and weekends. Many top studios offer dedicated beginner tracks \u2014 don't be intimidated to book even if you have zero experience.",
   },
   "new-york": {
-    intro: "New York's dance scene spans every borough — from polished Manhattan ballrooms to neighborhood studios in Brooklyn and Queens offering everything from Argentine tango to West African dance. Whatever style you're drawn to, New York has a world-class instructor who specializes in it.",
-    tip: "Subway access varies by neighborhood — confirm the studio's closest train stop when booking, especially for evening classes when Ubers surge.",
+    intro: "New York's dance scene spans every borough \u2014 from polished Manhattan ballrooms to neighborhood studios in Brooklyn and Queens offering everything from Argentine tango to West African dance. Whatever style you're drawn to, New York has a world-class instructor who specializes in it.",
+    tip: "Subway access varies by neighborhood \u2014 confirm the studio's closest train stop when booking, especially for evening classes when Ubers surge.",
   },
   "atlanta": {
     intro: "Atlanta's dance scene punches well above its weight. The city's vibrant arts community and proximity to a world-class film and entertainment industry has cultivated exceptional talent across ballroom, Latin, and contemporary styles. Buckhead and Midtown are the two primary dance corridors.",
@@ -192,63 +192,63 @@ const CITY_CONTENT: Record<string, { intro: string; tip: string }> = {
   },
   "seattle": {
     intro: "Seattle's dance community thrives in the spaces between its coffee shop culture and tech-industry wealth. From Capitol Hill swing dancing venues to Bellevue ballrooms, the Pacific Northwest offers a uniquely welcoming private lesson environment with instructors who emphasize individuality and fun.",
-    tip: "Seattle rain means indoor activities surge in fall and winter. Studios in Capitol Hill, Ballard, and Bellevue tend to book faster November through March — plan ahead.",
+    tip: "Seattle rain means indoor activities surge in fall and winter. Studios in Capitol Hill, Ballard, and Bellevue tend to book faster November through March \u2014 plan ahead.",
   },
   "denver": {
     intro: "Denver's active, outdoorsy population brings exceptional energy to the ballroom floor. The Mile High City has cultivated a competitive dance scene anchored by Arthur Murray and Fred Astaire franchises, alongside passionate independent studios that reflect Colorado's pioneering spirit.",
-    tip: "Denver studios often host monthly social dances where you can practice between lessons and meet other students. Ask your studio about their social calendar — it's one of Denver's best-kept dance secrets.",
+    tip: "Denver studios often host monthly social dances where you can practice between lessons and meet other students. Ask your studio about their social calendar \u2014 it's one of Denver's best-kept dance secrets.",
   },
   "las-vegas": {
-    intro: "Las Vegas is a professional dance hub hiding in plain sight. Behind the neon, the city employs thousands of professional dancers for shows, events, and casinos — and many of them teach private lessons on the side. You're often just one studio visit away from learning from a Cirque du Soleil veteran.",
-    tip: "Vegas studios understand unpredictable schedules — many offer late-night appointments and weekend slots that most cities never see. Don't assume you can't fit lessons into a Vegas lifestyle.",
+    intro: "Las Vegas is a professional dance hub hiding in plain sight. Behind the neon, the city employs thousands of professional dancers for shows, events, and casinos \u2014 and many of them teach private lessons on the side. You're often just one studio visit away from learning from a Cirque du Soleil veteran.",
+    tip: "Vegas studios understand unpredictable schedules \u2014 many offer late-night appointments and weekend slots that most cities never see. Don't assume you can't fit lessons into a Vegas lifestyle.",
   },
   "phoenix": {
-    intro: "Phoenix's sprawling Sunbelt layout means dance studios are spread across the Valley of the Sun — from Scottsdale's luxury ballrooms to Mesa and Tempe studios that serve ASU's student population. The dry desert heat makes Phoenix studios popular year-round with climate-controlled facilities.",
+    intro: "Phoenix's sprawling Sunbelt layout means dance studios are spread across the Valley of the Sun \u2014 from Scottsdale's luxury ballrooms to Mesa and Tempe studios that serve ASU's student population. The dry desert heat makes Phoenix studios popular year-round with climate-controlled facilities.",
     tip: "Scottsdale tends to have the highest concentration of upscale private lesson studios in the Phoenix metro. If you're in Chandler, Gilbert, or Tempe, ask about satellite locations or traveling instructors.",
   },
   "minneapolis": {
-    intro: "Minneapolis is a hidden gem in the American dance world. The Twin Cities arts community — one of the most vibrant per capita in the country — has seeded exceptional ballroom and Latin studios throughout the metro. Expect rigorous training and a community that takes the craft seriously.",
-    tip: "Minnesota winters push dance indoors in a big way. Studios in Minneapolis and St. Paul tend to see a spike in new students every October — book your intro lesson before the seasonal rush.",
+    intro: "Minneapolis is a hidden gem in the American dance world. The Twin Cities arts community \u2014 one of the most vibrant per capita in the country \u2014 has seeded exceptional ballroom and Latin studios throughout the metro. Expect rigorous training and a community that takes the craft seriously.",
+    tip: "Minnesota winters push dance indoors in a big way. Studios in Minneapolis and St. Paul tend to see a spike in new students every October \u2014 book your intro lesson before the seasonal rush.",
   },
   "nashville": {
     intro: "Nashville's rise as a national destination city has brought a dance studio boom. Beyond country line dancing, Music City has cultivated serious ballroom and Latin instruction, with studios drawing from the city's deep pool of musically sophisticated residents who bring rhythm to everything they do.",
-    tip: "Nashville's wedding industry is enormous — many studios run dedicated wedding dance packages that include choreography and rehearsal coaching. Worth asking even if you're not planning a wedding.",
+    tip: "Nashville's wedding industry is enormous \u2014 many studios run dedicated wedding dance packages that include choreography and rehearsal coaching. Worth asking even if you're not planning a wedding.",
   },
   "boston": {
     intro: "Boston's world-class university ecosystem keeps the dance scene perpetually refreshed with ambitious students and faculty. From Back Bay ballrooms to Cambridge studios catering to the MIT and Harvard communities, Boston offers private dance instruction at a consistently high academic standard.",
-    tip: "Parking in Boston is notoriously difficult. Prioritize studios near the T — especially the Green Line and Red Line corridors — for the most convenient access.",
+    tip: "Parking in Boston is notoriously difficult. Prioritize studios near the T \u2014 especially the Green Line and Red Line corridors \u2014 for the most convenient access.",
   },
   "san-diego": {
-    intro: "San Diego's year-round sunshine and laid-back beach culture create an infectious enthusiasm for social dance. The city's private studio scene reflects this warmth — instructors tend to emphasize enjoyment and confidence over rigid technique, making San Diego an excellent place for first-time dancers.",
-    tip: "San Diego studios in the Gaslamp Quarter and Hillcrest neighborhoods often partner with local Latin dance venues. Ask your instructor about complimentary social dance tickets — it's a great way to practice.",
+    intro: "San Diego's year-round sunshine and laid-back beach culture create an infectious enthusiasm for social dance. The city's private studio scene reflects this warmth \u2014 instructors tend to emphasize enjoyment and confidence over rigid technique, making San Diego an excellent place for first-time dancers.",
+    tip: "San Diego studios in the Gaslamp Quarter and Hillcrest neighborhoods often partner with local Latin dance venues. Ask your instructor about complimentary social dance tickets \u2014 it's a great way to practice.",
   },
   "portland": {
-    intro: "Portland's fiercely independent creative culture has produced a dance studio scene unlike any other. Alongside national chains, the city hosts a constellation of independent instructors — many of them competition champions who chose Oregon's quality of life over the ballroom circuit. Expect creativity, warmth, and no pretension.",
-    tip: "Portland studios tend to be smaller and more intimate than those in larger cities. The upside is more personal attention. The downside is availability — popular instructors book weeks in advance.",
+    intro: "Portland's fiercely independent creative culture has produced a dance studio scene unlike any other. Alongside national chains, the city hosts a constellation of independent instructors \u2014 many of them competition champions who chose Oregon's quality of life over the ballroom circuit. Expect creativity, warmth, and no pretension.",
+    tip: "Portland studios tend to be smaller and more intimate than those in larger cities. The upside is more personal attention. The downside is availability \u2014 popular instructors book weeks in advance.",
   },
   "san-antonio": {
     intro: "San Antonio's rich Hispanic heritage infuses its dance scene with authentic Latin flair. Studios here offer some of the most genuine instruction in Salsa, Cumbia, and Bachata you'll find in the country, alongside polished ballroom programs shaped by the city's military and upscale social culture.",
-    tip: "San Antonio's dance community is tight-knit and welcoming to newcomers. Studios often host free demo nights — a great way to watch instructors before booking a private lesson.",
+    tip: "San Antonio's dance community is tight-knit and welcoming to newcomers. Studios often host free demo nights \u2014 a great way to watch instructors before booking a private lesson.",
   },
   "austin": {
-    intro: "Austin's explosive growth has brought world-class dance instruction to the Live Music Capital. From East Austin Latin studios to Westlake ballrooms catering to tech executives, the city's dance scene is as eclectic as its music scene — and expanding fast.",
+    intro: "Austin's explosive growth has brought world-class dance instruction to the Live Music Capital. From East Austin Latin studios to Westlake ballrooms catering to tech executives, the city's dance scene is as eclectic as its music scene \u2014 and expanding fast.",
     tip: "Austin's traffic has become Houston-level bad on major corridors. Studios near South Congress, East Cesar Chavez, or the Domain tend to have the best parking and access from multiple sides of town.",
   },
   "tampa": {
     intro: "Tampa's Gulf Coast energy and strong Cuban heritage make it one of Florida's most dynamic dance cities. South Tampa and Hyde Park are home to upscale private lesson studios, while Ybor City's Latin roots give the city an authentic connection to the rhythms at the heart of competitive ballroom.",
-    tip: "Tampa's dance community regularly produces national-level competitors. Even recreational students benefit from this — studios here maintain high standards that accelerate your progress.",
+    tip: "Tampa's dance community regularly produces national-level competitors. Even recreational students benefit from this \u2014 studios here maintain high standards that accelerate your progress.",
   },
   "orlando": {
     intro: "Orlando's tourism industry draws professional dancers from around the world, and many of them teach private lessons between gigs at Walt Disney World, Universal, and the city's show venues. You're likely to find instructors here with performance résumés unmatched in any other mid-size city.",
-    tip: "Many Orlando studios offer accelerated programs for visitors — 3-day or week-long intensives are common. If you're in town short-term, ask about crash-course options.",
+    tip: "Many Orlando studios offer accelerated programs for visitors \u2014 3-day or week-long intensives are common. If you're in town short-term, ask about crash-course options.",
   },
   "frisco": {
-    intro: "Frisco's rapid growth has brought first-rate private dance studios to this Dallas suburb. With a young, affluent population and strong school arts programs, Frisco has become a serious training ground for competitive ballroom — particularly youth dancers working toward national titles.",
-    tip: "Frisco studios often offer family packages and youth lesson programs. If you have children interested in competitive dance, start the conversation early — waitlists form for top junior instructors.",
+    intro: "Frisco's rapid growth has brought first-rate private dance studios to this Dallas suburb. With a young, affluent population and strong school arts programs, Frisco has become a serious training ground for competitive ballroom \u2014 particularly youth dancers working toward national titles.",
+    tip: "Frisco studios often offer family packages and youth lesson programs. If you have children interested in competitive dance, start the conversation early \u2014 waitlists form for top junior instructors.",
   },
   "plano": {
     intro: "Plano's sophisticated suburban community supports a polished dance studio scene that rivals many larger cities. With a diverse international community and strong corporate culture that values social polish, Plano studios attract students who want high-quality instruction without the drive into Dallas proper.",
-    tip: "Plano is home to several corporate headquarters — many studios offer lunch-hour private lessons for working professionals. Ask about midday availability.",
+    tip: "Plano is home to several corporate headquarters \u2014 many studios offer lunch-hour private lessons for working professionals. Ask about midday availability.",
   },
   "scottsdale": {
     intro: "Scottsdale's luxury market has cultivated the finest private dance studios in the Phoenix metropolitan area. Studios here attract an upscale clientele that expects premium instruction, top-tier facilities with sprung floors, and instructors with national competition credentials.",
@@ -256,7 +256,7 @@ const CITY_CONTENT: Record<string, { intro: string; tip: string }> = {
   },
   "bellevue": {
     intro: "Bellevue's tech-wealth demographic has created a demand for high-quality, sophisticated private dance instruction. Studios here cater to busy professionals and competitive students, offering premium instruction in ballroom, Latin, and wedding dance with flexible scheduling to accommodate demanding careers.",
-    tip: "Bellevue studios are significantly less expensive than comparable Manhattan or San Francisco studios — and the instruction quality is equal. If you're new to the area from a coastal city, you'll be pleasantly surprised.",
+    tip: "Bellevue studios are significantly less expensive than comparable Manhattan or San Francisco studios \u2014 and the instruction quality is equal. If you're new to the area from a coastal city, you'll be pleasantly surprised.",
   },
 };
 
@@ -285,7 +285,7 @@ export default async function CityPage({
   const cityName = citySlugToName(city);
   const studios  = await getStudiosByCity(city);
 
-  // No studios in this city — redirect to the main directory rather than serving
+  // No studios in this city \u2014 redirect to the main directory rather than serving
   // a 404. Handles invalid / unsupported city slugs gracefully.
   if (!studios.length) permanentRedirect("/studios");
 
@@ -371,7 +371,7 @@ export default async function CityPage({
         "name": `How much do ballroom dance lessons cost in ${cityName}?`,
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": `Private ballroom dance lessons in ${cityName} typically cost $80–$150 per 45–60 minute session at independent studios. National chain studios (Arthur Murray, Fred Astaire, Dance With Me) often use package pricing. Many studios offer an introductory first lesson at a reduced rate of $30–$75.`,
+          "text": `Private ballroom dance lessons in ${cityName} typically cost $80\u2013$150 per 45\u201360 minute session at independent studios. National chain studios (Arthur Murray, Fred Astaire, Dance With Me) often use package pricing. Many studios offer an introductory first lesson at a reduced rate of $30\u2013$75.`,
         },
       },
       {
@@ -379,7 +379,7 @@ export default async function CityPage({
         "name": `How do I find a good ballroom dance instructor in ${cityName}?`,
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": `Look for instructors with verifiable competition credentials, teaching experience, and positive student reviews. Schedule a trial lesson before committing to a package — a good instructor will assess your goals and natural movement before recommending a program. Ballroom Dance Directory lists top-rated studios in ${cityName} with verified contact information.`,
+          "text": `Look for instructors with verifiable competition credentials, teaching experience, and positive student reviews. Schedule a trial lesson before committing to a package \u2014 a good instructor will assess your goals and natural movement before recommending a program. Ballroom Dance Directory lists top-rated studios in ${cityName} with verified contact information.`,
         },
       },
     ],
