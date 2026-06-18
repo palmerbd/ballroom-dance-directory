@@ -19,7 +19,7 @@ import {
 import { CompetitionCard } from "@/components/CompetitionCard";
 import { supabaseAdmin }   from "@/lib/supabase-admin";
 
-export const revalidate = 86400; // 24 hours — competition data from static file, changes infrequently
+export const revalidate = 86400; // 24 hours \u2014 competition data from static file, changes infrequently
 
 // ── Static params ─────────────────────────────────────────────────────────────
 
@@ -43,7 +43,7 @@ export async function generateMetadata({
     description: comp.description,
     alternates: { canonical: pageUrl },
     openGraph: {
-      title: `${comp.name} — ${comp.city}, ${comp.state}`,
+      title: `${comp.name} \u2014 ${comp.city}, ${comp.state}`,
       description: comp.description,
       type: "website",
     },
@@ -63,9 +63,9 @@ function formatDateRange(start: string | null, end: string | null, typicalMonth:
   const s = new Date(start + "T12:00:00");
   const e = new Date(end   + "T12:00:00");
   if (s.getMonth() === e.getMonth() && s.getFullYear() === e.getFullYear()) {
-    return `${s.toLocaleDateString("en-US", { month: "long", day: "numeric" })}–${e.getDate()}, ${e.getFullYear()}`;
+    return `${s.toLocaleDateString("en-US", { month: "long", day: "numeric" })}\u2013${e.getDate()}, ${e.getFullYear()}`;
   }
-  return `${formatFullDate(start)} – ${formatFullDate(end)}`;
+  return `${formatFullDate(start)} \u2013 ${formatFullDate(end)}`;
 }
 
 // ── Style → hero image ────────────────────────────────────────────────────────
@@ -353,7 +353,7 @@ export default async function CompetitionDetailPage({
                     label="Entry Fee"
                     value={
                       comp.entryFeeMin && comp.entryFeeMax
-                        ? `$${comp.entryFeeMin}–$${comp.entryFeeMax} per dance`
+                        ? `$${comp.entryFeeMin}\u2013$${comp.entryFeeMax} per dance`
                         : comp.entryFeeMin
                           ? `From $${comp.entryFeeMin}`
                           : `Up to $${comp.entryFeeMax}`
@@ -394,7 +394,7 @@ export default async function CompetitionDetailPage({
                     className="block w-full text-center py-2 text-sm font-semibold transition-colors
                                border border-blue-200 rounded-lg text-blue-700 hover:bg-blue-50"
                   >
-                    ✓ Verified — Manage Your Listing
+                    ✓ Verified \u2014 Manage Your Listing
                   </Link>
                 ) : (
                   <Link
