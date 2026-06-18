@@ -9,9 +9,9 @@ import {
   matchStudiosToNeighborhood,
 } from "@/lib/neighborhoods";
 
-export const revalidate = 86400; // 24 hours â neighborhood data is stable
+export const revalidate = 86400; // 24 hours \u2014 neighborhood data is stable
 
-// ââ Static params âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ── Static params ─────────────────────────────────────────────────────────────
 
 export async function generateStaticParams() {
   const params: { city: string; neighborhood: string }[] = [];
@@ -23,7 +23,7 @@ export async function generateStaticParams() {
   return params;
 }
 
-// ââ Metadata ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ── Metadata ──────────────────────────────────────────────────────────────────
 
 export async function generateMetadata({
   params,
@@ -40,6 +40,8 @@ export async function generateMetadata({
   const { city, neighborhood } = result;
 
   // Pre-check studio count to set canonical / robots correctly.
+  // We re-fetch in the page component but this avoids a separate server-side call
+  // since generateMetadata and the page component share the same RSC render pass.
   const cityStudiosCheck = await getStudiosByCity(citySlug);
   const hoodStudiosCheck = matchStudiosToNeighborhood(
     cityStudiosCheck as unknown as { address?: string; city?: string; [key: string]: unknown }[],
@@ -47,6 +49,9 @@ export async function generateMetadata({
   );
 
   if (hoodStudiosCheck.length === 0) {
+    // No local studios \u2014 this page will 301 redirect in the component.
+    // Set canonical to city page and noindex so Google doesn't treat any
+    // transient crawl of this URL as a standalone indexable page.
     return {
       title: `Ballroom Dance Studios in ${neighborhood.name}, ${city.name} | Ballroom Dance Directory`,
       robots: { index: false, follow: true },
@@ -67,7 +72,7 @@ export async function generateMetadata({
   };
 }
 
-// ââ Sub-components ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ── Sub-components ────────────────────────────────────────────────────────────
 
 function Stars({ rating }: { rating: number }) {
   const full  = Math.floor(rating);
@@ -76,11 +81,11 @@ function Stars({ rating }: { rating: number }) {
   return (
     <span className="flex items-center gap-0.5 text-sm" aria-label={`${rating} out of 5 stars`}>
       {Array.from({ length: full  }).map((_, i) => (
-        <span key={`f${i}`} style={{ color: "#e8c560" }}>â</span>
+        <span key={`f${i}`} style={{ color: "#e8c560" }}>★</span>
       ))}
-      {half && <span style={{ color: "#e8c560" }}>Â½</span>}
+      {half && <span style={{ color: "#e8c560" }}>½</span>}
       {Array.from({ length: empty }).map((_, i) => (
-        <span key={`e${i}`} className="text-gray-300">â</span>
+        <span key={`e${i}`} className="text-gray-300">★</span>
       ))}
       <span className="ml-1 text-gray-500 text-xs">{rating.toFixed(1)}</span>
     </span>
@@ -166,7 +171,7 @@ function StudioListCard({ studio }: { studio: StudioCard }) {
 
         <div className="pt-3 border-t border-gray-100 flex justify-between items-center">
           <span className="text-sm font-bold" style={{ color: "#b8922a" }}>
-            View Studio â
+            View Studio →
           </span>
           {studio.privateLessonRate && (
             <span className="text-xs text-gray-500">From {studio.privateLessonRate}</span>
@@ -177,7 +182,7 @@ function StudioListCard({ studio }: { studio: StudioCard }) {
   );
 }
 
-// ââ Page ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ── Page ──────────────────────────────────────────────────────────────────────
 
 export default async function NeighborhoodPage({
   params,
@@ -197,6 +202,9 @@ export default async function NeighborhoodPage({
     neighborhood.keywords
   ) as unknown as StudioCard[];
 
+  // If no studios matched this neighborhood, redirect to the city page.
+  // Rendering a page with 0 local results but a full "nearby" list looks like
+  // a duplicate of the city page to Google \u2014 301 redirect consolidates equity.
   if (hoodStudios.length === 0) {
     permanentRedirect(`/studios/city/${citySlug}`);
   }
@@ -229,7 +237,7 @@ export default async function NeighborhoodPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
       />
 
-      {/* ââ Hero ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */}
+      {/* ── Hero ────────────────────────────────────────────────────────── */}
       <section
         className="py-16 px-6"
         style={{ background: "linear-gradient(135deg, #0c1428 0%, #1a2d5a 100%)" }}
@@ -267,25 +275,25 @@ export default async function NeighborhoodPage({
 
           <div className="flex flex-wrap gap-3">
             <span className="px-4 py-2 rounded-full text-sm font-semibold bg-white/10 text-white/80">
-              ð {neighborhood.name}
+              📍 {neighborhood.name}
             </span>
             <span className="px-4 py-2 rounded-full text-sm font-semibold bg-white/10 text-white/80">
-              ð {city.name}, {city.stateAbbr}
+              🏙 {city.name}, {city.stateAbbr}
             </span>
             {hoodStudios.length > 0 && (
               <span className="px-4 py-2 rounded-full text-sm font-semibold bg-white/10 text-white/80">
-                ðµ {hoodStudios.length} Studi{hoodStudios.length === 1 ? "o" : "os"}
+                🎵 {hoodStudios.length} Studi{hoodStudios.length === 1 ? "o" : "os"}
               </span>
             )}
           </div>
         </div>
       </section>
 
-      {/* ââ Body ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */}
+      {/* ── Body ────────────────────────────────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-          {/* ââ Main content ââââââââââââââââââââââââââââââââââââââââââââ */}
+          {/* ── Main content ──────────────────────────────────────────── */}
           <div className="lg:col-span-2 space-y-10">
 
             {/* Neighborhood intro */}
@@ -314,15 +322,15 @@ export default async function NeighborhoodPage({
                 </div>
               </div>
             ) : (
-              /* No direct matches â show SEO-friendly message + city fallback */
+              /* No direct matches \u2014 show SEO-friendly message + city fallback */
               <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-8 text-center">
-                <div className="text-4xl mb-4">ð</div>
+                <div className="text-4xl mb-4">💃</div>
                 <h2 className="font-display font-bold text-gray-900 text-xl mb-2">
                   Expanding to {neighborhood.name} soon
                 </h2>
                 <p className="text-gray-600 mb-6 max-w-md mx-auto">
                   We&apos;re actively adding studios to the {neighborhood.name} area. In the meantime,
-                  explore all studios in {city.name} â many offer lessons convenient to {neighborhood.name}.
+                  explore all studios in {city.name} \u2014 many offer lessons convenient to {neighborhood.name}.
                 </p>
                 <Link
                   href={`/studios/city/${city.slug}`}
@@ -374,7 +382,7 @@ export default async function NeighborhoodPage({
               <p>
                 Private lessons give you one-on-one attention that group classes simply can&apos;t match.
                 Your instructor can adapt to your learning pace, correct technique in real time, and
-                design a curriculum around your specific goals â whether that&apos;s a particular dance style,
+                design a curriculum around your specific goals \u2014 whether that&apos;s a particular dance style,
                 a performance date, or a fitness target.
               </p>
               <p>
@@ -385,7 +393,7 @@ export default async function NeighborhoodPage({
             </div>
           </div>
 
-          {/* ââ Sidebar âââââââââââââââââââââââââââââââââââââââââââââââââ */}
+          {/* ── Sidebar ───────────────────────────────────────────────── */}
           <div className="space-y-6">
 
             {/* City tip */}
@@ -416,7 +424,7 @@ export default async function NeighborhoodPage({
                                  text-gray-700 hover:bg-yellow-50 hover:text-yellow-800 transition-colors"
                     >
                       <span>{n.name}</span>
-                      <span className="text-gray-300">â</span>
+                      <span className="text-gray-300">→</span>
                     </Link>
                   ))}
                 <Link
@@ -426,7 +434,7 @@ export default async function NeighborhoodPage({
                              border-t border-gray-100 pt-3"
                 >
                   <span>All {city.name} Studios</span>
-                  <span className="text-gray-300">â</span>
+                  <span className="text-gray-300">→</span>
                 </Link>
               </div>
             </div>
@@ -451,7 +459,7 @@ export default async function NeighborhoodPage({
                                  text-gray-700 hover:bg-yellow-50 hover:text-yellow-800 transition-colors"
                     >
                       <span>{c.name}</span>
-                      <span className="text-gray-300">â</span>
+                      <span className="text-gray-300">→</span>
                     </Link>
                   ))}
               </div>
@@ -461,13 +469,13 @@ export default async function NeighborhoodPage({
               href="/studios"
               className="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors"
             >
-              â View all studios
+              ← View all studios
             </Link>
           </div>
         </div>
       </div>
 
-      {/* ââ Footer ââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */}
+      {/* ── Footer ──────────────────────────────────────────────────────── */}
       <footer className="py-10 px-6 bg-white border-t border-gray-100 mt-8">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
           <div>
