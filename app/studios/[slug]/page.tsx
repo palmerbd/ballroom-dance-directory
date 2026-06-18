@@ -12,11 +12,11 @@ import ReviewsSection, { type GoogleReview } from "@/components/ReviewsSection";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { type StudioProfile } from "@/lib/supabase";
 
-export const revalidate = 86400; // 24 hours â studio data changes infrequently; 1hr was burning Vercel ISR quota
+export const revalidate = 86400; // 24 hours \u2014 studio data changes infrequently; 1hr was burning Vercel ISR quota
 
 // Static params
 
-// Return empty array â 4,000+ pages are generated on-demand via ISR (revalidate=86400).
+// Return empty array \u2014 4,000+ pages are generated on-demand via ISR (revalidate=86400).
 // Pre-rendering all slugs at build time exceeded Vercel's build resources.
 export async function generateStaticParams() {
   return [];
@@ -33,20 +33,16 @@ export async function generateMetadata({
   const studio = await getStudio(slug);
   if (!studio) return {
     title: "Studio Not Found",
-    // Provide canonical even for missing studios — prevents these 404 slugs
+    // Provide canonical even for missing studios \u2014 prevents these 404 slugs
     // from appearing in GSC as "Duplicate without user-selected canonical".
     alternates: { canonical: "https://www.ballroomdancedirectory.com/studios" },
   };
 
   const location = [studio.city, studio.state].filter(Boolean).join(", ");
 
-  // Thin-content guard: studios with no phone, no website, and no reviews
-  // are too sparse for Google to consider indexable. Mark them noindex so
-  // they land in "Excluded by noindex" rather than "Crawled - currently not
-  // indexed", which is a cleaner signal and concentrates crawl budget.
   // Thin-content guard: studios with no phone, no website, no reviews, AND
   // no tagline/description are too sparse to index. Studios with at least a
-  // tagline have enough unique content to pass — loosening this threshold
+  // tagline have enough unique content to pass \u2014 loosening this threshold
   // reduces the noindex count and gets more legitimate pages into Google.
   const isThinContent =
     !studio.phone &&
@@ -186,7 +182,7 @@ export default async function StudioPage({
       )).filter((s) => s.slug !== studio.slug)
     : [];
 
-  // Style-matched related: same city, shares at least one dance style â prioritise paid
+  // Style-matched related: same city, shares at least one dance style \u2014 prioritise paid
   const primaryStyle = studio.danceStyles[0] ?? null;
   const styleRelated = primaryStyle
     ? cityStudios
@@ -246,11 +242,11 @@ export default async function StudioPage({
         .limit(6);
       studioPhotos = data ?? [];
     } catch {
-      // Table may not exist yet â fall back to Unsplash placeholders silently
+      // Table may not exist yet \u2014 fall back to Unsplash placeholders silently
     }
   }
 
-  // Fetch studio profile (custom description, social links, promo) â paid tier only
+  // Fetch studio profile (custom description, social links, promo) \u2014 paid tier only
   let studioProfile: StudioProfile | null = null;
   let googleReviews: GoogleReview[]       = [];
   if (studio.tier === "paid") {
@@ -285,7 +281,7 @@ export default async function StudioPage({
     .filter(Boolean).join(", ");
   const cityState = studio.cityState;
 
-  // Map embed query â prefer full address, fall back to city+state
+  // Map embed query \u2014 prefer full address, fall back to city+state
   const mapQuery = location || [studio.city, studio.state].filter(Boolean).join(", ");
   const mapEmbedUrl = mapQuery
     ? `https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed&zoom=15`
@@ -393,7 +389,7 @@ export default async function StudioPage({
           ].filter(Boolean).join(". ") + ".",
         },
       }] : []),
-      // Beginner-friendly question â addresses high-intent "near me" / "classes near me" queries
+      // Beginner-friendly question \u2014 addresses high-intent "near me" / "classes near me" queries
       ...(studio.danceStyles.length > 0 ? [{
         "@type": "Question" as const,
         "name": `Does ${studio.title} teach beginners?`,
@@ -402,7 +398,7 @@ export default async function StudioPage({
           "text": `Yes. ${studio.title} works with dancers at every level, from complete beginners to advanced students. Private lessons let instructors tailor the pace and curriculum to each student's experience and goals.`,
         },
       }] : []),
-      // Wedding-dance question â only when studio offers wedding instruction (high-converting query)
+      // Wedding-dance question \u2014 only when studio offers wedding instruction (high-converting query)
       ...(studio.danceStyles.includes("wedding_dance") ? [{
         "@type": "Question" as const,
         "name": `Does ${studio.title} offer wedding dance lessons?`,
@@ -411,7 +407,7 @@ export default async function StudioPage({
           "text": `Yes. ${studio.title} offers wedding first-dance choreography and preparation packages${studio.city ? ` for couples in ${studio.city}` : ""}. Lessons cover song selection, choreography, and rehearsal technique to help couples feel confident on their wedding day.`,
         },
       }] : []),
-      // Lesson format â clarifies private vs group, an extremely common pre-booking question
+      // Lesson format \u2014 clarifies private vs group, an extremely common pre-booking question
       {
         "@type": "Question" as const,
         "name": `Are lessons at ${studio.title} private or group?`,
@@ -490,7 +486,7 @@ export default async function StudioPage({
             {studio.title}
             {studio.city && (
               <span className="text-white/70 font-normal">
-                {" â "}
+                {" \u2014 "}
                 {studio.city}
                 {studio.state ? `, ${studio.state}` : ""}
               </span>
@@ -502,7 +498,7 @@ export default async function StudioPage({
           ) : studio.city ? (
             <p className="text-white/60 text-lg mb-4">
               Private dance lessons in {studio.city}
-              {styleList ? ` â ${styleList.toLowerCase()} instruction` : ""}.
+              {styleList ? ` \u2014 ${styleList.toLowerCase()} instruction` : ""}.
             </p>
           ) : null}
 
@@ -527,7 +523,7 @@ export default async function StudioPage({
             </div>
           )}
 
-          {/* Social media links â Featured studios */}
+          {/* Social media links \u2014 Featured studios */}
           {studioProfile && (studioProfile.facebook_url || studioProfile.instagram_url || studioProfile.tiktok_url) && (
             <div className="mt-3">
               <SocialLinks
@@ -543,7 +539,7 @@ export default async function StudioPage({
             <ClaimBadge slug={studio.slug} />
           </div>
 
-          {/* Promo banner â Featured studios with active promotion */}
+          {/* Promo banner \u2014 Featured studios with active promotion */}
           {studioProfile?.promo_text && (
             <div className="mt-5">
               <PromoBar
@@ -578,7 +574,7 @@ export default async function StudioPage({
         </div>
       )}
 
-      {/* Photo Gallery â currently only shown for claimed/paid studios.
+      {/* Photo Gallery \u2014 currently only shown for claimed/paid studios.
           To re-enable Unsplash placeholders for ALL studios, remove the
           (studio.tier === "claimed" || studio.tier === "paid") && wrapper below. */}
       {(studio.tier === "claimed" || studio.tier === "paid") && (
@@ -614,7 +610,7 @@ export default async function StudioPage({
               </section>
             )}
 
-            {/* Google Reviews â Featured studios */}
+            {/* Google Reviews \u2014 Featured studios */}
             {googleReviews.length > 0 && (
               <ReviewsSection reviews={googleReviews} />
             )}
@@ -683,7 +679,7 @@ export default async function StudioPage({
                   )}
                 </div>
               ) : (
-                /* No pricing data â show a CTA to contact the studio */
+                /* No pricing data \u2014 show a CTA to contact the studio */
                 <div className="rounded-xl border border-gray-200 bg-gray-50 p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
                   <div className="flex-1">
                     <p className="font-semibold text-gray-800 mb-1">Pricing available upon inquiry</p>
@@ -771,7 +767,7 @@ export default async function StudioPage({
               </section>
             )}
 
-            {/* Visible FAQ â mirrors FAQPage JSON-LD so Google can validate. Boosts CTR via scan-friendly answers. */}
+            {/* Visible FAQ \u2014 mirrors FAQPage JSON-LD so Google can validate. Boosts CTR via scan-friendly answers. */}
             {faqSchema.mainEntity.length > 0 && (
               <section>
                 <h2 className="font-display font-bold text-gray-900 text-xl mb-4">
@@ -805,11 +801,11 @@ export default async function StudioPage({
               />
             )}
 
-            {/* Google Business Profile connect â Featured studios only */}
+            {/* Google Business Profile connect \u2014 Featured studios only */}
             {studio.tier === "paid" && !gbpConnected && (
               <div className="rounded-2xl border border-dashed border-gray-200 p-5 bg-gray-50 shadow-sm">
                 <div className="flex items-start gap-3">
-                  <span className="text-2xl">â­</span>
+                  <span className="text-2xl">⭐</span>
                   <div>
                     <h3 className="font-semibold text-gray-900 text-sm mb-1">
                       Show Live Google Ratings
@@ -841,11 +837,11 @@ export default async function StudioPage({
             {studio.tier === "paid" && gbpConnected && (
               <div className="rounded-2xl border border-green-100 p-4 bg-green-50 shadow-sm">
                 <div className="flex items-center gap-2 text-green-700 text-sm font-semibold">
-                  <span>â</span> Google ratings connected
+                  <span>✅</span> Google ratings connected
                 </div>
                 <p className="text-xs text-green-600 mt-1">
-                  Ratings refresh daily. Last sync shows {gbpRating?.toFixed(1)}â
-                  {gbpReviewCount ? ` Â· ${gbpReviewCount.toLocaleString()} reviews` : ""}.
+                  Ratings refresh daily. Last sync shows {gbpRating?.toFixed(1)}★
+                  {gbpReviewCount ? ` · ${gbpReviewCount.toLocaleString()} reviews` : ""}.
                 </p>
               </div>
             )}
@@ -974,12 +970,12 @@ export default async function StudioPage({
             </h2>
             <p className="text-gray-500 text-sm mb-6">
               More {STYLE_LABELS[primaryStyle as DanceStyle].toLowerCase()} instruction nearby
-              &nbsp;Â·&nbsp;
+              &nbsp;·&nbsp;
               <Link
                 href={`/studios/city/${studio.city.toLowerCase().replace(/\s+/g, "-")}/style/${primaryStyle.replace(/_/g, "-")}`}
                 className="text-amber-700 font-semibold hover:underline"
               >
-                See all {STYLE_LABELS[primaryStyle as DanceStyle].toLowerCase()} studios in {studio.city} â
+                See all {STYLE_LABELS[primaryStyle as DanceStyle].toLowerCase()} studios in {studio.city} →
               </Link>
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -1022,7 +1018,7 @@ export default async function StudioPage({
         </section>
       )}
 
-      {/* Related Studios â general city */}
+      {/* Related Studios \u2014 general city */}
       {relatedStudios.length > 0 && (
         <section className="bg-gray-50 border-t border-gray-100 py-12 px-6">
           <div className="max-w-5xl mx-auto">
