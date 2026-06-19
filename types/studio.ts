@@ -17,7 +17,9 @@ export type DanceStyle =
   | "cha_cha"
   | "rumba"
   | "wedding_dance"
-  | "competition";
+  | "competition"
+  | "country"
+  | "social_latin";
 
 export type ListingTier = "free" | "claimed" | "paid";
 
@@ -120,11 +122,14 @@ export const STYLE_LABELS: Record<DanceStyle, string> = {
   rumba:          "Rumba",
   wedding_dance:  "Wedding Dance",
   competition:    "Competition",
+  country:        "Country",
+  social_latin:   "Social Latin Dances",
 };
 
 export const DANCE_STYLES: DanceStyle[] = [
   "ballroom", "latin", "tango", "salsa", "swing",
-  "waltz", "foxtrot", "wedding_dance", "competition"
+  "waltz", "foxtrot", "wedding_dance", "competition",
+  "country", "social_latin"
 ];
 
 export const AMENITY_LABELS: Record<string, string> = {
