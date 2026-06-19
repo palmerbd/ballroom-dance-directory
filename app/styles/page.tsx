@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { getAllStudios } from "@/lib/wordpress";
-import { DANCE_STYLES, STYLE_LABELS, DanceStyle } from "@/types/studio";
+import { DanceStyle } from "@/types/studio";
 
 export const revalidate = 86400; // 24 hours
 
@@ -12,70 +12,79 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://www.ballroomdancedirectory.com/styles" },
 };
 
-// Style metadata: description, emoji, and link destination
-const STYLE_META: Partial<Record<DanceStyle, { desc: string; emoji: string; href: string; color: string; bg: string }>> = {
-  ballroom:     {
-    desc: "Elegant partner dancing — Waltz, Foxtrot, Viennese Waltz, and Quickstep. The foundation of all social dance.",
-    emoji: "🥂",
-    href: "/ballroom-dance-lessons",
-    color: "#1e3a8a",
-    bg: "#dbeafe",
+// The 7 styles shown on this page, in display order
+const STYLES_PAGE_ORDER: DanceStyle[] = [
+  "ballroom", "latin", "swing", "country",
+  "wedding_dance", "competition", "social_latin",
+];
+
+// Style metadata: label override, description, emoji, CTA label, href, and colors
+const STYLE_META: Partial<Record<DanceStyle, {
+  label: string; ctaLabel: string; desc: string;
+  emoji: string; href: string; color: string; bg: string;
+}>> = {
+  ballroom: {
+    label:    "American Smooth / Ballroom / Standard",
+    ctaLabel: "Ballroom",
+    desc:     "Waltz, Tango, Foxtrot, Viennese Waltz, Quickstep — elegant partner dancing, flowing, romantic and timeless.",
+    emoji:    "🥂",
+    href:     "/ballroom-dance-lessons",
+    color:    "#1e3a8a",
+    bg:       "#dbeafe",
   },
-  latin:        {
-    desc: "High-energy Latin rhythms — Cha-Cha, Rumba, Samba, Mambo, and Paso Doble. Passion on the dance floor.",
-    emoji: "🌶️",
-    href: "/latin-dance-lessons",
-    color: "#7f1d1d",
-    bg: "#fee2e2",
+  latin: {
+    label:    "Latin / Rhythm",
+    ctaLabel: "Latin",
+    desc:     "Rumba, Cha Cha, Samba, East Coast Swing, Bolero, Paso Doble, Jive, Mambo — high energy, passion on the dance floor!",
+    emoji:    "🌶️",
+    href:     "/latin-dance-lessons",
+    color:    "#7f1d1d",
+    bg:       "#fee2e2",
   },
-  tango:        {
-    desc: "The sultry Argentine and American Tango. Dramatic, close-embrace partner work unlike any other style.",
-    emoji: "🌹",
-    href: "/tango-dance-lessons",
-    color: "#4c1d95",
-    bg: "#ede9fe",
+  swing: {
+    label:    "Swing",
+    ctaLabel: "Swing",
+    desc:     "Hustle, West Coast Swing, East Coast Swing, Lindy Hop — playful, lively dances rooted in jazz and rock & roll.",
+    emoji:    "🎷",
+    href:     "/swing-dance-lessons",
+    color:    "#78350f",
+    bg:       "#fef3c7",
   },
-  salsa:        {
-    desc: "Fast, fun, and social. Salsa is one of the most popular partner dances in the world.",
-    emoji: "💃",
-    href: "/studios?style=salsa",
-    color: "#065f46",
-    bg: "#d1fae5",
-  },
-  swing:        {
-    desc: "East Coast Swing, West Coast Swing, Lindy Hop — playful, lively dances rooted in jazz and rock & roll.",
-    emoji: "🎷",
-    href: "/swing-dance-lessons",
-    color: "#78350f",
-    bg: "#fef3c7",
-  },
-  waltz:        {
-    desc: "The graceful Waltz is the classic of ballroom dancing — flowing, romantic, and timeless.",
-    emoji: "🩰",
-    href: "/studios?style=waltz",
-    color: "#1e3a8a",
-    bg: "#eff6ff",
-  },
-  foxtrot:      {
-    desc: "Smooth and sophisticated, the Foxtrot is perfect for cocktail parties and formal events.",
-    emoji: "🎩",
-    href: "/studios?style=foxtrot",
-    color: "#374151",
-    bg: "#f3f4f6",
+  country: {
+    label:    "Country",
+    ctaLabel: "Country",
+    desc:     "Two-step, line dances, Country Waltz, Country Polka and more — break out your boots and cowboy hats and get ready to boogie!",
+    emoji:    "🤠",
+    href:     "/studios?style=country",
+    color:    "#6b4226",
+    bg:       "#fdf3e3",
   },
   wedding_dance: {
-    desc: "Perfect your first dance. Studios specializing in wedding choreography and bridal dance packages.",
-    emoji: "💍",
-    href: "/wedding-dance-lessons",
-    color: "#831843",
-    bg: "#fce7f3",
+    label:    "Wedding Dance",
+    ctaLabel: "Wedding Dance",
+    desc:     "Perfect your first dance. Studios specializing in wedding choreography and bridal packages.",
+    emoji:    "💍",
+    href:     "/wedding-dance-lessons",
+    color:    "#831843",
+    bg:       "#fce7f3",
   },
-  competition:  {
-    desc: "Train for DanceSport competition. Studios offering medal programs, showcase, and competitive coaching.",
-    emoji: "🏆",
-    href: "/competition-dance-lessons",
-    color: "#92400e",
-    bg: "#fef3c7",
+  competition: {
+    label:    "Competition",
+    ctaLabel: "Competition",
+    desc:     "Train for dance competitions. Studios offering medal programs, showcase, and competitive coaching.",
+    emoji:    "🏆",
+    href:     "/competition-dance-lessons",
+    color:    "#92400e",
+    bg:       "#fef3c7",
+  },
+  social_latin: {
+    label:    "Social Latin Dances",
+    ctaLabel: "Social Latin",
+    desc:     "Salsa, Bachata, Merengue, Cumbia, Argentine Tango — fast, fun and social. Some of the most popular dances in the world.",
+    emoji:    "💃",
+    href:     "/studios?style=social_latin",
+    color:    "#065f46",
+    bg:       "#d1fae5",
   },
 };
 
@@ -114,7 +123,7 @@ export default async function StylesPage() {
             Browse Studios by Dance Style
           </h1>
           <p className="text-white/60 text-lg max-w-2xl">
-            {totalStudios.toLocaleString()} studios across {DANCE_STYLES.length} dance styles —
+            {totalStudios.toLocaleString()} studios across {STYLES_PAGE_ORDER.length} dance styles —
             click a style to see all studios that teach it.
           </p>
         </div>
@@ -125,7 +134,7 @@ export default async function StylesPage() {
         <div className="max-w-6xl mx-auto">
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {DANCE_STYLES.filter((style) => !!STYLE_META[style]).map((style) => {
+            {STYLES_PAGE_ORDER.map((style) => {
               const meta  = STYLE_META[style]!;
               const count = styleCounts[style] || 0;
 
@@ -152,7 +161,7 @@ export default async function StylesPage() {
                           className="font-display font-bold text-xl group-hover:text-yellow-800 transition-colors"
                           style={{ color: "#111" }}
                         >
-                          {STYLE_LABELS[style]}
+                          {meta.label}
                         </h2>
                       </div>
                       <span
@@ -171,7 +180,7 @@ export default async function StylesPage() {
                     {/* CTA */}
                     <div className="flex items-center gap-1 font-bold text-sm transition-colors"
                          style={{ color: "#b8922a" }}>
-                      Browse {STYLE_LABELS[style]} Studios
+                      Browse {meta.ctaLabel} Studios
                       <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform"
                            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
