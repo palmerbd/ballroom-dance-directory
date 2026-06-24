@@ -155,6 +155,10 @@ export default async function BlogPostPage({
       "@type": "WebPage",
       "@id": `https://www.ballroomdancedirectory.com/blog/${post.slug}`,
     },
+    "speakable": {
+      "@type": "SpeakableSpecification",
+      "cssSelector": ["h1", ".bdd-post-body > p:first-child"],
+    },
   };
 
   const breadcrumbSchema = {
