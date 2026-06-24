@@ -44,6 +44,82 @@ function formatDate(iso: string): string {
   });
 }
 
+
+// ---------------------------------------------------------------------------
+// HowTo schema — static lookup keyed by post slug.
+// Add new slugs here as qualifying how-to posts are published.
+// ---------------------------------------------------------------------------
+type HowToStep = { name: string; text: string };
+
+const HOWTO_STEPS: Record<string, HowToStep[]> = {
+  "how-to-do-the-foxtrot": [
+    {
+      name: "Understand the Slow-Quick-Quick Timing",
+      text: "Foxtrot is danced in 4/4 time using a Slow-Quick-Quick pattern. A Slow lasts 2 beats; each Quick lasts 1 beat. One full basic box takes 6 counts: Slow-Quick-Quick, Slow-Quick-Quick. Internalizing this timing before stepping is the single most important preparation for learning foxtrot.",
+    },
+    {
+      name: "Establish Closed Position",
+      text: "The leader places their right hand on the follower's left shoulder blade. The follower rests their left hand on the leader's upper arm. Both join free hands at approximately shoulder height with a gentle downward curve. Maintain a slight lean toward your partner from the hips — frame is what allows clear communication between partners.",
+    },
+    {
+      name: "Learn the Basic Box Step",
+      text: "Start with the leader's left foot. Forward-left (Slow), side-right (Quick), close-left (Quick), then back-right (Slow), side-left (Quick), close-right (Quick). The follower mirrors the opposite footwork simultaneously. This six-count box is the foundation for every foxtrot pattern.",
+    },
+    {
+      name: "Add Heel Leads on Forward Steps",
+      text: "On every forward Slow step, strike the floor heel-first before rolling onto the ball of the foot. This heel lead — absent in most other ballroom dances — creates foxtrot's signature smooth, gliding quality. On side and back steps, use a ball-flat foot placement instead.",
+    },
+    {
+      name: "Practice the Feather Step",
+      text: "The feather step is foxtrot's opening signature movement: three forward steps taken outside partner on the right side, timed Slow-Quick-Quick. It sets the traveling direction and establishes forward momentum. Master the feather step and you have the entry point for almost all foxtrot choreography.",
+    },
+  ],
+  "how-to-find-ballroom-dance-teacher": [
+    {
+      name: "Define Your Goals",
+      text: "Decide whether you want social dancing confidence, wedding dance preparation, or competitive training. Your goal determines which type of instructor fits — not all teachers specialize in every area. Social and recreational studios differ significantly from competition-oriented ones in pricing, contract structure, and teaching style.",
+    },
+    {
+      name: "Check Instructor Credentials",
+      text: "Look for certification from recognized organizations: NDCA (National Dance Council of America), DVIDA (Dance Vision International Dance Association), or USA Dance. Credentials signal formal training, knowledge of syllabus, and commitment to professional teaching standards. Ask about certification directly — reputable instructors will be glad to share.",
+    },
+    {
+      name: "Take a Trial Lesson",
+      text: "Most reputable studios offer an introductory lesson at a reduced rate. Use it to evaluate how clearly the instructor explains concepts, whether they adjust the pace to your learning style, and whether the studio environment feels welcoming and professional. How you feel after one lesson is a reliable predictor of long-term progress.",
+    },
+    {
+      name: "Watch for High-Pressure Contracts",
+      text: "Be cautious of studios that pressure you to sign multi-lesson packages or program contracts immediately after your first visit. Legitimate instructors respect your timeline for commitment. If a studio quotes a large package price before you've had a chance to evaluate the teaching, that's a warning sign worth heeding.",
+    },
+    {
+      name: "Evaluate Long-Term Compatibility",
+      text: "Consider lesson scheduling, studio location, pricing transparency, and whether you genuinely enjoy the instructor's personality and communication style. You'll spend significant time with this person — learning outcomes are heavily influenced by the student-teacher relationship. Trust your instincts after the trial lesson.",
+    },
+  ],
+  "how-to-find-ballroom-dance-instructor": [
+    {
+      name: "Define Your Goals",
+      text: "Decide whether you want social dancing confidence, wedding dance preparation, or competitive training. Your goal determines which type of instructor fits — not all teachers specialize in every area. Social and recreational studios differ significantly from competition-oriented ones in pricing, contract structure, and teaching style.",
+    },
+    {
+      name: "Check Instructor Credentials",
+      text: "Look for certification from recognized organizations: NDCA (National Dance Council of America), DVIDA (Dance Vision International Dance Association), or USA Dance. Credentials signal formal training, knowledge of syllabus, and commitment to professional teaching standards. Ask about certification directly — reputable instructors will be glad to share.",
+    },
+    {
+      name: "Take a Trial Lesson",
+      text: "Most reputable studios offer an introductory lesson at a reduced rate. Use it to evaluate how clearly the instructor explains concepts, whether they adjust the pace to your learning style, and whether the studio environment feels welcoming and professional. How you feel after one lesson is a reliable predictor of long-term progress.",
+    },
+    {
+      name: "Watch for High-Pressure Contracts",
+      text: "Be cautious of studios that pressure you to sign multi-lesson packages or program contracts immediately after your first visit. Legitimate instructors respect your timeline for commitment. If a studio quotes a large package price before you've had a chance to evaluate the teaching, that's a warning sign worth heeding.",
+    },
+    {
+      name: "Evaluate Long-Term Compatibility",
+      text: "Consider lesson scheduling, studio location, pricing transparency, and whether you genuinely enjoy the instructor's personality and communication style. You'll spend significant time with this person — learning outcomes are heavily influenced by the student-teacher relationship. Trust your instincts after the trial lesson.",
+    },
+  ],
+};
+
 export default async function BlogPostPage({
   params,
 }: {
@@ -106,6 +182,24 @@ export default async function BlogPostPage({
     ],
   };
 
+
+  // HowTo schema — only rendered for qualifying how-to posts
+  const howtoSteps = HOWTO_STEPS[slug] ?? null;
+  const howtoSchema = howtoSteps
+    ? {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": post.title,
+        "description": post.excerpt,
+        "step": howtoSteps.map((s, i) => ({
+          "@type": "HowToStep",
+          "position": i + 1,
+          "name": s.name,
+          "text": s.text,
+        })),
+      }
+    : null;
+
   return (
     <main>
       <script
@@ -116,6 +210,12 @@ export default async function BlogPostPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
+      {howtoSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(howtoSchema) }}
+        />
+      )}
 
       {/* Hero */}
       <section
