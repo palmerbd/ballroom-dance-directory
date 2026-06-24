@@ -29,8 +29,46 @@ export default async function HomePage() {
   const studioCount = studios.length;
   const countLabel = studioCount > 0 ? `${studioCount.toLocaleString()}+` : "900+";
 
+
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Ballroom Dance Directory",
+    "url": "https://www.ballroomdancedirectory.com",
+    "logo": "https://www.ballroomdancedirectory.com/logo.png",
+    "description": "The largest directory of ballroom dance studios in the United States. Find private lessons, group classes, and wedding dance instruction near you.",
+    "foundingDate": "2025",
+    "areaServed": "US",
+    "sameAs": [
+      "https://www.facebook.com/ballroomdancedirectory",
+      "https://www.instagram.com/ballroomdancedirectory"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer support",
+      "email": "hello@ballroomdancedirectory.com"
+    }
+  };
+
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Ballroom Dance Directory",
+    "url": "https://www.ballroomdancedirectory.com",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://www.ballroomdancedirectory.com/studios?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  };
+
   return (
     <main>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
       {/* Hero */}
       <section
         className="relative min-h-[85vh] flex items-center justify-center"
