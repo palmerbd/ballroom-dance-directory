@@ -98,6 +98,15 @@ function EventSchema({ comp }: { comp: Competition }) {
   const orgUrl   = ORG_WEBSITE[comp.organization] || comp.website || "";
   const pageUrl  = `${SITE_URL}/competitions/${comp.slug}`;
 
+  // Always supply startDate — Google requires it for Event rich results.
+  // For TBA competitions use the 1st of typicalMonth in the next upcoming year.
+  const now        = new Date();
+  const curYear    = now.getFullYear();
+  const curMonth   = now.getMonth() + 1; // 1-12
+  const approxYear = comp.typicalMonth >= curMonth ? curYear : curYear + 1;
+  const startDate  = comp.dateStart ??
+    `${approxYear}-${String(comp.typicalMonth).padStart(2, "0")}-01`;
+
   const schema = {
     "@context": "https://schema.org",
     "@type":    "DanceEvent",
@@ -116,10 +125,8 @@ function EventSchema({ comp }: { comp: Competition }) {
         addressCountry:  "US",
       },
     },
-    ...(comp.dateStart && {
-      startDate: comp.dateStart,
-      ...(comp.dateEnd && { endDate: comp.dateEnd }),
-    }),
+    startDate,
+    ...(comp.dateEnd && { endDate: comp.dateEnd }),
     eventStatus:         "https://schema.org/EventScheduled",
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     // ── performer (required by Google) ──────────────────────────────────────
