@@ -120,6 +120,32 @@ const HOWTO_STEPS: Record<string, HowToStep[]> = {
   ],
 };
 
+// ---------------------------------------------------------------------------
+// FAQPage schema — static lookup keyed by post slug.
+// Add new slugs here as FAQ pages are published.
+// ---------------------------------------------------------------------------
+type FaqEntry = { q: string; a: string };
+
+const FAQ_ENTRIES: Record<string, FaqEntry[]> = {
+  "ballroom-dance-faq": [
+    { q: "What is the easiest ballroom dance to learn?", a: "Foxtrot and rumba are widely considered the easiest for beginners. Foxtrot has a natural walking quality that most adults can grasp quickly. Rumba's slow tempo gives beginners time to think through each step. Merengue and cha cha are also beginner-friendly." },
+    { q: "How long does it take to learn ballroom dancing?", a: "Most beginners can learn the basics of one ballroom dance in 8–15 private lessons over 2–3 months. Learning to feel comfortable on the social dance floor across multiple dances typically takes 6–12 months of regular practice. Competitive-level dancing takes 2–5+ years." },
+    { q: "How much do ballroom dance lessons cost?", a: "Private lessons at ballroom studios in the United States typically cost $80–$150 per hour, depending on the instructor's experience and location. Group classes typically cost $15–$30 per session." },
+    { q: "What is the difference between American Style and International Style ballroom dancing?", a: "American Style allows partners to break from closed frame, perform open choreography, and execute free spins. International Style maintains closed frame more strictly and is used in Olympic-level DanceSport competition worldwide." },
+    { q: "What is the difference between ballroom tango and Argentine tango?", a: "Ballroom tango is a structured, syllabus-based dance with staccato walks and the distinctive tango look head position. Argentine tango is entirely improvisational, danced in close embrace with no fixed syllabus. They are completely different dances despite sharing a name." },
+    { q: "What age is too old to start ballroom dancing?", a: "There is no age that is too old to start ballroom dancing. Studios regularly teach students in their 60s, 70s, and 80s who are beginning for the first time. Many ballroom competitions include dedicated senior age categories." },
+    { q: "Can I learn ballroom dancing alone, without a partner?", a: "Yes. Most ballroom studios teach individuals without partners. Private lessons are always one student and one instructor. Group classes often rotate partners. Many students find a partner through studio social events over time." },
+    { q: "How many dance lessons do I need for a wedding?", a: "For a first dance that looks confident: 8–12 private lessons. For choreographed moves: 12–20 lessons. Begin at least 3 months before the wedding; 6 months is ideal for more ambitious goals." },
+    { q: "What is a heat in ballroom competition?", a: "A heat is one competitive entry — one dance, at one level, in one style. A single competitor might enter 30 or more heats across a competition day. In each heat, competitors dance for 1–2 minutes while judges observe and score them." },
+    { q: "What is Pro-Am ballroom competition?", a: "Pro-Am (Professional-Amateur) is a competition format where an amateur student competes with their professional instructor as a partner. Judges evaluate the amateur's dancing. Pro-Am allows students to compete at any level with the security of an experienced partner." },
+    { q: "What are Bronze, Silver, and Gold levels in ballroom dancing?", a: "These are syllabus classification levels in American Style competition. Bronze is beginner-level figures; Silver is intermediate; Gold is advanced. Above Gold is Open level, where choreography is unrestricted. The International Style equivalent is Newcomer, Bronze, Silver, Gold, Novice, Pre-Amateur, Amateur, Professional." },
+    { q: "Is ballroom dancing a good workout?", a: "Yes. A one-hour ballroom dance session burns approximately 200–400 calories depending on the style and intensity. Fast dances like quickstep and jive burn more than slow dances. Ballroom dancing also improves cardiovascular health, balance, coordination, posture, and cognitive function." },
+    { q: "Is ballroom dancing good for seniors?", a: "Ballroom dancing is particularly beneficial for seniors. Regular dancing improves balance and proprioception, directly reducing fall risk. Studies show dancing is among the highest-value exercise forms for healthy aging, with protective effects against cognitive decline." },
+    { q: "What dance styles are best for a wedding first dance?", a: "Foxtrot, waltz, and rumba are the most popular choices. Foxtrot works with most slow pop songs. Waltz suits traditional formal weddings. Rumba works for romantic ballads. Bring your song to your instructor — they can identify which style fits its tempo and rhythm." },
+    { q: "What is the difference between East Coast Swing and West Coast Swing?", a: "East Coast Swing is circular and bouncy, danced to classic rock-and-roll. West Coast Swing is a slot dance danced to contemporary music including blues, R&B, hip-hop, and country. WCS has a deeper skill ceiling and its own national competition circuit." },
+  ],
+};
+
 export default async function BlogPostPage({
   params,
 }: {
@@ -204,6 +230,23 @@ export default async function BlogPostPage({
       }
     : null;
 
+  // FAQPage schema — only rendered for FAQ pages
+  const faqEntries = FAQ_ENTRIES[slug] ?? null;
+  const faqPageSchema = faqEntries
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faqEntries.map((entry) => ({
+          "@type": "Question",
+          "name": entry.q,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": entry.a,
+          },
+        })),
+      }
+    : null;
+
   return (
     <main>
       <script
@@ -218,6 +261,12 @@ export default async function BlogPostPage({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(howtoSchema) }}
+        />
+      )}
+      {faqPageSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageSchema) }}
         />
       )}
 
