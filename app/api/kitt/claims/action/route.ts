@@ -79,7 +79,7 @@ async function updateWpTier(studioSlug: string, tier: "claimed" | "paid") {
   try {
     const searchRes = await fetch(
       `${WP_API_URL}/wp/v2/dance_studio?slug=${studioSlug}&_fields=id`,
-      { headers: { Authorization: wpAuthHeader() } }
+      { headers: { Authorization: wpAuthHeader() }, signal: AbortSignal.timeout(5000) }
     );
     if (!searchRes.ok) return;
     const studios = (await searchRes.json()) as Array<{ id: number }>;
@@ -88,6 +88,7 @@ async function updateWpTier(studioSlug: string, tier: "claimed" | "paid") {
       method:  "POST",
       headers: { "Content-Type": "application/json", "Authorization": wpAuthHeader() },
       body:    JSON.stringify({ acf: { studio_tier: tier } }),
+      signal:  AbortSignal.timeout(5000),
     });
   } catch (err) {
     console.warn(`[kitt/action] WP tier update failed for ${studioSlug}:`, err);
@@ -100,7 +101,8 @@ async function ghl<T>(method: string, path: string, body?: object): Promise<T> {
   const res = await fetch(`${GHL_BASE}${path}`, {
     method,
     headers: GHL_HEADERS,
-    body: body ? JSON.stringify(body) : undefined,
+    body:    body ? JSON.stringify(body) : undefined,
+    signal:  AbortSignal.timeout(8000),
   });
   if (!res.ok) {
     const text = await res.text();
