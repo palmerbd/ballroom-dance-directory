@@ -71,14 +71,14 @@ export async function generateMetadata({
   // Canonical points to the style page itself to consolidate what signals exist.
   if (filtered.length < 2) {
     return {
-      title: `${styleName} Dance Studios in ${cityName} | Ballroom Dance Directory`,
+      title: `${styleName} Dance Studios in ${cityName}`,
       robots: { index: false, follow: true },
       alternates: { canonical: `https://www.ballroomdancedirectory.com/studios/city/${city}/style/${style}` },
     };
   }
 
   return {
-    title: `${styleName} Dance Studios in ${cityName} | Ballroom Dance Directory`,
+    title: `${styleName} Dance Studios in ${cityName}`,
     description: `Find the best ${styleName.toLowerCase()} dance studios in ${cityName}. ${filtered.length} studio${filtered.length !== 1 ? "s" : ""} offering expert private ${styleName.toLowerCase()} instruction. Book your first lesson today.`,
     alternates: {
       canonical: `https://www.ballroomdancedirectory.com/studios/city/${city}/style/${style}`,

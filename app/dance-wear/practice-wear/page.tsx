@@ -6,7 +6,7 @@ import DancewearCard from "@/components/DancewearCard";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title:       "Practice Wear Brands | Dance Wear | Ballroom Dance Directory",
+  title:       "Practice Wear Brands | Dance Wear",
   description: "The best ballroom and Latin practice wear brands — skirts, bodysuits, dresses, and more for your daily studio training.",
 };
 

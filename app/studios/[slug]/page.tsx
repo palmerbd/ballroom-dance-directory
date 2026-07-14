@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { getStudio, getAllStudioSlugs, getStudiosByCity } from "@/lib/wordpress";
 import { Studio, StudioCard, CHAIN_CONFIG, STYLE_LABELS, AMENITY_LABELS, DanceStyle } from "@/types/studio";
 import ClaimBadge from "@/components/ClaimBadge";
@@ -54,7 +54,7 @@ export async function generateMetadata({
 
   if (isThinContent) {
     return {
-      title: `${studio.title}${location ? " \u2014 " + location : ""} | Ballroom Dance Directory`,
+      title: `${studio.title}${location ? " \u2014 " + location : ""}`,
       robots: { index: false, follow: true },
       alternates: {
         canonical: `https://www.ballroomdancedirectory.com/studios/${slug}`,
@@ -63,7 +63,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${studio.title}${location ? " \u2014 " + location : ""} | Ballroom Dance Directory`,
+    title: `${studio.title}${location ? " \u2014 " + location : ""}`,
     description:
       studio.description ||
       `Private dance lessons at ${studio.title}${location ? ` in ${location}` : ""}. ${
@@ -173,7 +173,19 @@ export default async function StudioPage({
     // We resolve city studios after we know the studio; handled below
     Promise.resolve([] as StudioCard[]),
   ]);
-  if (!studio) notFound();
+  if (!studio) {
+    // WP re-imports created duplicate "-2/-3/-N" slugs that were later
+    // deleted; Google crawled them and they 404 (285 in GSC, Jul 2026).
+    // If a dead slug ends in -N and the base slug is a live studio,
+    // 301 there. Live studios whose real slug ends in -N (67 of them)
+    // never reach this branch because getStudio(slug) succeeds above.
+    const dupeMatch = slug.match(/^(.+)-\d{1,2}$/);
+    if (dupeMatch) {
+      const baseStudio = await getStudio(dupeMatch[1]);
+      if (baseStudio) permanentRedirect(`/studios/${dupeMatch[1]}`);
+    }
+    notFound();
+  }
 
   // Fetch related studios in the same city (excluding current)
   const cityStudios = studio.city

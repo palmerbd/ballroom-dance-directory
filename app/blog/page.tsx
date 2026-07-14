@@ -5,12 +5,12 @@ import { getBlogPosts } from "@/lib/wordpress";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Dance Tips & Guides | Ballroom Dance Directory Blog",
+  title: "Dance Tips & Guides",
   description:
     "Expert advice on private dance lessons, studio costs, dance styles, and finding the right instructor near you. Your guide to the world of ballroom and Latin dance.",
   alternates: { canonical: "https://www.ballroomdancedirectory.com/blog" },
   openGraph: {
-    title: "Dance Tips & Guides | Ballroom Dance Directory",
+    title: "Dance Tips & Guides",
     description:
       "Expert advice on private dance lessons, studio costs, dance styles, and finding the right instructor near you.",
   },

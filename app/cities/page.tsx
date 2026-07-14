@@ -5,7 +5,7 @@ import { getAllCities } from "@/lib/wordpress";
 export const revalidate = 86400; // 24 hours
 
 export const metadata: Metadata = {
-  title: "Browse Dance Studios by City | Ballroom Dance Directory",
+  title: "Browse Dance Studios by City",
   description:
     "Find private ballroom dance studios in your city. Browse our directory of 4,000+ studios across hundreds of US cities — from New York to Los Angeles and everywhere in between.",
   alternates: { canonical: "https://www.ballroomdancedirectory.com/cities" },

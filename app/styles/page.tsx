@@ -6,7 +6,7 @@ import { DanceStyle } from "@/types/studio";
 export const revalidate = 86400; // 24 hours
 
 export const metadata: Metadata = {
-  title: "Browse Studios by Dance Style | Ballroom Dance Directory",
+  title: "Browse Studios by Dance Style",
   description:
     "Find private dance studios by style — ballroom, Latin, tango, salsa, swing, wedding dance, and more. Browse 4,000+ studios filtered by your preferred dance style.",
   alternates: { canonical: "https://www.ballroomdancedirectory.com/styles" },

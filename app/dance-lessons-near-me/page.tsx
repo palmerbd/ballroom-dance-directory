@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     canonical: "https://www.ballroomdancedirectory.com/dance-lessons-near-me",
   },
   openGraph: {
-    title: "Dance Lessons Near Me | Ballroom Dance Directory",
+    title: "Dance Lessons Near Me",
     description:
       "Find private dance lessons near you — ballroom, Latin, tango, salsa, swing, and wedding-dance instruction in every major US city.",
     type: "website",

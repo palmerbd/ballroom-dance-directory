@@ -44,6 +44,15 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
 
+      // ── Duplicate blog post: old teacher-guide slug → canonical post ─────
+      // Two near-identical posts existed (WP 4471 vs 4694); 4471 set to draft
+      // Jul 2026, its slug 301s to the surviving post.
+      {
+        source: "/blog/how-to-find-ballroom-dance-teacher",
+        destination: "/blog/how-to-find-a-good-ballroom-dance-teacher",
+        permanent: true,
+      },
+
       // ── Studio slug fixes: duplicate-city-suffix → cleaned slug ──────────
       // These slugs were created during the initial Google Places scrape before
       // slug deduplication ran; Google crawled them and now they 404.

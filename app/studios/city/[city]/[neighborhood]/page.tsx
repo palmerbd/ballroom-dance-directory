@@ -53,14 +53,14 @@ export async function generateMetadata({
     // Set canonical to city page and noindex so Google doesn't treat any
     // transient crawl of this URL as a standalone indexable page.
     return {
-      title: `Ballroom Dance Studios in ${neighborhood.name}, ${city.name} | Ballroom Dance Directory`,
+      title: `Ballroom Dance Studios in ${neighborhood.name}, ${city.name}`,
       robots: { index: false, follow: true },
       alternates: { canonical: `https://www.ballroomdancedirectory.com/studios/city/${citySlug}` },
     };
   }
 
   return {
-    title: `Ballroom Dance Studios in ${neighborhood.name}, ${city.name} | Ballroom Dance Directory`,
+    title: `Ballroom Dance Studios in ${neighborhood.name}, ${city.name}`,
     description: `Find the best private dance studios in the ${neighborhood.name} area of ${city.name}, ${city.stateAbbr}. Top-rated studios offering ballroom, Latin, salsa, tango, and wedding dance lessons near ${neighborhood.name}.`,
     alternates: {
       canonical: `https://www.ballroomdancedirectory.com/studios/city/${citySlug}/${hoodSlug}`,

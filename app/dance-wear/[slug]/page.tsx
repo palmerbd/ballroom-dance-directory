@@ -22,7 +22,7 @@ export async function generateMetadata({
 
   const catLabels = brand!.categories.map((c) => DANCEWEAR_CATEGORY_LABELS[c]).join(" & ");
   return {
-    title:       `${brand.name} | ${catLabels} | Ballroom Dance Directory`,
+    title:       `${brand.name} | ${catLabels}`,
     description: brand.description,
     alternates: {
       canonical: `https://www.ballroomdancedirectory.com/dance-wear/${brand.slug}`,

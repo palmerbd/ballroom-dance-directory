@@ -7,7 +7,7 @@ import DancewearCard from "@/components/DancewearCard";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title:       "Dance Wear | Ballroom Dance Directory",
+  title:       "Dance Wear",
   description: "Find the best ballroom and Latin dancewear brands for practice and competition — curated listings with contact info and direct links.",
 };
 

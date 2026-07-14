@@ -40,7 +40,7 @@ export async function generateMetadata({
   };
 
   return {
-    title: `Ballroom Dance Studios in ${cityName} | Ballroom Dance Directory`,
+    title: `Ballroom Dance Studios in ${cityName}`,
     description: `Find the best private dance studios in ${cityName}. ${studios.length} top-rated ${cityName} studios offering ballroom, Latin, tango, wedding dance, and more. Book your first lesson today.`,
     alternates: {
       canonical: `https://www.ballroomdancedirectory.com/studios/city/${city}`,

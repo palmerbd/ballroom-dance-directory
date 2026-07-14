@@ -23,7 +23,7 @@ export async function generateMetadata({
   };
 
   return {
-    title: `${post.title} | Ballroom Dance Directory`,
+    title: `${post.title}`,
     description: post.excerpt,
     alternates: { canonical: `https://www.ballroomdancedirectory.com/blog/${slug}` },
     openGraph: {

@@ -6,7 +6,7 @@ import DancewearCard from "@/components/DancewearCard";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title:       "Competition Wear Brands | Dance Wear | Ballroom Dance Directory",
+  title:       "Competition Wear Brands | Dance Wear",
   description: "Find the best ballroom and Latin competition wear brands — crystal-encrusted gowns, tailored men's attire, and custom couture for the competitive floor.",
 };
 
