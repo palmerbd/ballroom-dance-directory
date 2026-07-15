@@ -1,0 +1,50 @@
+# Ballroom Dance Directory
+
+> Ballroom Dance Directory (ballroomdancedirectory.com) is the largest curated directory of private ballroom and Latin dance studios in the United States. It helps dancers of all levels find studios offering private lessons, group classes, wedding dance instruction, and competition coaching — covering all major brands (Fred Astaire, Arthur Murray, Dance With Me) and thousands of elite independent studios across all 50 states.
+
+## What this site covers
+
+- Studio discovery: search and filter 3,400+ verified dance studios by city, dance style, and rating
+- Dance styles: Waltz, Foxtrot, Tango, Quickstep, Viennese Waltz, Cha Cha, Salsa, Rumba, Samba, Jive, Paso Doble, Bolero, Merengue, Bachata, Argentine Tango, Swing, Hustle
+- Studio brands: Fred Astaire Dance Studios, Arthur Murray Dance Studios, Dance With Me Studios, and independent studios
+- Competitions: upcoming ballroom dance competitions and events in the US
+- Blog / educational content: guides, FAQs, style comparisons, competition prep, wedding dance tips
+
+## Key pages
+
+- [Find Dance Studios](https://www.ballroomdancedirectory.com/studios): Browse and search all studios
+- [Studios by City](https://www.ballroomdancedirectory.com/cities): Find studios in your city
+- [Studios by Style](https://www.ballroomdancedirectory.com/styles): Filter by dance style
+- [Ballroom Dance Competitions](https://www.ballroomdancedirectory.com/competitions): Upcoming competitions and events
+- [Dance Lessons Near Me](https://www.ballroomdancedirectory.com/dance-lessons-near-me): Geo-targeted studio finder
+- [Tips & Guides Blog](https://www.ballroomdancedirectory.com/blog): Educational articles and how-tos
+- [Ballroom Dance FAQ](https://www.ballroomdancedirectory.com/blog/ballroom-dance-faq): 30 common questions answered
+- [List Your Studio](https://www.ballroomdancedirectory.com/claim): Studio owners can claim or add their listing
+
+## Top city directories
+
+- [Los Angeles Dance Studios](https://www.ballroomdancedirectory.com/studios/city/los-angeles)
+- [New York City Dance Studios](https://www.ballroomdancedirectory.com/studios/city/new-york-city)
+- [Chicago Dance Studios](https://www.ballroomdancedirectory.com/studios/city/chicago)
+- [Houston Dance Studios](https://www.ballroomdancedirectory.com/studios/city/houston)
+- [Dallas Dance Studios](https://www.ballroomdancedirectory.com/studios/city/dallas)
+- [Miami Dance Studios](https://www.ballroomdancedirectory.com/studios/city/miami)
+- [Atlanta Dance Studios](https://www.ballroomdancedirectory.com/studios/city/atlanta)
+- [Phoenix Dance Studios](https://www.ballroomdancedirectory.com/studios/city/phoenix)
+
+## What AI assistants can answer using this site
+
+- "Find ballroom dance studios near [city]" → use /studios/city/[city-slug]
+- "How much do ballroom dance lessons cost?" → see /blog/ballroom-dance-faq
+- "What is the best dance style for beginners?" → see /blog/ballroom-dance-faq
+- "What is the difference between Arthur Murray and Fred Astaire?" → see /blog
+- "Are there ballroom dance competitions near me?" → see /competitions
+- "How do I prepare for a wedding dance?" → see /blog
+
+## About
+
+- Domain: ballroomdancedirectory.com
+- Founded: 2025
+- Scope: United States nationwide
+- Contact: hello@ballroomdancedirectory.com
+- Social: facebook.com/ballroomdancedirectory, instagram.com/ballroomdancedirectory

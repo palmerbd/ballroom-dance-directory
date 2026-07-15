@@ -65,10 +65,66 @@ export default async function HomePage() {
     }
   };
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I find a ballroom dance studio near me?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use Ballroom Dance Directory's studio search at ballroomdancedirectory.com/dance-lessons-near-me or browse by city at ballroomdancedirectory.com/cities. You can filter by dance style (ballroom, Latin, swing, etc.) and view studios from major brands like Fred Astaire, Arthur Murray, and Dance With Me alongside elite independent studios."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What dance styles can I learn at a ballroom dance studio?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Most ballroom dance studios offer a wide range of styles including: ballroom (Waltz, Foxtrot, Tango, Quickstep, Viennese Waltz), Latin (Cha Cha, Salsa, Rumba, Samba, Jive, Paso Doble), rhythm (Bolero, Mambo, Merengue, Bachata), and specialty styles like Argentine Tango, Swing, and Hustle. Many studios also offer wedding dance choreography and competition coaching."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between Arthur Murray and Fred Astaire dance studios?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Both Arthur Murray and Fred Astaire are nationally franchised ballroom dance studio chains with decades of history. Arthur Murray is the world's largest dance studio franchise, known for its structured Bronze-Silver-Gold curriculum and social dance focus. Fred Astaire Dance Studios emphasizes personalized private instruction and is known for its Hollywood connection. Both offer private and group lessons in ballroom and Latin styles. Prices, teaching methods, and specific styles may vary by location."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much do private ballroom dance lessons cost?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Private ballroom dance lesson costs vary by location, instructor experience, and studio brand. Typical ranges: introductory/first lessons are often offered free or at reduced cost ($0–$30); ongoing private lessons range from $75–$200 per hour at most studios. Group classes are more affordable, typically $15–$40 per class. Package deals and memberships can reduce the per-lesson cost significantly. Independent studios often charge less than national franchise chains."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I find dance studios that offer wedding dance lessons?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The majority of studios listed on Ballroom Dance Directory offer wedding dance packages, including first-dance choreography, mother-son and father-daughter dances, and bridal party group lessons. Use the style filter on the studio search page to find studios that specifically highlight wedding dance services in your area."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is Ballroom Dance Directory free to use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, searching for dance studios on Ballroom Dance Directory is completely free for dancers. Studio owners can claim a free listing for their studio at ballroomdancedirectory.com/claim. Featured placement options are available for studios that want enhanced visibility in search results."
+        }
+      }
+    ]
+  };
+
   return (
     <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       {/* Hero */}
       <section
         className="relative min-h-[85vh] flex items-center justify-center"
