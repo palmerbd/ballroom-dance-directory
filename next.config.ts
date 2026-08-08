@@ -22,10 +22,10 @@ const nextConfig: NextConfig = {
     ],
   },
 
-  // ── Canonical enforcement ────────────────────────────────────────────────────
-  // 1. Redirect non-www → www (consolidates link equity)
+  // ââ Canonical enforcement ââââââââââââââââââââââââââââââââââââââââââââââââââââ
+  // 1. Redirect non-www â www (consolidates link equity)
   // 2. Tell Google not to index the Vercel preview URL
-  // 3. 301 redirects for GSC "Not found (404)" URLs — studios renamed/removed,
+  // 3. 301 redirects for GSC "Not found (404)" URLs â studios renamed/removed,
   //    duplicate-city-suffix slugs created during early scrape, and stale city routes.
   // Serve the Petrosyan Designs landing mockup at /petrosyan
   async rewrites() {
@@ -36,7 +36,7 @@ const nextConfig: NextConfig = {
 
   async redirects() {
     return [
-      // ── Non-www → www ─────────────────────────────────────────────────────
+      // ââ Non-www â www âââââââââââââââââââââââââââââââââââââââââââââââââââââ
       {
         source: "/:path*",
         has: [{ type: "host", value: "ballroomdancedirectory.com" }],
@@ -44,7 +44,7 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
 
-      // ── Duplicate blog post: old teacher-guide slug → canonical post ─────
+      // ââ Duplicate blog post: old teacher-guide slug â canonical post âââââ
       // Two near-identical posts existed (WP 4471 vs 4694); 4471 set to draft
       // Jul 2026, its slug 301s to the surviving post.
       {
@@ -53,7 +53,7 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
 
-      // ── Studio slug fixes: duplicate-city-suffix → cleaned slug ──────────
+      // ââ Studio slug fixes: duplicate-city-suffix â cleaned slug ââââââââââ
       // These slugs were created during the initial Google Places scrape before
       // slug deduplication ran; Google crawled them and now they 404.
       {
@@ -66,7 +66,7 @@ const nextConfig: NextConfig = {
         destination: "/studios",
         permanent: true,
       },
-      // Canadian locations — never belonged in US directory; send to root
+      // Canadian locations â never belonged in US directory; send to root
       {
         source: "/studios/arthur-murray-dance-studio-coquitlam-coquitlam",
         destination: "/studios",
@@ -78,7 +78,7 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
 
-      // ── Deleted / removed studios → main directory ────────────────────────
+      // ââ Deleted / removed studios â main directory ââââââââââââââââââââââââ
       {
         source: "/studios/the-ballet-school-performing-arts-walnut-creek",
         destination: "/studios",
@@ -100,26 +100,26 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
 
-      // ── Stale city / city×style routes ───────────────────────────────────
+      // ââ Stale city / cityÃstyle routes âââââââââââââââââââââââââââââââââââ
       // lafayette-township was never a supported city slug; no studios exist there.
       {
         source: "/studios/city/lafayette-township",
         destination: "/studios",
         permanent: true,
       },
-      // las-vegas salsa: no salsa studios in Las Vegas → redirect to city page
+      // las-vegas salsa: no salsa studios in Las Vegas â redirect to city page
       {
         source: "/studios/city/las-vegas/style/salsa",
         destination: "/studios/city/las-vegas",
         permanent: true,
       },
 
-      // ── Duplicate-city-suffix → clean slug (batch 2) ─────────────────────
+      // ââ Duplicate-city-suffix â clean slug (batch 2) âââââââââââââââââââââ
       // Same scrape artifact as batch 1: city name appended twice during import.
       // Each clean slug exists in WordPress (verified by pattern from batch 1).
       {
         source: "/studios/arthur-murray-dance-studio-redwood-city-redwood-city-3",
-        destination: "/studios/arthur-murray-dance-studio-redwood-city-3",
+        destination: "/studios",
         permanent: true,
       },
       {
@@ -148,7 +148,7 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
 
-      // ── Deleted / non-existent studios → main directory (batch 2) ────────
+      // ââ Deleted / non-existent studios â main directory (batch 2) ââââââââ
       {
         source: "/studios/image-ballroom-dance-academy-richardson-2",
         destination: "/studios",
@@ -181,36 +181,36 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
 
-      // ── Wrong city slug ───────────────────────────────────────────────────
-      // Google indexed /studios/city/new-york — correct slug is new-york-city
+      // ââ Wrong city slug âââââââââââââââââââââââââââââââââââââââââââââââââââ
+      // Google indexed /studios/city/new-york â correct slug is new-york-city
       {
         source: "/studios/city/new-york",
         destination: "/studios/city/new-york-city",
         permanent: true,
       },
 
-      // ── Invalid city×style (Toledo not in directory) ─────────────────────
+      // ââ Invalid cityÃstyle (Toledo not in directory) âââââââââââââââââââââ
       {
         source: "/studios/city/toledo/style/ballroom",
         destination: "/studios",
         permanent: true,
       },
 
-      // ── Misc stale / malformed root routes ───────────────────────────────
-      // Doubled slug — correct page is /wedding-dance-lessons
+      // ââ Misc stale / malformed root routes âââââââââââââââââââââââââââââââ
+      // Doubled slug â correct page is /wedding-dance-lessons
       {
         source: "/wedding-dance-dance-lessons",
         destination: "/wedding-dance-lessons",
         permanent: true,
       },
-      // Non-US studio (Tijuana, MX) — scraped near San Diego border
+      // Non-US studio (Tijuana, MX) â scraped near San Diego border
       {
         source: "/studios/academia-sm-tango-tijuana",
         destination: "/studios",
         permanent: true,
       },
 
-      // ── Soft 404: /studios?style=X&city=Y ────────────────────────────────
+      // ââ Soft 404: /studios?style=X&city=Y ââââââââââââââââââââââââââââââââ
       // The studios page ignores the "city" query param, so Google marks these
       // as soft 404s. Redirect to the clean /studios URL; users can filter
       // by style using the on-page controls.
@@ -221,8 +221,8 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
 
-      // ── Duplicate-city-suffix → clean slug (batch 3) ─────────────────────
-      // Same scrape artifact as batches 1–2. GSC sources:
+      // ââ Duplicate-city-suffix â clean slug (batch 3) âââââââââââââââââââââ
+      // Same scrape artifact as batches 1â2. GSC sources:
       //   - "Duplicate, Google chose different canonical": reno-reno-2
       //   - "Crawled - currently not indexed": beaverton-beaverton-2, torrance-torrance-2
       {
@@ -241,22 +241,22 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
 
-      // ── Invalid city×style (Clackamas not in directory) ──────────────────
+      // ââ Invalid cityÃstyle (Clackamas not in directory) ââââââââââââââââââ
       {
         source: "/studios/city/clackamas/style/ballroom",
         destination: "/studios",
         permanent: true,
       },
 
-      // ── WP duplicate-suffix slugs (batch 4) — 90-page GSC 404 failure ────
+      // ââ WP duplicate-suffix slugs (batch 4) â 90-page GSC 404 failure ââââ
       // WordPress auto-appended -2/-3/-4 when the slug already existed on
       // a prior import pass. Google crawled these and they all 404.
       // Two sub-patterns:
-      //   (a) Simple duplicate: dance-with-me-cleveland-2 → dance-with-me-cleveland
-      //   (b) City-doubled duplicate: foo-salt-lake-city-salt-lake-city-4 → foo-salt-lake-city-4
+      //   (a) Simple duplicate: dance-with-me-cleveland-2 â dance-with-me-cleveland
+      //   (b) City-doubled duplicate: foo-salt-lake-city-salt-lake-city-4 â foo-salt-lake-city-4
       {
         source: "/studios/arthur-murray-dance-studio-west-farms-new-britain-2",
-        destination: "/studios/arthur-murray-dance-studio-west-farms-new-britain",
+        destination: "/studios",
         permanent: true,
       },
       {
@@ -271,7 +271,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/studios/arthur-murray-dance-studio-salt-lake-city-salt-lake-city-4",
-        destination: "/studios/arthur-murray-dance-studio-salt-lake-city-4",
+        destination: "/studios",
         permanent: true,
       },
       {
@@ -296,11 +296,11 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/studios/arthur-murray-dance-studio-orange-city-orange-city-2",
-        destination: "/studios/arthur-murray-dance-studio-orange-city-2",
+        destination: "/studios",
         permanent: true,
       },
 
-      // ── Batch 4 (continued) — Pattern A: strip -N suffix ─────────────────
+      // ââ Batch 4 (continued) â Pattern A: strip -N suffix âââââââââââââââââ
       {
         source: "/studios/dance-with-me-soho-new-york-2",
         destination: "/studios/dance-with-me-soho-new-york",
@@ -462,7 +462,7 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
 
-      // ── Batch 4 (continued) — Pattern B: strip doubled city, keep -N ─────
+      // ââ Batch 4 (continued) â Pattern B: strip doubled city, keep -N âââââ
       {
         source: "/studios/arthur-murray-dance-studio-of-richmond-richmond-2",
         destination: "/studios",
