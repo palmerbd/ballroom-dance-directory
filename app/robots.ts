@@ -8,14 +8,15 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        // /api/ and /_next/ are infrastructure — never crawl.
+        // /api/ is infrastructure — never crawl.
         // /admin is a password-gated internal tool — no SEO value.
-        // NOTE: /claim, /dashboard, /upgrade are intentionally NOT listed here.
-        // Those routes have noindex in their layout.tsx files. Robots.txt disallow
-        // prevents Google from crawling the page, which means it can't see the
-        // noindex directive and can't de-index them. Allowing crawl + noindex in
-        // layout is the correct way to remove pages from Google's index.
-        disallow: ["/api/", "/_next/", "/admin"],
+        // NOTE: /_next/ is intentionally NOT listed here.
+        // Googlebot needs /_next/static/ to load JS/CSS bundles for page rendering.
+        // Disallowing /_next/ prevents proper rendering and hurts indexing quality.
+        // /claim, /dashboard, /upgrade are also NOT listed here — those routes have
+        // noindex in their layout.tsx files. Allowing crawl + noindex in layout is
+        // the correct way to remove pages from Google's index.
+        disallow: ["/api/", "/admin"],
       },
     ],
     sitemap: `${BASE_URL}/sitemap.xml`,
