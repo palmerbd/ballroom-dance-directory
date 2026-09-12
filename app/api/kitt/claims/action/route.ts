@@ -131,6 +131,35 @@ async function studioApprove(claimId: string): Promise<ActionResult> {
     .eq("id", claimId);
   if (updateErr) return { ok: false, error: updateErr.message, httpStatus: 500 };
 
+  // Fire ME warm-signal (non-blocking — approval succeeds even if ME is down)
+  const meWarmToken = process.env.ME_KITT_WARM_TOKEN ?? "";
+  if (meWarmToken) {
+    fetch("https://leads.sitetradein.com/api/inbound/warm-signal", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${meWarmToken}`,
+      },
+      body: JSON.stringify({
+        claim_id: claimId,
+        intent: "enroll",
+        studio: {
+          studio_id: 0,
+          slug: claim.studio_slug,
+          title: claim.studio_title,
+          domain: "",
+        },
+        contact: {
+          email: claim.owner_email,
+          name: claim.owner_name,
+        },
+        claim_status: "approved",
+        source: "bdd_claim",
+      }),
+      signal: AbortSignal.timeout(8000),
+    }).catch((err) => console.warn("[kitt/action] ME warm-signal failed:", err));
+  }
+
   const listingUrl   = `${SITE_URL}/studios/${claim.studio_slug}`;
   const dashboardUrl = `${SITE_URL}/dashboard`;
   const firstName    = claim.owner_name.split(" ")[0];
