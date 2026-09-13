@@ -1,6 +1,6 @@
 /**
  * GET /api/kitt/claims
- * ─────────────────────────────────────────────────────────────────────────────────
+ * ──────────────────────────────────────────────────────────────────────────
  * Server-to-server read-only endpoint for the KITT HQ dashboard.
  * Returns all studio claims + competition claims from Supabase.
  *
@@ -9,7 +9,7 @@
  *
  * Response shape:
  * {
- *   studio_claims:      ClaimRecord[],
+ *   studio_claims: ClaimRecord[],
  *   competition_claims: CompClaimRecord[],
  *   summary: { studio_pending, studio_approved, competition_pending, competition_approved },
  *   fetched_at: ISO string
@@ -17,9 +17,15 @@
  *
  * Status lifecycle:
  *   pending  = email link not yet clicked
- *   verified = email confirmed, awaiting Don's manual approval  <- NEEDS ACTION
+ *   verified = email confirmed, awaiting Don's manual approval <- NEEDS ACTION
  *   approved = live; owner has dashboard access
  *   rejected = denied
+ *
+ * Resilience note (2026-09-13): Supabase's free-tier API gateway can return a
+ * transient "Gateway Timeout" under load (see status.supabase.com — this hit
+ * BDD's Nano project and tripped KITT's bdd-claim-relay breaker). withRetry()
+ * retries each query once after a short backoff before surfacing a 500, since
+ * the failures observed were single-shot blips, not a sustained outage.
  */
 
 import { NextRequest, NextResponse } from "next/server";
@@ -30,6 +36,17 @@ function isAuthorized(req: NextRequest): boolean {
   return secret === process.env.KITT_HOOK_SECRET;
 }
 
+async function withRetry(fn: () => any, retries = 1): Promise<any> {
+  let result = await fn();
+  let attempt = 0;
+  while (result?.error && attempt < retries) {
+    attempt++;
+    await new Promise((r) => setTimeout(r, 800 * attempt));
+    result = await fn();
+  }
+  return result;
+}
+
 export async function GET(req: NextRequest) {
   if (!isAuthorized(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -38,25 +55,29 @@ export async function GET(req: NextRequest) {
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
   const [studiosResult, compsResult] = await Promise.all([
-    supabaseAdmin
-      .from("claims")
-      .select(
-        "id, studio_id, studio_slug, studio_title, owner_name, owner_email, owner_phone, status, tier, stripe_subscription_id, created_at, updated_at"
-      )
-      .or(
-        `status.in.(pending,verified,approved),and(status.eq.rejected,updated_at.gte.${thirtyDaysAgo})`
-      )
-      .order("created_at", { ascending: false }),
+    withRetry(() =>
+      supabaseAdmin
+        .from("claims")
+        .select(
+          "id, studio_id, studio_slug, studio_title, owner_name, owner_email, owner_phone, status, tier, stripe_subscription_id, created_at, updated_at"
+        )
+        .or(
+          `status.in.(pending,verified,approved),and(status.eq.rejected,updated_at.gte.${thirtyDaysAgo})`
+        )
+        .order("created_at", { ascending: false })
+    ),
 
-    supabaseAdmin
-      .from("competition_claims")
-      .select(
-        "id, competition_slug, competition_name, organizer_name, organizer_email, organizer_phone, status, tier, created_at, updated_at"
-      )
-      .or(
-        `status.in.(pending,verified,approved),and(status.eq.rejected,updated_at.gte.${thirtyDaysAgo})`
-      )
-      .order("created_at", { ascending: false }),
+    withRetry(() =>
+      supabaseAdmin
+        .from("competition_claims")
+        .select(
+          "id, competition_slug, competition_name, organizer_name, organizer_email, organizer_phone, status, tier, created_at, updated_at"
+        )
+        .or(
+          `status.in.(pending,verified,approved),and(status.eq.rejected,updated_at.gte.${thirtyDaysAgo})`
+        )
+        .order("created_at", { ascending: false })
+    ),
   ]);
 
   if (studiosResult.error) {
@@ -76,17 +97,17 @@ export async function GET(req: NextRequest) {
   }
 
   const studioClaims = studiosResult.data ?? [];
-  const compClaims   = compsResult.data   ?? [];
+  const compClaims = compsResult.data ?? [];
 
   return NextResponse.json(
     {
-      studio_claims:      studioClaims,
+      studio_claims: studioClaims,
       competition_claims: compClaims,
       summary: {
-        studio_pending:       studioClaims.filter(c => c.status === "verified").length,
-        studio_approved:      studioClaims.filter(c => c.status === "approved").length,
-        competition_pending:  compClaims.filter(c => c.status === "verified").length,
-        competition_approved: compClaims.filter(c => c.status === "approved").length,
+        studio_pending: studioClaims.filter((c: any) => c.status === "verified").length,
+        studio_approved: studioClaims.filter((c: any) => c.status === "approved").length,
+        competition_pending: compClaims.filter((c: any) => c.status === "verified").length,
+        competition_approved: compClaims.filter((c: any) => c.status === "approved").length,
       },
       fetched_at: new Date().toISOString(),
     },
