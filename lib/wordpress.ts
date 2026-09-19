@@ -26,6 +26,34 @@ async function fetchWP<T>(
   return res.json() as T;
 }
 
+// ── Concurrency-limited batch fetch ───────────────────────────────────────────
+// The WP backend runs on a small 2 vCPU / 2GB VPS with a 50-connection MySQL
+// cap. getAllStudios() below has to paginate through the full ~4,300-studio
+// dataset (~40+ pages), and it's called independently — each on its own
+// 1-hour ISR clock — from ~10 different routes (homepage, /styles, the style
+// landing pages, /studios/city/[city], /api/studios/all, the sitemap). If
+// several of those caches happen to expire close together, firing all pages
+// of all of them in parallel (Promise.all across everything) creates a
+// "cache stampede" that can exceed 40-80+ simultaneous requests against a box
+// that can't handle it — this caused the Sept 18 2026 fluid_duration spikes
+// (WP returned 5xx on ~52% of requests, 19s+ P75 latency). Capping how many
+// page-fetches run at once, per call, keeps peak concurrent load bounded
+// regardless of how many routes' caches expire together.
+async function fetchPagesLimited(fetchPage, pageCount, concurrency = 6) {
+  const results = new Array(pageCount);
+  let next = 0;
+  async function worker() {
+    while (next < pageCount) {
+      const i = next++;
+      results[i] = await fetchPage(i + 1);
+    }
+  }
+  await Promise.all(
+    Array.from({ length: Math.min(concurrency, pageCount) }, worker)
+  );
+  return results;
+}
+
 // ── HTML entity decoder ───────────────────────────────────────────────────────
 // WordPress REST API returns HTML entities in title.rendered (e.g. &#8217; for ').
 // Decode them so JSX renders clean text instead of literal entity strings.
@@ -230,8 +258,11 @@ export async function getAllStudios(perPage = 100): Promise<StudioCard[]> {
     url.searchParams.set("status", "publish");
     url.searchParams.set("page", "1");
 
+    // 2h revalidate (was 1h) — this is catalog-wide aggregate data (homepage,
+    // style pages, sitemap), not a single studio's detail page, so it doesn't
+    // need hourly freshness. Longer window = fewer stampede opportunities.
     const res1 = await fetch(url.toString(), {
-      next: { revalidate: 3600 },
+      next: { revalidate: 7200 },
       headers: { "Content-Type": "application/json" },
     });
     if (!res1.ok) throw new Error(`WP API ${res1.status}`);
@@ -239,19 +270,24 @@ export async function getAllStudios(perPage = 100): Promise<StudioCard[]> {
     const totalPages = Number(res1.headers.get("X-WP-TotalPages") || "1");
     const page1: Record<string, unknown>[] = await res1.json();
 
-    // Fetch remaining pages in parallel
-    const rest = await Promise.all(
-      Array.from({ length: Math.max(0, totalPages - 1) }, (_, i) => {
+    // Fetch remaining pages (2..totalPages) with bounded concurrency (see
+    // fetchPagesLimited) — NOT all-at-once — to avoid overwhelming the small
+    // WP VPS. fetchPagesLimited's callback receives a 1-based index (1..N)
+    // for N = totalPages-1 remaining pages, so WP page number = index + 1.
+    const restPages = await fetchPagesLimited(
+      (i) => {
         const u = new URL(url.toString());
-        u.searchParams.set("page", String(i + 2));
+        u.searchParams.set("page", String(i + 1));
         return fetch(u.toString(), {
-          next: { revalidate: 3600 },
+          next: { revalidate: 7200 },
           headers: { "Content-Type": "application/json" },
         }).then((r) => r.json() as Promise<Record<string, unknown>[]>);
-      })
+      },
+      Math.max(0, totalPages - 1),
+      6
     );
 
-    const all = [page1, ...rest].flat();
+    const all = [page1, ...restPages].flat();
     return all.map(mapWPPost).map(toCard);
   } catch {
     return [];
