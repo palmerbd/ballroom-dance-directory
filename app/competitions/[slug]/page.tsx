@@ -106,6 +106,9 @@ function EventSchema({ comp }: { comp: Competition }) {
   const approxYear = comp.typicalMonth >= curMonth ? curYear : curYear + 1;
   const startDate  = comp.dateStart ??
     `${approxYear}-${String(comp.typicalMonth).padStart(2, "0")}-01`;
+  // Always supply endDate too — Google flags it as missing otherwise, even
+  // though it's optional. Default to startDate for TBA / single-day events.
+  const endDate    = comp.dateEnd ?? startDate;
 
   const schema = {
     "@context": "https://schema.org",
@@ -126,7 +129,7 @@ function EventSchema({ comp }: { comp: Competition }) {
       },
     },
     startDate,
-    ...(comp.dateEnd && { endDate: comp.dateEnd }),
+    endDate,
     eventStatus:         "https://schema.org/EventScheduled",
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     // ── performer (required by Google) ──────────────────────────────────────
