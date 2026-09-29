@@ -2,9 +2,24 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { DANCE_STYLES, STYLE_LABELS } from "@/types/studio";
 import { getAllStudios } from "@/lib/wordpress";
+import { DANCE_BOOKING_RANK } from "@/lib/dancebookingrank";
 import styles from "./hero-search.module.css";
 
 export const revalidate = 86400;
+
+// "Where Lessons Are Booked" — Dance Booking Rank metro reports. Live reports come
+// from lib/dancebookingrank.ts (one entry per published city, added by Don's
+// dance-market-report skill). Until there are 6 live metros, the grid is topped up
+// with "coming soon" cards that link to the metro's existing studio listing page.
+// A coming-soon card drops out automatically once that city's report is published.
+const UPCOMING_REPORT_METROS = [
+  { city: "Dallas",        stateAbbr: "TX", cityPage: "/studios/city/dallas" },
+  { city: "Houston",       stateAbbr: "TX", cityPage: "/studios/city/houston" },
+  { city: "Austin",        stateAbbr: "TX", cityPage: "/studios/city/austin" },
+  { city: "San Antonio",   stateAbbr: "TX", cityPage: "/studios/city/san-antonio" },
+  { city: "Oklahoma City", stateAbbr: "OK", cityPage: "/studios/city/oklahoma-city" },
+];
+const REPORT_GRID_MIN_CARDS = 6;
 
 export const metadata: Metadata = {
   title: "Ballroom Dance Studios & Lessons Near You | Ballroom Dance Directory",
@@ -202,6 +217,64 @@ export default async function HomePage() {
                 </p>
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Where Lessons Are Booked — Dance Booking Rank metro reports */}
+      <section className="py-20 px-6" style={{ background: "#0c1428" }}>
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <p className="text-xs font-bold tracking-[0.15em] uppercase mb-3" style={{ color: "#e8c560" }}>
+              Where Lessons Are Booked
+            </p>
+            <h2 className="font-display text-white font-bold"
+              style={{ fontSize: "clamp(1.75rem, 4vw, 2.5rem)" }}>
+              See Which Studios Are Booking Lessons
+            </h2>
+            <p className="mt-4 text-gray-300 max-w-2xl mx-auto">
+              Metro-by-metro rankings of the studios that actually show up when people search
+              for lessons, on Google and in AI answers.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {DANCE_BOOKING_RANK.map((m) => (
+              <Link key={m.slug} href={`/dancebookingrank/${m.slug}`}
+                className="group p-6 rounded-xl border transition-all duration-200 hover:shadow-xl"
+                style={{ background: "#f9f6f0", borderColor: "#e8c560" }}>
+                <p className="text-xs font-bold tracking-wide uppercase mb-2" style={{ color: "#b8922a" }}>
+                  Report live
+                </p>
+                <h3 className="font-display font-bold text-gray-900 text-2xl mb-1
+                               group-hover:text-yellow-700 transition-colors">
+                  {m.city}, {m.stateAbbr}
+                </h3>
+                <p className="text-gray-600 text-sm">Top studios ranked by search and AI visibility.</p>
+                <p className="mt-4 text-xs font-bold tracking-wide uppercase" style={{ color: "#b8922a" }}>
+                  See the Rankings →
+                </p>
+              </Link>
+            ))}
+            {UPCOMING_REPORT_METROS
+              .filter((u) => !DANCE_BOOKING_RANK.some((m) => m.city === u.city && m.stateAbbr === u.stateAbbr))
+              .slice(0, Math.max(0, REPORT_GRID_MIN_CARDS - DANCE_BOOKING_RANK.length))
+              .map((u) => (
+                <Link key={u.cityPage} href={u.cityPage}
+                  className="group p-6 rounded-xl border border-white/15 transition-all duration-200
+                             hover:border-yellow-400"
+                  style={{ background: "rgba(255,255,255,0.04)" }}>
+                  <p className="text-xs font-bold tracking-wide uppercase mb-2 text-gray-400">
+                    Report coming soon
+                  </p>
+                  <h3 className="font-display font-bold text-white text-2xl mb-1">
+                    {u.city}, {u.stateAbbr}
+                  </h3>
+                  <p className="text-gray-400 text-sm">Rankings in progress. Browse local studios now.</p>
+                  <p className="mt-4 text-xs font-bold tracking-wide uppercase" style={{ color: "#e8c560" }}>
+                    Browse Studios →
+                  </p>
+                </Link>
+              ))}
           </div>
         </div>
       </section>
