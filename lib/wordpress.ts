@@ -39,8 +39,12 @@ async function fetchWP<T>(
 // (WP returned 5xx on ~52% of requests, 19s+ P75 latency). Capping how many
 // page-fetches run at once, per call, keeps peak concurrent load bounded
 // regardless of how many routes' caches expire together.
-async function fetchPagesLimited(fetchPage, pageCount, concurrency = 6) {
-  const results = new Array(pageCount);
+async function fetchPagesLimited<T>(
+  fetchPage: (i: number) => Promise<T>,
+  pageCount: number,
+  concurrency = 6
+): Promise<T[]> {
+  const results = new Array<T>(pageCount);
   let next = 0;
   async function worker() {
     while (next < pageCount) {
@@ -289,8 +293,13 @@ export async function getAllStudios(perPage = 100): Promise<StudioCard[]> {
 
     const all = [page1, ...restPages].flat();
     return all.map(mapWPPost).map(toCard);
-  } catch {
-    return [];
+  } catch (err) {
+    // Re-throw instead of returning []. An empty list made every caller think the
+    // directory had zero studios during WP API hiccups: city/style pages cached a
+    // 308 redirect for 24h, hubs rendered empty, and the sitemap could ship empty.
+    // Throwing lets Next ISR keep serving the last good page (or a temporary 5xx
+    // on a cold render), which Google treats as transient instead of as content loss.
+    throw err;
   }
 }
 
@@ -367,8 +376,12 @@ export async function getStudio(slug: string): Promise<Studio | null> {
     }
 
     return studio;
-  } catch {
-    return null;
+  } catch (err) {
+    // Only a genuine "no such slug" should return null (-> notFound/404). A failed
+    // WP fetch used to fall through here too, so live studios got served, and
+    // ISR-cached for up to 24h, as 404s whenever the WP VPS was slow. Those showed
+    // up in Search Console as hundreds of "Not found (404)" real studio URLs.
+    throw err;
   }
 }
 
