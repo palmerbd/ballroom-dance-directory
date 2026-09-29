@@ -191,7 +191,8 @@ export default async function StudioPage({
   const cityStudios = studio.city
     ? (await getStudiosByCity(
         studio.city.toLowerCase().replace(/\s+/g, "-")
-      )).filter((s) => s.slug !== studio.slug)
+      ).catch(() => [] as StudioCard[])) // related list is optional — never fail the page over it
+        .filter((s) => s.slug !== studio.slug)
     : [];
 
   // Style-matched related: same city, shares at least one dance style \u2014 prioritise paid
