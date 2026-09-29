@@ -7,9 +7,9 @@ import styles from "./hero-search.module.css";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Private Dance Lessons Directory — Find Elite Studios Near You",
+  title: "Ballroom Dance Studios & Lessons Near You | Ballroom Dance Directory",
   description:
-    "Discover the finest private dance instruction studios across the United States. Fred Astaire, Arthur Murray, Dance With Me, and elite independent studios.",
+    "Search 4,200+ ballroom dance studios across the U.S. Compare Arthur Murray, Fred Astaire, Dance With Me and independent studios for private lessons and wedding dance.",
   alternates: {
     canonical: "https://www.ballroomdancedirectory.com",
   },
