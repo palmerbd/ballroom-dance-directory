@@ -1,71 +1,52 @@
 @echo off
-echo ================================================
-echo  Dance Directory - Git Sync and Push
-echo ================================================
+REM ==========================================================================
+REM  Dance Directory - safe sync and push   (rewritten 2026-09-29)
+REM
+REM  The old version of this script backed up 7 files to TEMP, ran
+REM  "git reset --hard origin/main", then copied those stale backups back over
+REM  the fresh checkout. That silently reverted newer work already on GitHub,
+REM  e.g. the Dance Booking Rank entries in app/sitemap.ts (see
+REM  docs/dancebookingrank.md) and the Sept 2026 WordPress error-handling fixes.
+REM
+REM  This version never resets, never overwrites files and never commits for
+REM  you. It only rebases the commits you already made on top of origin/main
+REM  and pushes them. Commit your changes yourself first (git add <files>,
+REM  git commit -m "...").
+REM ==========================================================================
 cd /d "%~dp0"
 echo Working in: %CD%
 
-echo.
-echo [1/7] Removing stale git lock files...
-if exist .git\index.lock (del /f .git\index.lock && echo   Deleted index.lock)
-if exist .git\HEAD.lock (del /f .git\HEAD.lock && echo   Deleted HEAD.lock)
-if exist .git\config.lock (del /f .git\config.lock && echo   Deleted config.lock)
+if exist .git\index.lock del /f .git\index.lock
+if exist .git\HEAD.lock del /f .git\HEAD.lock
+if exist .git\config.lock del /f .git\config.lock
 
 echo.
-echo [2/7] Backing up our new/modified files to TEMP...
-md "%TEMP%\dance_backup_2026" 2>nul
-copy /y "app\sitemap.ts" "%TEMP%\dance_backup_2026\sitemap.ts" >nul
-copy /y "app\api\stripe\webhook\route.ts" "%TEMP%\dance_backup_2026\webhook_route.ts" >nul
-copy /y "app\studios\city\[city]\page.tsx" "%TEMP%\dance_backup_2026\city_page.tsx" >nul
-copy /y "app\studios\[slug]\page.tsx" "%TEMP%\dance_backup_2026\slug_page.tsx" >nul
-copy /y "docs\architecture.html" "%TEMP%\dance_backup_2026\architecture.html" >nul
-copy /y "app\competitions\[slug]\page.tsx" "%TEMP%\dance_backup_2026\comp_slug_page.tsx" >nul
-copy /y "scripts\generate-descriptions.ts" "%TEMP%\dance_backup_2026\generate-descriptions.ts" >nul
-echo   Files backed up to %TEMP%\dance_backup_2026\
-
-echo.
-echo [3/7] Fetching latest from GitHub...
+echo [1/4] Fetching latest from GitHub...
 git fetch origin
-if %ERRORLEVEL% neq 0 (echo ERROR: git fetch failed & pause & exit /b 1)
+if errorlevel 1 (echo ERROR: git fetch failed & pause & exit /b 1)
 
 echo.
-echo [4/7] Resetting working tree to origin/main...
-git reset --hard origin/main
-if %ERRORLEVEL% neq 0 (echo ERROR: git reset failed & pause & exit /b 1)
+echo [2/4] Checking for uncommitted changes...
+git diff --quiet
+if errorlevel 1 (echo You have uncommitted changes. Commit or stash them first, then run this again. & git status --short & pause & exit /b 1)
+git diff --cached --quiet
+if errorlevel 1 (echo You have staged but uncommitted changes. Commit them first, then run this again. & git status --short & pause & exit /b 1)
+
+set AHEAD=0
+for /f %%i in ('git rev-list --count origin/main..HEAD') do set AHEAD=%%i
+if "%AHEAD%"=="0" (echo Nothing to push: no local commits ahead of origin/main. & pause & exit /b 0)
+echo   %AHEAD% local commit(s) to push.
 
 echo.
-echo [5/7] Restoring our modifications on top of origin/main...
-copy /y "%TEMP%\dance_backup_2026\sitemap.ts" "app\sitemap.ts" >nul && echo   Restored sitemap.ts
-copy /y "%TEMP%\dance_backup_2026\webhook_route.ts" "app\api\stripe\webhook\route.ts" >nul && echo   Restored webhook route
-copy /y "%TEMP%\dance_backup_2026\city_page.tsx" "app\studios\city\[city]\page.tsx" >nul && echo   Restored city page
-copy /y "%TEMP%\dance_backup_2026\slug_page.tsx" "app\studios\[slug]\page.tsx" >nul && echo   Restored studio detail page
-copy /y "%TEMP%\dance_backup_2026\architecture.html" "docs\architecture.html" >nul && echo   Restored architecture.html
-copy /y "%TEMP%\dance_backup_2026\comp_slug_page.tsx" "app\competitions\[slug]\page.tsx" >nul && echo   Restored competition detail page (Event schema fix)
-copy /y "%TEMP%\dance_backup_2026\generate-descriptions.ts" "scripts\generate-descriptions.ts" >nul && echo   Restored generate-descriptions.ts
-echo   New city x style page already in place
+echo [3/4] Rebasing your commits on top of origin/main...
+git rebase origin/main
+if errorlevel 1 (echo ERROR: rebase hit a conflict. Aborting so nothing is lost. Resolve it by hand. & git rebase --abort & pause & exit /b 1)
 
 echo.
-echo [6/7] Staging our changes...
-git add "app/studios/city/[city]/[style]/page.tsx"
-git add "app/sitemap.ts"
-git add "app/studios/city/[city]/page.tsx"
-git add "app/studios/[slug]/page.tsx"
-git add "app/api/stripe/webhook/route.ts"
-git add "docs/architecture.html"
-git add "app/competitions/[slug]/page.tsx"
-git add "scripts/generate-descriptions.ts"
-echo.
-git status --short
+echo [4/4] Pushing to GitHub...
+git push origin HEAD:main
+if errorlevel 1 (echo ERROR: git push failed & pause & exit /b 1)
 
 echo.
-echo [7/7] Committing and pushing to GitHub...
-git commit -m "feat: city x style SEO pages, style linking, GHL cancel webhook, Event schema fix, description generator"
-if %ERRORLEVEL% neq 0 (echo ERROR: git commit failed & pause & exit /b 1)
-git push
-if %ERRORLEVEL% neq 0 (echo ERROR: git push failed & pause & exit /b 1)
-
-echo.
-echo ================================================
-echo  SUCCESS! All changes pushed to GitHub.
-echo ================================================
+echo SUCCESS: pushed %AHEAD% commit(s) on top of the latest origin/main.
 pause
