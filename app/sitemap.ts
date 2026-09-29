@@ -3,6 +3,7 @@ import { getAllStudios, getBlogSlugs, getStudiosByCity } from "@/lib/wordpress";
 import { COMPETITIONS } from "@/lib/competitions-data";
 import { COMP_REGION_LABELS, COMP_STYLE_LABELS } from "@/types/competition";
 import { DANCE_STYLES } from "@/types/studio";
+import { DANCE_BOOKING_RANK } from "@/lib/dancebookingrank";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.ballroomdancedirectory.com";
 const WP_API_URL = process.env.NEXT_PUBLIC_WP_API_URL || "http://5.78.218.239/wp-json";
@@ -103,6 +104,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.75,
   }));
 
+  // Dance Booking Rank city reports (static pages, see lib/dancebookingrank.ts)
+  const danceBookingRankEntries: MetadataRoute.Sitemap = DANCE_BOOKING_RANK.flatMap((c) => [
+    {
+      url: `${BASE_URL}/dancebookingrank/${c.slug}`,
+      lastModified: new Date(`${c.published}T00:00:00Z`),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/dancebookingrank/${c.slug}/seo-details`,
+      lastModified: new Date(`${c.published}T00:00:00Z`),
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+    },
+  ]);
+
   // ── Competition routes ──────────────────────────────────────────────────────
   const competitionEntries: MetadataRoute.Sitemap = COMPETITIONS.map((c) => ({
     url: `${BASE_URL}/competitions/${c.slug}`,
@@ -137,6 +154,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...cityStyleEntries,
     ...studioEntries,
     ...blogEntries,
+    ...danceBookingRankEntries,
     ...competitionEntries,
     ...competitionRegionEntries,
     ...competitionStyleEntries,
