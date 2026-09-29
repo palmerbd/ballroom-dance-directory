@@ -1,7 +1,8 @@
 @AGENTS.md
 
 ## Keep: Dance Booking Rank pages
-`public/dancebookingrank/**`, the two `/dancebookingrank/...` rewrites in `next.config.ts`,
-`lib/dancebookingrank.ts` and `danceBookingRankEntries` in `app/sitemap.ts` are live city
-report pages (added 2026-09-29, published from Don's Smoak laptop session). Keep them when
-editing, regenerating or resetting files. Details: `docs/dancebookingrank.md`.
+`/dancebookingrank/<city>` and `/dancebookingrank/<city>/seo-details` are live city report pages
+(published from Don's Smoak laptop session). Keep `content/dancebookingrank/*.json`,
+`lib/dancebookingrank.ts`, `lib/dancebookingrank-styles.ts`, `components/DanceBookingRank.tsx`,
+`app/dancebookingrank/**` and `danceBookingRankEntries` in `app/sitemap.ts` when editing,
+regenerating or resetting files. Details: `docs/dancebookingrank.md`.

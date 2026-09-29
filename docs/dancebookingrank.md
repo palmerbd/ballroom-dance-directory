@@ -1,44 +1,54 @@
-# Dance Booking Rank pages — keep these (added 2026-09-29)
+# Dance Booking Rank pages — keep these (added 2026-09-29, moved into the site layout the same day)
 
 These are live, published pages. Please keep them whenever you edit, regenerate
 or reset files in this repo.
 
-| URL | File |
+| URL | What it is |
 |---|---|
-| `/dancebookingrank/<city>-<st>` (e.g. `/dancebookingrank/fort-worth-tx`) | `public/dancebookingrank/<city>-<st>/index.html` — the city's ranked list of dance studios |
-| `/dancebookingrank/<city>-<st>/seo-details` | `public/dancebookingrank/<city>-<st>/seo-details.html` — the full SEO / AI-visibility report behind it |
+| `/dancebookingrank/<city>-<st>` (e.g. `/dancebookingrank/fort-worth-tx`) | The city's ranked list of dance studios |
+| `/dancebookingrank/<city>-<st>/seo-details` | The full SEO / AI-visibility report behind it |
 
-## What makes them work (don't remove)
+## How they're built (don't remove)
 
-- `public/dancebookingrank/**` — one folder per city, two static HTML files each.
-  They are complete, self-contained pages (inline CSS, no React, no WordPress).
-- `next.config.ts` → `rewrites()`: the two `/dancebookingrank/...` rules that map
-  the clean URLs to those files.
-- `lib/dancebookingrank.ts` — the list of published cities.
-- `app/sitemap.ts` — `danceBookingRankEntries`, built from that list.
+- `content/dancebookingrank/<city>-<st>.json` — one generated file per city: titles,
+  hero text, schema, and the two body fragments. **Generated from audit data — don't
+  hand-edit; changes are lost on the next refresh.**
+- `lib/dancebookingrank.ts` — types, the list of published cities (one import + one
+  entry per city) and `getDbrCity()`.
+- `app/dancebookingrank/[city]/page.tsx` and `app/dancebookingrank/[city]/seo-details/page.tsx`
+  — the two routes; metadata, canonical URLs, static params.
+- `components/DanceBookingRank.tsx` — the shared page shell (site hero + breadcrumb,
+  body, browse CTA, footer), rendered inside the root layout so the normal SiteNav shows.
+- `lib/dancebookingrank-styles.ts` — styles for the fragments, all scoped under `.dbr`.
+- `app/sitemap.ts` — `danceBookingRankEntries`, built from the list.
 
 ## Where they come from
 
-Don's `dance-market-report` skill, run from his Smoak laptop Cowork session:
-a SiteTradeIn site audit of every dance/ballroom studio in a city plus live
-ChatGPT, Perplexity and Google AI checks, then two pages built from the same data.
-Expect roughly one new city at a time, as commits titled `dancebookingrank: <city>`
-that only add a new `public/dancebookingrank/<city>-<st>/` folder and one line in
-`lib/dancebookingrank.ts`. Pull before you push.
+Don's `dance-market-report` skill, run from his Smoak laptop Cowork session: a
+SiteTradeIn site audit of every dance/ballroom studio in a city plus live ChatGPT,
+Perplexity and Google AI checks. Expect roughly one new city at a time, as commits
+titled `dancebookingrank: <city>` that only add `content/dancebookingrank/<city>-<st>.json`
+and one import + list entry in `lib/dancebookingrank.ts`. Pull before you push.
 
 ## Things that would wipe them
 
-- Resetting to an older tree, or restoring an older `app/sitemap.ts` / `next.config.ts`
-  over the current one. `git_push.bat` does exactly this for `app/sitemap.ts`
-  (backs it up, `git reset --hard origin/main`, copies the old file back) — rebase
-  instead, or re-add `danceBookingRankEntries` afterwards.
-- Adding an `app/dancebookingrank/...` route or a catch-all that claims these paths.
-- A cleanup that deletes "unknown" files from `public/`.
+- Resetting to an older tree, or restoring an older `app/sitemap.ts` over the current one.
+  `git_push.bat` does exactly this for `app/sitemap.ts` (backs it up, `git reset --hard
+  origin/main`, copies the old file back) — rebase instead, or re-add
+  `danceBookingRankEntries` afterwards.
+- Deleting "unused-looking" files: `content/`, `components/DanceBookingRank.tsx` or
+  `lib/dancebookingrank*.ts`.
+- A catch-all route or redirect that claims `/dancebookingrank/...`.
+- Re-adding the old static setup (`public/dancebookingrank/` files or the
+  `/dancebookingrank/...` rewrites in `next.config.ts`, both removed on 2026-09-29).
+  Rewrites run before dynamic routes, so they would send these URLs to files that
+  no longer exist and the pages would 404.
 
 ## What the pages depend on
 
-They link to `/logo.png`, `/studios`, `/studios/city/<city>`, `/blog` and each studio's
-`/studios/<slug>` listing page. If you rename or remove any of those, tell Don so the
-city pages can be regenerated. They do not call WordPress, so a WP outage doesn't affect them.
+The fragments link to each studio's `/studios/<slug>` listing page, the city page
+(`/studios/city/<city>`) and use the site chrome from the root layout. If you
+rename or remove studio or city URLs, tell Don so the city pages can be regenerated.
+They don't call WordPress at request time, so a WP outage doesn't affect them.
 
 Questions: log them on KITT under `bdd-directory`.

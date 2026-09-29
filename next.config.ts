@@ -31,10 +31,6 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       { source: "/petrosyan", destination: "/petrosyan.html" },
-      // Dance Booking Rank city reports (static HTML in public/dancebookingrank/<city>/,
-      // see lib/dancebookingrank.ts): index.html = ranking, seo-details.html = full report.
-      { source: "/dancebookingrank/:city", destination: "/dancebookingrank/:city/index.html" },
-      { source: "/dancebookingrank/:city/seo-details", destination: "/dancebookingrank/:city/seo-details.html" },
     ];
   },
 
