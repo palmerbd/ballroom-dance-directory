@@ -11,6 +11,7 @@
  * don't hand-edit them. To add a city: add its JSON, import it below, add it to the list.
  */
 import fortWorthTx from "@/content/dancebookingrank/fort-worth-tx.json";
+import dallasTx from "@/content/dancebookingrank/dallas-tx.json";
 
 export type DbrPage = {
   title: string;        // <title> without the site suffix (the layout template adds it)
@@ -35,6 +36,7 @@ export type DbrCity = {
 
 export const DANCE_BOOKING_RANK: DbrCity[] = [
   fortWorthTx,
+  dallasTx,
 ];
 
 export function getDbrCity(slug: string): DbrCity | undefined {
