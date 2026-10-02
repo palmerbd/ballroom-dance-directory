@@ -57,11 +57,6 @@ const nextConfig: NextConfig = {
       // These slugs were created during the initial Google Places scrape before
       // slug deduplication ran; Google crawled them and now they 404.
       {
-        source: "/studios/arthur-murray-dance-studio-temecula-temecula",
-        destination: "/studios",
-        permanent: true,
-      },
-      {
         source: "/studios/arthur-murray-dance-studio-ventura-ventura-4",
         destination: "/studios",
         permanent: true,
@@ -79,26 +74,6 @@ const nextConfig: NextConfig = {
       },
 
       // ââ Deleted / removed studios â main directory ââââââââââââââââââââââââ
-      {
-        source: "/studios/the-ballet-school-performing-arts-walnut-creek",
-        destination: "/studios",
-        permanent: true,
-      },
-      {
-        source: "/studios/top-tier-dance-coaching-corpus-christi",
-        destination: "/studios",
-        permanent: true,
-      },
-      {
-        source: "/studios/fred-astaire-dance-studios-princeton",
-        destination: "/studios",
-        permanent: true,
-      },
-      {
-        source: "/studios/mitchells-dance-studio-beverly",
-        destination: "/studios",
-        permanent: true,
-      },
 
       // ââ Stale city / cityÃstyle routes âââââââââââââââââââââââââââââââââââ
       // lafayette-township was never a supported city slug; no studios exist there.
@@ -133,11 +108,6 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/studios/arthur-murray-dance-studio-of-plano-plano",
-        destination: "/studios",
-        permanent: true,
-      },
-      {
         source: "/studios/arthur-murray-dance-studio-of-stockton-stockton-3",
         destination: "/studios",
         permanent: true,
@@ -154,29 +124,9 @@ const nextConfig: NextConfig = {
         destination: "/studios",
         permanent: true,
       },
-      {
-        source: "/studios/my-heels-on-dance-houston",
-        destination: "/studios",
-        permanent: true,
-      },
-      {
-        source: "/studios/clarity-dance-academy-midland",
-        destination: "/studios",
-        permanent: true,
-      },
-      {
-        source: "/studios/pasofino-salsa-bachata-dance-studio-atlanta",
-        destination: "/studios",
-        permanent: true,
-      },
       // Malformed slug (2-26 appears to be a scrape artifact in the name field)
       {
         source: "/studios/swingtime-center-dancing-2-26-fort-worth-2",
-        destination: "/studios",
-        permanent: true,
-      },
-      {
-        source: "/studios/you-can-dance-dallas-addison",
         destination: "/studios",
         permanent: true,
       },
@@ -225,11 +175,6 @@ const nextConfig: NextConfig = {
       // Same scrape artifact as batches 1â2. GSC sources:
       //   - "Duplicate, Google chose different canonical": reno-reno-2
       //   - "Crawled - currently not indexed": beaverton-beaverton-2, torrance-torrance-2
-      {
-        source: "/studios/arthur-murray-dance-studio-reno-reno-2",
-        destination: "/studios",
-        permanent: true,
-      },
       {
         source: "/studios/arthur-murray-dance-studio-beaverton-beaverton-2",
         destination: "/studios",
