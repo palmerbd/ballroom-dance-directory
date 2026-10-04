@@ -20,6 +20,12 @@ import theWoodlandsTx from "@/content/dancebookingrank/the-woodlands-tx.json";
 import sugarLandTx from "@/content/dancebookingrank/sugar-land-tx.json";
 import austinTx from "@/content/dancebookingrank/austin-tx.json";
 import sanAntonioTx from "@/content/dancebookingrank/san-antonio-tx.json";
+import columbusOh from "@/content/dancebookingrank/columbus-oh.json";
+import cincinnatiOh from "@/content/dancebookingrank/cincinnati-oh.json";
+import clevelandOh from "@/content/dancebookingrank/cleveland-oh.json";
+import daytonOh from "@/content/dancebookingrank/dayton-oh.json";
+import akronOh from "@/content/dancebookingrank/akron-oh.json";
+import toledoOh from "@/content/dancebookingrank/toledo-oh.json";
 
 export type DbrPage = {
   title: string;        // <title> without the site suffix (the layout template adds it)
@@ -53,6 +59,12 @@ export const DANCE_BOOKING_RANK: DbrCity[] = [
   sugarLandTx,
   austinTx,
   sanAntonioTx,
+  columbusOh,
+  cincinnatiOh,
+  clevelandOh,
+  daytonOh,
+  akronOh,
+  toledoOh,
 ];
 
 export function getDbrCity(slug: string): DbrCity | undefined {
