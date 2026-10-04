@@ -12,6 +12,12 @@
  */
 import fortWorthTx from "@/content/dancebookingrank/fort-worth-tx.json";
 import dallasTx from "@/content/dancebookingrank/dallas-tx.json";
+import planoTx from "@/content/dancebookingrank/plano-tx.json";
+import carrolltonTx from "@/content/dancebookingrank/carrollton-tx.json";
+import houstonTx from "@/content/dancebookingrank/houston-tx.json";
+import westHoustonTx from "@/content/dancebookingrank/west-houston-tx.json";
+import theWoodlandsTx from "@/content/dancebookingrank/the-woodlands-tx.json";
+import sugarLandTx from "@/content/dancebookingrank/sugar-land-tx.json";
 
 export type DbrPage = {
   title: string;        // <title> without the site suffix (the layout template adds it)
@@ -37,6 +43,12 @@ export type DbrCity = {
 export const DANCE_BOOKING_RANK: DbrCity[] = [
   fortWorthTx,
   dallasTx,
+  planoTx,
+  carrolltonTx,
+  houstonTx,
+  westHoustonTx,
+  theWoodlandsTx,
+  sugarLandTx,
 ];
 
 export function getDbrCity(slug: string): DbrCity | undefined {
