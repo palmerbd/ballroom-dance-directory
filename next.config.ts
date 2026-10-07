@@ -138,6 +138,13 @@ const nextConfig: NextConfig = {
         destination: "/studios/city/new-york-city",
         permanent: true,
       },
+      // Bare /studios/city (no city in the path) gets crawled from URL trimming and 404s;
+      // send it to the city index instead.
+      {
+        source: "/studios/city",
+        destination: "/cities",
+        permanent: true,
+      },
 
       // ââ Invalid cityÃstyle (Toledo not in directory) âââââââââââââââââââââ
       {
