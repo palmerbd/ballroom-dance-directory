@@ -5,6 +5,10 @@ import { COMP_REGION_LABELS, COMP_STYLE_LABELS } from "@/types/competition";
 import { DANCE_STYLES } from "@/types/studio";
 import { DANCE_BOOKING_RANK } from "@/lib/dancebookingrank";
 
+// Regenerate daily so studio <lastmod> values (real WP modified dates) stay current
+// between deploys; otherwise the sitemap is frozen at build time.
+export const revalidate = 86400;
+
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.ballroomdancedirectory.com";
 const WP_API_URL = process.env.NEXT_PUBLIC_WP_API_URL || "http://5.78.218.239/wp-json";
 
