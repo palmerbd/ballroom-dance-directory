@@ -251,6 +251,11 @@ function toCard(s: Studio): StudioCard {
 
 const FIELDS = "_fields=id,slug,title,excerpt,acf";
 
+// getAllStudios() cache window: 24h base, plus 15 min per extra page (see note
+// inside getAllStudios) so the ~43 page entries refresh spread out, not all at once.
+const STUDIO_LIST_REVALIDATE = 86400;
+const STUDIO_LIST_STAGGER = 900;
+
 // ── Public API ────────────────────────────────────────────────────────────────
 
 /** All published studios as lightweight cards — fetches all pages automatically */
@@ -262,11 +267,16 @@ export async function getAllStudios(perPage = 100): Promise<StudioCard[]> {
     url.searchParams.set("status", "publish");
     url.searchParams.set("page", "1");
 
-    // 2h revalidate (was 1h) — this is catalog-wide aggregate data (homepage,
-    // style pages, sitemap), not a single studio's detail page, so it doesn't
-    // need hourly freshness. Longer window = fewer stampede opportunities.
+    // Catalog-wide aggregate data (homepage, city/style pages, sitemap), not a
+    // single studio's detail page (getStudio has its own per-slug fetch), so a
+    // 24h window is plenty. Oct 2026: with a 2h window every one of the ~43 page
+    // entries expired together and each got ~20 concurrent re-fetches per expiry
+    // (Vercel showed ~130 cache writes/entry/12h, ~1K WP calls per burst); when a
+    // crawl spike landed on that, the WP origin returned 525/500 and city pages
+    // 5xx'd. Each page now gets a different window (staggered 15 min apart) so the
+    // entries never all refresh at the same moment.
     const res1 = await fetch(url.toString(), {
-      next: { revalidate: 7200 },
+      next: { revalidate: STUDIO_LIST_REVALIDATE },
       headers: { "Content-Type": "application/json" },
     });
     if (!res1.ok) throw new Error(`WP API ${res1.status}`);
@@ -283,9 +293,12 @@ export async function getAllStudios(perPage = 100): Promise<StudioCard[]> {
         const u = new URL(url.toString());
         u.searchParams.set("page", String(i + 1));
         return fetch(u.toString(), {
-          next: { revalidate: 7200 },
+          next: { revalidate: STUDIO_LIST_REVALIDATE + i * STUDIO_LIST_STAGGER },
           headers: { "Content-Type": "application/json" },
-        }).then((r) => r.json() as Promise<Record<string, unknown>[]>);
+        }).then((r) => {
+          if (!r.ok) throw new Error(`WP API ${r.status} (page ${i + 1})`);
+          return r.json() as Promise<Record<string, unknown>[]>;
+        });
       },
       Math.max(0, totalPages - 1),
       6
