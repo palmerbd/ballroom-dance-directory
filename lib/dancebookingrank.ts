@@ -30,6 +30,11 @@ import chicagoIl from "@/content/dancebookingrank/chicago-il.json";
 import evanstonIl from "@/content/dancebookingrank/evanston-il.json";
 import schaumburgIl from "@/content/dancebookingrank/schaumburg-il.json";
 import auroraIl from "@/content/dancebookingrank/aurora-il.json";
+import sanFranciscoCa from "@/content/dancebookingrank/san-francisco-ca.json";
+import oaklandCa from "@/content/dancebookingrank/oakland-ca.json";
+import sanJoseCa from "@/content/dancebookingrank/san-jose-ca.json";
+import fremontCa from "@/content/dancebookingrank/fremont-ca.json";
+import sanMateoCa from "@/content/dancebookingrank/san-mateo-ca.json";
 
 export type DbrPage = {
   title: string;        // <title> without the site suffix (the layout template adds it)
@@ -73,6 +78,11 @@ export const DANCE_BOOKING_RANK: DbrCity[] = [
   evanstonIl,
   schaumburgIl,
   auroraIl,
+  sanFranciscoCa,
+  oaklandCa,
+  sanJoseCa,
+  fremontCa,
+  sanMateoCa,
 ];
 
 export function getDbrCity(slug: string): DbrCity | undefined {
