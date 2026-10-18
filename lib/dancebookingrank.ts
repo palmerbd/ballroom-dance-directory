@@ -35,6 +35,12 @@ import oaklandCa from "@/content/dancebookingrank/oakland-ca.json";
 import sanJoseCa from "@/content/dancebookingrank/san-jose-ca.json";
 import fremontCa from "@/content/dancebookingrank/fremont-ca.json";
 import sanMateoCa from "@/content/dancebookingrank/san-mateo-ca.json";
+import losAngelesCa from "@/content/dancebookingrank/los-angeles-ca.json";
+import glendaleCa from "@/content/dancebookingrank/glendale-ca.json";
+import pasadenaCa from "@/content/dancebookingrank/pasadena-ca.json";
+import longBeachCa from "@/content/dancebookingrank/long-beach-ca.json";
+import anaheimCa from "@/content/dancebookingrank/anaheim-ca.json";
+import irvineCa from "@/content/dancebookingrank/irvine-ca.json";
 
 export type DbrPage = {
   title: string;        // <title> without the site suffix (the layout template adds it)
@@ -83,6 +89,12 @@ export const DANCE_BOOKING_RANK: DbrCity[] = [
   sanJoseCa,
   fremontCa,
   sanMateoCa,
+  losAngelesCa,
+  glendaleCa,
+  pasadenaCa,
+  longBeachCa,
+  anaheimCa,
+  irvineCa,
 ];
 
 export function getDbrCity(slug: string): DbrCity | undefined {
