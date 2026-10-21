@@ -41,6 +41,11 @@ import pasadenaCa from "@/content/dancebookingrank/pasadena-ca.json";
 import longBeachCa from "@/content/dancebookingrank/long-beach-ca.json";
 import anaheimCa from "@/content/dancebookingrank/anaheim-ca.json";
 import irvineCa from "@/content/dancebookingrank/irvine-ca.json";
+import sanDiegoCa from "@/content/dancebookingrank/san-diego-ca.json";
+import oceansideCa from "@/content/dancebookingrank/oceanside-ca.json";
+import sacramentoCa from "@/content/dancebookingrank/sacramento-ca.json";
+import riversideCa from "@/content/dancebookingrank/riverside-ca.json";
+import temeculaCa from "@/content/dancebookingrank/temecula-ca.json";
 
 export type DbrPage = {
   title: string;        // <title> without the site suffix (the layout template adds it)
@@ -95,6 +100,11 @@ export const DANCE_BOOKING_RANK: DbrCity[] = [
   longBeachCa,
   anaheimCa,
   irvineCa,
+  sanDiegoCa,
+  oceansideCa,
+  sacramentoCa,
+  riversideCa,
+  temeculaCa,
 ];
 
 export function getDbrCity(slug: string): DbrCity | undefined {
