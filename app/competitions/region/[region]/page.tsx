@@ -36,6 +36,8 @@ export async function generateMetadata({
   return {
     title: `${label} Ballroom Dance Competitions`,
     description: `Find ballroom dance competitions in the ${label} United States. NDCA, USA Dance, WDSF, and Independent events.`,
+    // Oct 2026 recovery plan: filter pages over the same 29 events are not indexed.
+    robots: { index: false, follow: true },
     alternates: { canonical: pageUrl },
     openGraph: {
       title: `${label} Ballroom Dance Competitions`,
