@@ -508,13 +508,55 @@ export function getMetroSuburbs(citySlug: string): string[] {
 }
 
 /** Studios filtered by city slug — metro hub slugs include suburb studios */
+// Metros that legitimately span state lines (suburbs in neighbouring states).
+const CROSS_STATE_METROS: Record<string, string[]> = {
+  "new-york-city": ["NY", "NJ", "CT"],
+  "portland":      ["OR", "WA"],
+  "charlotte":     ["NC", "SC"],
+};
+
+const US_STATES: Record<string, string> = {
+  alabama:"AL",alaska:"AK",arizona:"AZ",arkansas:"AR",california:"CA",colorado:"CO",connecticut:"CT",
+  delaware:"DE","district of columbia":"DC",florida:"FL",georgia:"GA",hawaii:"HI",idaho:"ID",illinois:"IL",
+  indiana:"IN",iowa:"IA",kansas:"KS",kentucky:"KY",louisiana:"LA",maine:"ME",maryland:"MD",massachusetts:"MA",
+  michigan:"MI",minnesota:"MN",mississippi:"MS",missouri:"MO",montana:"MT",nebraska:"NE",nevada:"NV",
+  "new hampshire":"NH","new jersey":"NJ","new mexico":"NM","new york":"NY","north carolina":"NC",
+  "north dakota":"ND",ohio:"OH",oklahoma:"OK",oregon:"OR",pennsylvania:"PA","rhode island":"RI",
+  "south carolina":"SC","south dakota":"SD",tennessee:"TN",texas:"TX",utah:"UT",vermont:"VT",virginia:"VA",
+  washington:"WA","west virginia":"WV",wisconsin:"WI",wyoming:"WY",
+};
+
+/** Normalise "Texas" / "TX" / "tx" to "TX"; "" when unknown. */
+export function normalizeState(state: string | undefined | null): string {
+  const s = (state || "").trim();
+  if (!s) return "";
+  return US_STATES[s.toLowerCase()] ?? s.toUpperCase();
+}
+
 export async function getStudiosByCity(citySlug: string): Promise<StudioCard[]> {
   const cityName = citySlugToName(citySlug).toLowerCase();
   // Metro hubs expand to include all satellite city studios
   const suburbs  = METRO_ALIASES[citySlug] ?? [];
   const metroNames = new Set([cityName, ...suburbs.map((s) => s.toLowerCase())]);
   const all = await getAllStudios(100);
-  return all.filter((s) => metroNames.has(s.city.toLowerCase()));
+  const inMetro = all.filter((s) => metroNames.has(s.city.toLowerCase()));
+
+  // Oct 2026: city slugs carry no state, so same-named cities elsewhere were mixed in
+  // ("Denver, Ohio", Aurora IL on the Denver hub). Keep the hub's dominant state.
+  const counts = new Map<string, number>();
+  for (const s of inMetro) {
+    if (s.city.toLowerCase() !== cityName) continue;
+    const st = normalizeState(s.state);
+    if (st) counts.set(st, (counts.get(st) ?? 0) + 1);
+  }
+  let mainState = "";
+  for (const [st, n] of counts) if (!mainState || n > (counts.get(mainState) ?? 0)) mainState = st;
+  if (!mainState) return inMetro;
+  const allowed = new Set([mainState, ...(CROSS_STATE_METROS[citySlug] ?? [])]);
+  return inMetro.filter((s) => {
+    const st = normalizeState(s.state);
+    return !st || allowed.has(st);
+  });
 }
 
 /** Studios filtered by dance style — fetches ALL studios to search across full directory */
