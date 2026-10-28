@@ -4,7 +4,7 @@
 
 ## What this site covers
 
-- Studio discovery: search and filter 3,400+ verified dance studios by city, dance style, and rating
+- Studio discovery: search and filter 4,200+ dance studio listings by city and dance style (listings are marked verified only after the studio claims them)
 - Dance styles: Waltz, Foxtrot, Tango, Quickstep, Viennese Waltz, Cha Cha, Salsa, Rumba, Samba, Jive, Paso Doble, Bolero, Merengue, Bachata, Argentine Tango, Swing, Hustle
 - Studio brands: Fred Astaire Dance Studios, Arthur Murray Dance Studios, Dance With Me Studios, and independent studios
 - Competitions: upcoming ballroom dance competitions and events in the US
