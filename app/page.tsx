@@ -459,6 +459,10 @@ export default async function HomePage() {
             <Link href="/latin-dance-lessons"    className="hover:text-gray-900 transition-colors">Latin</Link>
             <Link href="/tango-dance-lessons"    className="hover:text-gray-900 transition-colors">Tango</Link>
             <Link href="/wedding-dance-lessons"  className="hover:text-gray-900 transition-colors">Wedding Dance</Link>
+            <Link href="/about"                  className="hover:text-gray-900 transition-colors">About</Link>
+            <Link href="/contact"                className="hover:text-gray-900 transition-colors">Contact</Link>
+            <Link href="/privacy"                className="hover:text-gray-900 transition-colors">Privacy</Link>
+            <Link href="/terms"                  className="hover:text-gray-900 transition-colors">Terms</Link>
           </div>
         </div>
       </footer>
