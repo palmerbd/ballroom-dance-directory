@@ -6,6 +6,8 @@ import { StudioCard, STYLE_LABELS } from "@/types/studio";
 export const revalidate = 86400; // 24 hours
 
 export const metadata: Metadata = {
+  // Oct 2026 recovery plan: generic landing pages stay live but out of Google's index.
+  robots: { index: false, follow: true },
   title: "Ballroom Dance Lessons — Find Private Instruction Near You",
   description:
     "Find the best private ballroom dance lesson studios near you. Browse Fred Astaire, Arthur Murray, Dance With Me, and elite independent studios offering expert ballroom instruction.",
