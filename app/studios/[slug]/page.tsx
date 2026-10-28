@@ -62,10 +62,14 @@ export async function generateMetadata({
     };
   }
 
+  // Oct 2026 recovery plan: generated descriptions/taglines are only used for
+  // studio-verified (claimed/paid) listings; everything else gets a plain factual summary.
+  const verifiedListing = studio.tier === "claimed" || studio.tier === "paid";
+
   return {
     title: `${studio.title}${location ? " \u2014 " + location : ""}`,
     description:
-      studio.description ||
+      (verifiedListing ? studio.description : "") ||
       `Private dance lessons at ${studio.title}${location ? ` in ${location}` : ""}. ${
         studio.danceStyles.map((s) => STYLE_LABELS[s as DanceStyle]).join(", ")
       } instruction available.`,
@@ -74,7 +78,7 @@ export async function generateMetadata({
     },
     openGraph: {
       title: studio.title,
-      description: studio.tagline || studio.description,
+      description: verifiedListing ? (studio.tagline || studio.description) : undefined,
     },
   };
 }
@@ -294,6 +298,14 @@ export default async function StudioPage({
     .filter(Boolean).join(", ");
   const cityState = studio.cityState;
 
+  // Oct 2026 recovery plan: only studio-verified (claimed/paid) listings show prose.
+  // Unverified listings show plain public facts — no generated descriptions or taglines.
+  const isVerified = studio.tier === "claimed" || studio.tier === "paid";
+  if (!isVerified) {
+    studio.description = "";
+    studio.tagline = "";
+  }
+
   // Map embed query \u2014 prefer full address, fall back to city+state
   const mapQuery = location || [studio.city, studio.state].filter(Boolean).join(", ");
   const mapEmbedUrl = mapQuery
@@ -315,7 +327,7 @@ export default async function StudioPage({
     "@context": "https://schema.org",
     "@type": "DanceSchool",
     "name": studio.title,
-    "description": studio.description || studio.tagline,
+    "description": studio.description || studio.tagline || undefined,
     "url": studio.website || undefined,
     "telephone": studio.phone || undefined,
     "email": studio.email || undefined,
@@ -329,20 +341,11 @@ export default async function StudioPage({
         "addressCountry": "US",
       }
     } : {}),
-    ...(studio.rating ? {
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": studio.rating.toFixed(1),
-        "reviewCount": studio.reviewCount || 1,
-        "bestRating": "5",
-        "worstRating": "1",
-      }
-    } : {}),
+    // AggregateRating removed (Oct 2026): ratings come from Google Maps, and Google's
+    // review-snippet rules forbid marking up ratings aggregated from other sites.
     ...(studio.privateLessonRate ? {
       "priceRange": studio.privateLessonRate,
     } : {}),
-    "currenciesAccepted": "USD",
-    "paymentAccepted": "Cash, Credit Card",
   };
 
   const breadcrumbSchema = {
@@ -402,33 +405,6 @@ export default async function StudioPage({
           ].filter(Boolean).join(". ") + ".",
         },
       }] : []),
-      // Beginner-friendly question \u2014 addresses high-intent "near me" / "classes near me" queries
-      ...(studio.danceStyles.length > 0 ? [{
-        "@type": "Question" as const,
-        "name": `Does ${studio.title} teach beginners?`,
-        "acceptedAnswer": {
-          "@type": "Answer" as const,
-          "text": `Yes. ${studio.title} works with dancers at every level, from complete beginners to advanced students. Private lessons let instructors tailor the pace and curriculum to each student's experience and goals.`,
-        },
-      }] : []),
-      // Wedding-dance question \u2014 only when studio offers wedding instruction (high-converting query)
-      ...(studio.danceStyles.includes("wedding_dance") ? [{
-        "@type": "Question" as const,
-        "name": `Does ${studio.title} offer wedding dance lessons?`,
-        "acceptedAnswer": {
-          "@type": "Answer" as const,
-          "text": `Yes. ${studio.title} offers wedding first-dance choreography and preparation packages${studio.city ? ` for couples in ${studio.city}` : ""}. Lessons cover song selection, choreography, and rehearsal technique to help couples feel confident on their wedding day.`,
-        },
-      }] : []),
-      // Lesson format \u2014 clarifies private vs group, an extremely common pre-booking question
-      {
-        "@type": "Question" as const,
-        "name": `Are lessons at ${studio.title} private or group?`,
-        "acceptedAnswer": {
-          "@type": "Answer" as const,
-          "text": `${studio.title} primarily offers one-on-one private lessons${studio.amenities && studio.amenities.includes("group_classes") ? ", with group classes also available" : ""}. Private lessons are scheduled by appointment to fit each student's availability.`,
-        },
-      },
       ...(studio.phone || studio.email || studio.website ? [{
         "@type": "Question" as const,
         "name": `How can I contact ${studio.title}?`,
@@ -444,6 +420,9 @@ export default async function StudioPage({
     ],
   };
 
+  // Oct 2026 recovery plan: FAQ (visible + FAQPage markup) only for verified listings.
+  const showFaq = isVerified && faqSchema.mainEntity.length > 0;
+
   return (
     <main>
       <script
@@ -454,7 +433,7 @@ export default async function StudioPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      {faqSchema.mainEntity.length > 0 && (
+      {showFaq && (
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
@@ -781,7 +760,7 @@ export default async function StudioPage({
             )}
 
             {/* Visible FAQ \u2014 mirrors FAQPage JSON-LD so Google can validate. Boosts CTR via scan-friendly answers. */}
-            {faqSchema.mainEntity.length > 0 && (
+            {showFaq && (
               <section>
                 <h2 className="font-display font-bold text-gray-900 text-xl mb-4">
                   Frequently Asked Questions
@@ -1010,7 +989,7 @@ export default async function StudioPage({
                     <h3 className="font-display font-bold text-gray-900 text-base mb-1 group-hover:text-amber-800 transition-colors">
                       {s.title}
                     </h3>
-                    {s.tagline ? (
+                    {s.tier !== "claimed" && s.tier !== "paid" ? null : s.tagline ? (
                       <p className="text-gray-500 text-sm italic mb-2 line-clamp-2">{s.tagline}</p>
                     ) : s.description ? (
                       <p className="text-gray-500 text-sm mb-2 line-clamp-2">{s.description}</p>
@@ -1057,10 +1036,10 @@ export default async function StudioPage({
                     <h3 className="font-display font-bold text-gray-900 text-base mb-1 group-hover:text-amber-800 transition-colors">
                       {s.title}
                     </h3>
-                    {s.tagline && (
+                    {(s.tier === "claimed" || s.tier === "paid") && s.tagline && (
                       <p className="text-gray-500 text-sm italic mb-2 line-clamp-2">{s.tagline}</p>
                     )}
-                    {s.description && !s.tagline && (
+                    {(s.tier === "claimed" || s.tier === "paid") && s.description && !s.tagline && (
                       <p className="text-gray-500 text-sm mb-2 line-clamp-2">{s.description}</p>
                     )}
                     <div className="flex items-center justify-between mt-3">
