@@ -71,6 +71,11 @@ export async function generateMetadata({
 
   return {
     title: `${studio.title}${location ? " \u2014 " + location : ""}`,
+    // Wave 2 (Oct 2026): unverified listings restate public business data, so Google
+    // is asked not to index them. Bing and others still may (BDD still ranks there).
+    ...(verifiedListing ? {} : {
+      robots: { index: true, follow: true, googleBot: { index: false, follow: true } },
+    }),
     description:
       (verifiedListing ? studio.description : "") ||
       `Private dance lessons at ${studio.title}${location ? ` in ${location}` : ""}. ${
