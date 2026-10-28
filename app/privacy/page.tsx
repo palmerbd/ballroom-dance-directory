@@ -33,14 +33,6 @@ export default function PrivacyPage() {
       <section className="px-6 py-16">
         <div className="max-w-3xl mx-auto space-y-8">
 
-          <div className="bg-amber-50 border border-amber-200 rounded-xl p-6">
-            <p className="text-amber-800 text-sm leading-relaxed">
-              <strong>Note:</strong> This Privacy Policy is a working draft and should be reviewed by
-              legal counsel before the custom domain launches, especially if a claim flow or paid tier
-              is added that collects user data.
-            </p>
-          </div>
-
           <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100 space-y-6 text-gray-600 leading-relaxed">
 
             <section>

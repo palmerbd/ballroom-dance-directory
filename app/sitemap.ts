@@ -158,12 +158,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   void cityStyleEntries; void competitionRegionEntries; void competitionStyleEntries;
   const indexableStatic = staticEntries.filter((e) => !e.url.endsWith("/dance-lessons-near-me"));
 
+  // Wave 2 (Oct 2026): unverified studio pages are noindexed for Google, so only
+  // claimed/paid studios are listed. DBR seo-details pages are noindexed too.
+  const verifiedSlugs = new Set(studios.filter((s) => s.tier === "claimed" || s.tier === "paid").map((s) => s.slug));
+  const verifiedStudioEntries = studioEntries.filter((e) => verifiedSlugs.has(e.url.split("/studios/")[1]));
+  const dbrIndexable = danceBookingRankEntries.filter((e) => !e.url.endsWith("/seo-details"));
+
   return [
     ...indexableStatic,
     ...cityEntries,
-    ...studioEntries,
+    ...verifiedStudioEntries,
     ...blogEntries,
-    ...danceBookingRankEntries,
+    ...dbrIndexable,
     ...competitionEntries,
   ];
 }
