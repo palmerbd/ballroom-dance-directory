@@ -5,6 +5,8 @@ import { getAllStudios } from "@/lib/wordpress";
 export const revalidate = 86400; // 24 hours
 
 export const metadata: Metadata = {
+  // Oct 2026 recovery plan: generic landing pages stay live but out of Google's index.
+  robots: { index: false, follow: true },
   title: "Wedding Dance Lessons — First Dance Instruction Near You",
   description:
     "Find private wedding dance lesson studios near you. Make your first dance unforgettable with expert one-on-one instruction. Browse top-rated studios.",
