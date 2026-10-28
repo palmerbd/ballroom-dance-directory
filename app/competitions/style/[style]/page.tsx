@@ -48,6 +48,8 @@ export async function generateMetadata({
   return {
     title: `${label} Ballroom Dance Competitions`,
     description: STYLE_DESCRIPTION[style as CompStyle],
+    // Oct 2026 recovery plan: filter pages over the same 29 events are not indexed.
+    robots: { index: false, follow: true },
     alternates: { canonical: pageUrl },
     openGraph: {
       title: `${label} Competitions`,
