@@ -33,14 +33,6 @@ export default function TermsPage() {
       <section className="px-6 py-16">
         <div className="max-w-3xl mx-auto space-y-8">
 
-          <div className="bg-amber-50 border border-amber-200 rounded-xl p-6">
-            <p className="text-amber-800 text-sm leading-relaxed">
-              <strong>Note:</strong> These Terms of Service are a working draft and have not yet been
-              reviewed by legal counsel. They should be treated as a placeholder until attorney-reviewed
-              terms are in place prior to the launch of the custom domain.
-            </p>
-          </div>
-
           <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100 space-y-6 text-gray-600 leading-relaxed">
 
             <section>
