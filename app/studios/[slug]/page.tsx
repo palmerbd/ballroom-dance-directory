@@ -44,11 +44,14 @@ export async function generateMetadata({
   // no tagline/description are too sparse to index. Studios with at least a
   // tagline have enough unique content to pass \u2014 loosening this threshold
   // reduces the noindex count and gets more legitimate pages into Google.
+  // Oct 2026: generated taglines/descriptions no longer count as content for
+  // unverified listings, so only real contact/rating facts keep a page indexable.
+  const hasOwnerProse =
+    (studio.tier === "claimed" || studio.tier === "paid") && !!(studio.tagline || studio.description);
   const isThinContent =
     !studio.phone &&
     !studio.website &&
-    !studio.tagline &&
-    !studio.description &&
+    !hasOwnerProse &&
     (!studio.rating || studio.rating < 0.1) &&
     (!studio.reviewCount || studio.reviewCount === 0);
 
