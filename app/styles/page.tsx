@@ -6,6 +6,8 @@ import { DanceStyle } from "@/types/studio";
 export const revalidate = 86400; // 24 hours
 
 export const metadata: Metadata = {
+  // Oct 2026 recovery plan: generic landing pages stay live but out of Google's index.
+  robots: { index: false, follow: true },
   title: "Browse Studios by Dance Style",
   description:
     "Find private dance studios by style — ballroom, Latin, tango, salsa, swing, wedding dance, and more. Browse 4,000+ studios filtered by your preferred dance style.",

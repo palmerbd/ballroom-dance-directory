@@ -4,9 +4,11 @@ import Link from "next/link";
 export const revalidate = 86400; // 24 hours
 
 export const metadata: Metadata = {
+  // Oct 2026 recovery plan: generic landing pages stay live but out of Google's index.
+  robots: { index: false, follow: true },
   title: "Dance Lessons Near Me — Find Private Ballroom & Latin Studios in Your City",
   description:
-    "Find dance lessons near you. Browse 4,000+ private ballroom, Latin, tango, salsa, swing, and wedding-dance studios across every major US city. Read reviews, compare ratings, and book lessons with top-rated local instructors.",
+    "Find dance lessons near you. Browse 4,000+ private ballroom, Latin, tango, salsa, swing, and wedding-dance studios across every major US city. Compare studios by style and location, then contact them directly.",
   alternates: {
     canonical: "https://www.ballroomdancedirectory.com/dance-lessons-near-me",
   },
@@ -55,7 +57,7 @@ const STYLES: Array<{ name: string; slug: string; blurb: string }> = [
 const FAQS: Array<{ q: string; a: string }> = [
   {
     q: "How do I find dance lessons near me?",
-    a: "Use the city directory below to browse private dance studios in your metro area. Each city page lists local studios with verified ratings, reviews, contact information, and a breakdown of dance styles taught. You can also filter by style (ballroom, Latin, tango, swing, wedding) to find the right instructor for your goal.",
+    a: "Use the city directory below to browse private dance studios in your metro area. Each city page lists local studios with contact information and the dance styles they list. You can also filter by style (ballroom, Latin, tango, swing, wedding) to find the right instructor for your goal.",
   },
   {
     q: "How much do private dance lessons cost?",
@@ -110,7 +112,7 @@ export default function DanceLessonsNearMePage() {
               Dance Lessons Near Me
             </h1>
             <p className="text-white/70 text-lg leading-relaxed max-w-2xl mx-auto">
-              Find private ballroom, Latin, tango, salsa, swing, and wedding-dance lessons near you. Our directory covers 4,000+ studios across every major US city — with verified ratings, real reviews, and full contact details.
+              Find private ballroom, Latin, tango, salsa, swing, and wedding-dance lessons near you. Our directory covers 4,000+ studios across every major US city — with addresses, contact details, and the styles each studio lists.
             </p>
             <div className="mt-10">
               <Link href="/cities"

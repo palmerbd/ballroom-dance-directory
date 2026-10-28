@@ -152,15 +152,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/cities`, changeFrequency: "weekly", priority: 0.85 },
   ];
 
+  // Oct 2026 recovery plan: only indexable pages belong in the sitemap. City × style,
+  // competition region/style filters and /dance-lessons-near-me are now noindexed,
+  // so they are no longer listed (the arrays above are kept for easy reinstatement).
+  void cityStyleEntries; void competitionRegionEntries; void competitionStyleEntries;
+  const indexableStatic = staticEntries.filter((e) => !e.url.endsWith("/dance-lessons-near-me"));
+
   return [
-    ...staticEntries,
+    ...indexableStatic,
     ...cityEntries,
-    ...cityStyleEntries,
     ...studioEntries,
     ...blogEntries,
     ...danceBookingRankEntries,
     ...competitionEntries,
-    ...competitionRegionEntries,
-    ...competitionStyleEntries,
   ];
 }

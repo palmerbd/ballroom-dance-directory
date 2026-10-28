@@ -6,7 +6,6 @@ import {
   getMetroSlug, getMetroSuburbs,
 } from "@/lib/wordpress";
 import { StudioCard, CHAIN_CONFIG, STYLE_LABELS, DanceStyle, DANCE_STYLES } from "@/types/studio";
-import { getCityConfig } from "@/lib/neighborhoods";
 import { getCityIntroCopy } from "@/lib/seo-copy";
 
 export const revalidate = 86400; // 24 hours \u2014 city data is stable; reduces ISR cost
@@ -39,8 +38,14 @@ export async function generateMetadata({
     alternates: { canonical: `https://www.ballroomdancedirectory.com/studios` },
   };
 
+  // Oct 2026 recovery plan: small hubs are thin by construction; keep them out of
+  // Google's index until they have enough real studios to be a useful page.
+  const MIN_STUDIOS_TO_INDEX_HUB = 5;
+  const thinHub = studios.length < MIN_STUDIOS_TO_INDEX_HUB;
+
   return {
     title: `Ballroom Dance Studios in ${cityName}`,
+    ...(thinHub ? { robots: { index: false, follow: true } } : {}),
     description: `Find the best private dance studios in ${cityName}. ${studios.length} top-rated ${cityName} studios offering ballroom, Latin, tango, wedding dance, and more. Book your first lesson today.`,
     alternates: {
       canonical: `https://www.ballroomdancedirectory.com/studios/city/${city}`,
@@ -111,7 +116,8 @@ function StudioListCard({ studio, featured = false }: { studio: StudioCard; feat
           {studio.title}
         </h2>
 
-        {studio.tagline ? (
+        {/* Oct 2026 recovery plan: card prose only for studio-verified listings */}
+        {studio.tier !== "claimed" && studio.tier !== "paid" ? null : studio.tagline ? (
           <p className="text-sm text-gray-500 italic mb-3">{studio.tagline}</p>
         ) : studio.description ? (
           <p className="text-sm text-gray-500 mb-3 line-clamp-2">{studio.description}</p>
@@ -602,32 +608,6 @@ export default async function CityPage({
                 Claim Your Studio →
               </Link>
             </div>
-
-            {/* Neighborhoods in this city */}
-            {(() => {
-              const cityConf = getCityConfig(city);
-              if (!cityConf || !cityConf.neighborhoods.length) return null;
-              return (
-                <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-                  <h3 className="font-display font-bold text-gray-900 text-base mb-3">
-                    Browse by Neighborhood
-                  </h3>
-                  <div className="space-y-0.5">
-                    {cityConf.neighborhoods.map((n) => (
-                      <Link
-                        key={n.slug}
-                        href={`/studios/city/${city}/${n.slug}`}
-                        className="flex items-center justify-between py-2 px-3 rounded-lg text-sm
-                                   text-gray-700 hover:bg-yellow-50 hover:text-yellow-800 transition-colors"
-                      >
-                        <span>{n.name}</span>
-                        <span className="text-gray-300">→</span>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              );
-            })()}
 
             {/* Browse other major cities */}
             <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">

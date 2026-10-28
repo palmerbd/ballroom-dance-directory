@@ -5,6 +5,8 @@ import { getAllStudios } from "@/lib/wordpress";
 export const revalidate = 86400; // 24 hours
 
 export const metadata: Metadata = {
+  // Oct 2026 recovery plan: generic landing pages stay live but out of Google's index.
+  robots: { index: false, follow: true },
   title: "Competition Dance Lessons — Train to Compete Near You",
   description:
     "Find private competition dance training studios near you. Ballroom, Latin, and formation competition coaching from expert instructors at top-rated studios.",

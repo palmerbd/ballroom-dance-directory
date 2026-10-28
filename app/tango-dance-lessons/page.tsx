@@ -5,6 +5,8 @@ import { getAllStudios } from "@/lib/wordpress";
 export const revalidate = 86400; // 24 hours
 
 export const metadata: Metadata = {
+  // Oct 2026 recovery plan: generic landing pages stay live but out of Google's index.
+  robots: { index: false, follow: true },
   title: "Tango Dance Lessons — Find Private Instruction Near You",
   description:
     "Find private tango dance lesson studios near you. Argentine Tango, Ballroom Tango, and more. Browse expert studios offering one-on-one tango instruction.",
