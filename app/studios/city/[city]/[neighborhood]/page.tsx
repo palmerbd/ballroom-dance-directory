@@ -193,6 +193,10 @@ export default async function NeighborhoodPage({
   const result = getNeighborhood(citySlug, hoodSlug);
   if (!result) notFound();
 
+  // Oct 2026 recovery plan: neighborhood pages repeated the city hub's studios with a
+  // swapped name (doorway pattern). Every valid neighborhood now 301s to its city hub.
+  permanentRedirect(`/studios/city/${citySlug}`);
+
   const { city, neighborhood } = result;
 
   // All studios in the city, then filter to neighborhood by address keywords
