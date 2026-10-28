@@ -5,6 +5,8 @@ import { getAllStudios } from "@/lib/wordpress";
 export const revalidate = 86400; // 24 hours
 
 export const metadata: Metadata = {
+  // Oct 2026 recovery plan: generic landing pages stay live but out of Google's index.
+  robots: { index: false, follow: true },
   title: "Latin Dance Lessons — Find Private Instruction Near You",
   description:
     "Find private Latin dance lesson studios near you. Salsa, Cha-Cha, Rumba, Samba, and more. Browse top-rated studios from coast to coast.",
