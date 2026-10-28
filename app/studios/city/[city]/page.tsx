@@ -116,7 +116,8 @@ function StudioListCard({ studio, featured = false }: { studio: StudioCard; feat
           {studio.title}
         </h2>
 
-        {studio.tagline ? (
+        {/* Oct 2026 recovery plan: card prose only for studio-verified listings */}
+        {studio.tier !== "claimed" && studio.tier !== "paid" ? null : studio.tagline ? (
           <p className="text-sm text-gray-500 italic mb-3">{studio.tagline}</p>
         ) : studio.description ? (
           <p className="text-sm text-gray-500 mb-3 line-clamp-2">{studio.description}</p>
