@@ -77,11 +77,14 @@ export async function generateMetadata({
     };
   }
 
+  // Oct 2026 recovery plan: city × style pages are filtered copies of the city hub
+  // (same studios, same order), so they are never indexed. Kept live as a user filter.
   return {
     title: `${styleName} Dance Studios in ${cityName}`,
+    robots: { index: false, follow: true },
     description: `Find the best ${styleName.toLowerCase()} dance studios in ${cityName}. ${filtered.length} studio${filtered.length !== 1 ? "s" : ""} offering expert private ${styleName.toLowerCase()} instruction. Book your first lesson today.`,
     alternates: {
-      canonical: `https://www.ballroomdancedirectory.com/studios/city/${city}/style/${style}`,
+      canonical: `https://www.ballroomdancedirectory.com/studios/city/${city}`,
     },
     openGraph: {
       title: `${styleName} Dance Studios in ${cityName}`,
