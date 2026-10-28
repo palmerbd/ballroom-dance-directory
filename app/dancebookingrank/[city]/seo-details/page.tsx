@@ -18,6 +18,9 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
   return {
     title: c.details.title,
     description: c.details.description,
+    // Oct 2026 recovery plan: website-SEO report pages are off-topic for a consumer
+    // directory, so they stay live but out of search indexes.
+    robots: { index: false, follow: true },
     alternates: { canonical: url },
     openGraph: { title: c.details.title, description: c.details.description, type: "article", url, publishedTime: c.published },
   };
