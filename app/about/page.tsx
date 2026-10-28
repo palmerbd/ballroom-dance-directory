@@ -52,16 +52,17 @@ export default function AboutPage() {
           <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
             <h2 className="font-display font-bold text-gray-900 text-xl mb-4">How Our Listings Work</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
-              Studio listings on this directory are compiled from publicly available sources,
-              including Google Maps, state business registration databases, and direct outreach to
-              individual studios. Basic factual information &mdash; studio name, address, phone number,
+              Studio listings on this directory are compiled from publicly available business
+              listings (primarily Google Maps) and from information supplied by studio owners who
+              claim their listing. Basic factual information &mdash; studio name, address, phone number,
               hours of operation, and dance styles offered &mdash; is collected and displayed for each
               listing.
             </p>
             <p className="text-gray-600 leading-relaxed mb-4">
-              All studio descriptions on this directory are original content written by our editorial
-              team. We do not reproduce or adapt any text, photographs, or marketing materials from
-              studio websites or franchise corporate sites.
+              Unclaimed listings show only those basic facts. We do not publish a description for a
+              studio until its owner has claimed the listing and confirmed the details; descriptions
+              on claimed listings are written or approved by the studio. We do not reproduce text,
+              photographs, or marketing materials from studio websites or franchise corporate sites.
             </p>
             <p className="text-gray-600 leading-relaxed">
               Listings are marked as <strong>Unclaimed</strong> until a verified studio owner or
