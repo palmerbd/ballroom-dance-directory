@@ -46,6 +46,26 @@ import oceansideCa from "@/content/dancebookingrank/oceanside-ca.json";
 import sacramentoCa from "@/content/dancebookingrank/sacramento-ca.json";
 import riversideCa from "@/content/dancebookingrank/riverside-ca.json";
 import temeculaCa from "@/content/dancebookingrank/temecula-ca.json";
+import miamiFl from "@/content/dancebookingrank/miami-fl.json";
+import fortLauderdaleFl from "@/content/dancebookingrank/fort-lauderdale-fl.json";
+import bocaRatonFl from "@/content/dancebookingrank/boca-raton-fl.json";
+import westPalmBeachFl from "@/content/dancebookingrank/west-palm-beach-fl.json";
+import portStLucieFl from "@/content/dancebookingrank/port-st-lucie-fl.json";
+import orlandoFl from "@/content/dancebookingrank/orlando-fl.json";
+import lakeMaryFl from "@/content/dancebookingrank/lake-mary-fl.json";
+import tampaFl from "@/content/dancebookingrank/tampa-fl.json";
+import stPetersburgFl from "@/content/dancebookingrank/st-petersburg-fl.json";
+import clearwaterFl from "@/content/dancebookingrank/clearwater-fl.json";
+import sarasotaFl from "@/content/dancebookingrank/sarasota-fl.json";
+import lakelandFl from "@/content/dancebookingrank/lakeland-fl.json";
+import naplesFl from "@/content/dancebookingrank/naples-fl.json";
+import fortMyersFl from "@/content/dancebookingrank/fort-myers-fl.json";
+import jacksonvilleFl from "@/content/dancebookingrank/jacksonville-fl.json";
+import daytonaBeachFl from "@/content/dancebookingrank/daytona-beach-fl.json";
+import melbourneFl from "@/content/dancebookingrank/melbourne-fl.json";
+import ocalaFl from "@/content/dancebookingrank/ocala-fl.json";
+import gainesvilleFl from "@/content/dancebookingrank/gainesville-fl.json";
+import pensacolaFl from "@/content/dancebookingrank/pensacola-fl.json";
 
 export type DbrPage = {
   title: string;        // <title> without the site suffix (the layout template adds it)
@@ -105,6 +125,26 @@ export const DANCE_BOOKING_RANK: DbrCity[] = [
   sacramentoCa,
   riversideCa,
   temeculaCa,
+  miamiFl,
+  fortLauderdaleFl,
+  bocaRatonFl,
+  westPalmBeachFl,
+  portStLucieFl,
+  orlandoFl,
+  lakeMaryFl,
+  tampaFl,
+  stPetersburgFl,
+  clearwaterFl,
+  sarasotaFl,
+  lakelandFl,
+  naplesFl,
+  fortMyersFl,
+  jacksonvilleFl,
+  daytonaBeachFl,
+  melbourneFl,
+  ocalaFl,
+  gainesvilleFl,
+  pensacolaFl,
 ];
 
 export function getDbrCity(slug: string): DbrCity | undefined {
