@@ -150,4 +150,3 @@ export const DANCE_BOOKING_RANK: DbrCity[] = [
 export function getDbrCity(slug: string): DbrCity | undefined {
   return DANCE_BOOKING_RANK.find((c) => c.slug === slug);
 }
-
