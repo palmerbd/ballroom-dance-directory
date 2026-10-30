@@ -66,6 +66,9 @@ import melbourneFl from "@/content/dancebookingrank/melbourne-fl.json";
 import ocalaFl from "@/content/dancebookingrank/ocala-fl.json";
 import gainesvilleFl from "@/content/dancebookingrank/gainesville-fl.json";
 import pensacolaFl from "@/content/dancebookingrank/pensacola-fl.json";
+import denverCo from "@/content/dancebookingrank/denver-co.json";
+import lakewoodCo from "@/content/dancebookingrank/lakewood-co.json";
+import littletonCo from "@/content/dancebookingrank/littleton-co.json";
 
 export type DbrPage = {
   title: string;        // <title> without the site suffix (the layout template adds it)
@@ -145,6 +148,9 @@ export const DANCE_BOOKING_RANK: DbrCity[] = [
   ocalaFl,
   gainesvilleFl,
   pensacolaFl,
+  denverCo,
+  lakewoodCo,
+  littletonCo,
 ];
 
 export function getDbrCity(slug: string): DbrCity | undefined {
