@@ -40,7 +40,7 @@ export default function SiteNav() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden xl:flex items-center gap-1">
             {NAV_LINKS.map(({ href, label }) => {
               const active = pathname === href || pathname.startsWith(href + "/");
               return (
@@ -58,12 +58,29 @@ export default function SiteNav() {
               );
             })}
             <Link
+              href="/login"
+              className="ml-3 inline-flex items-center px-4 py-2 rounded-md border-2 border-amber-700 text-amber-800 text-sm font-semibold hover:bg-amber-50 transition-colors"
+            >
+              <svg className="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.1a7.5 7.5 0 0115 0A17.9 17.9 0 0112 21.75c-2.68 0-5.22-.58-7.5-1.65z" />
+              </svg>
+              Owner Login
+            </Link>
+            <Link
               href="/claim"
-              className="ml-3 inline-flex items-center px-4 py-2 rounded-md bg-amber-700 text-white text-sm font-semibold hover:bg-amber-800 transition-colors shadow-sm"
+              className="ml-2 inline-flex items-center px-4 py-2 rounded-md bg-amber-700 text-white text-sm font-semibold hover:bg-amber-800 transition-colors shadow-sm"
             >
               List Your Studio
             </Link>
           </nav>
+
+          {/* Mobile: Owner Login always visible next to the menu button */}
+          <Link
+            href="/login"
+            className="xl:hidden ml-auto mr-2 inline-flex items-center px-3 py-2 rounded-md border-2 border-amber-700 text-amber-800 text-sm font-semibold hover:bg-amber-50 transition-colors"
+          >
+            Owner Login
+          </Link>
 
           {/* Mobile hamburger */}
           <button
@@ -71,7 +88,7 @@ export default function SiteNav() {
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
-            className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+            className="xl:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors"
           >
             {open ? (
               /* X icon */
@@ -90,7 +107,7 @@ export default function SiteNav() {
 
       {/* Mobile drawer */}
       {open && (
-        <div className="md:hidden border-t border-gray-100 bg-white shadow-lg">
+        <div className="xl:hidden border-t border-gray-100 bg-white shadow-lg">
           <nav className="flex flex-col px-4 py-3 gap-1">
             {NAV_LINKS.map(({ href, label }) => {
               const active = pathname === href || pathname.startsWith(href + "/");
@@ -110,9 +127,16 @@ export default function SiteNav() {
               );
             })}
             <Link
+              href="/login"
+              onClick={() => setOpen(false)}
+              className="mt-2 px-4 py-3 rounded-md border-2 border-amber-700 text-amber-800 text-sm font-semibold text-center hover:bg-amber-50 transition-colors"
+            >
+              Studio Owner Login
+            </Link>
+            <Link
               href="/claim"
               onClick={() => setOpen(false)}
-              className="mt-2 px-4 py-3 rounded-md bg-amber-700 text-white text-sm font-semibold text-center hover:bg-amber-800 transition-colors"
+              className="px-4 py-3 rounded-md bg-amber-700 text-white text-sm font-semibold text-center hover:bg-amber-800 transition-colors"
             >
               List Your Studio
             </Link>
