@@ -333,6 +333,12 @@ function ClaimPageInner() {
             Claiming your listing is free. We verify ownership before displaying the Verified badge.
           </p>
         ) : null}
+        {step === "search" || step === "confirm" ? (
+          <p className="text-center text-sm text-gray-500 mt-3">
+            Already manage a listing?{" "}
+            <Link href="/login" className="font-semibold text-yellow-700 hover:underline">Owner Login</Link>
+          </p>
+        ) : null}
       </div>
     </main>
   );
