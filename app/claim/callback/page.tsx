@@ -30,6 +30,44 @@ export default function ClaimCallbackPage() {
         return;
       }
 
+      // Step 1b (Oct 2026): this page is also the landing page for owner sign-in links
+      // and password-reset links sent from /login (it is already on Supabase's
+      // redirect allow-list). Route those before any claim handling.
+      const user = sessionData.session.user;
+      let intent: string | null = null;
+      try {
+        const rawIntent = localStorage.getItem("bddAuthIntent");
+        if (rawIntent) {
+          const parsed = JSON.parse(rawIntent);
+          if (parsed && Date.now() - Number(parsed.at || 0) < 2 * 60 * 60 * 1000) intent = String(parsed.intent);
+        }
+      } catch { /* ignore */ }
+      const recoverySent = (user as { recovery_sent_at?: string }).recovery_sent_at;
+      const recentRecovery = !!recoverySent && Date.now() - new Date(recoverySent).getTime() < 60 * 60 * 1000;
+      const hasPendingClaim = !!localStorage.getItem("pendingClaim");
+
+      if (intent === "reset" || (recentRecovery && !hasPendingClaim)) {
+        router.replace("/reset-password");
+        return;
+      }
+      if (intent === "login" && !hasPendingClaim) {
+        try { localStorage.removeItem("bddAuthIntent"); } catch { /* ignore */ }
+        router.replace("/dashboard");
+        return;
+      }
+
+      // Listings this owner already manages (by account or verified email).
+      let ownedSlugs: string[] = [];
+      try {
+        const ownRes = await fetch("/api/owner/claims", {
+          headers: { Authorization: `Bearer ${sessionData.session.access_token}` },
+        });
+        if (ownRes.ok) {
+          const own = await ownRes.json();
+          ownedSlugs = (own.claims || []).map((c: { studio_slug: string }) => c.studio_slug);
+        }
+      } catch { /* non-fatal */ }
+
       // Step 2: Read pending claim data.
       // Primary source: localStorage (set on the same device/browser before the magic link was sent).
       // Fallback: Supabase user_metadata (set in signInWithOtp options.data -- works even when the
@@ -62,6 +100,14 @@ export default function ClaimCallbackPage() {
           router.push("/dashboard");
           return;
         }
+      }
+
+      // Returning owner signing in again: their claim is already on file, so don't
+      // re-submit it (that used to fail with "already claimed by another owner").
+      if (ownedSlugs.includes(claim.studio_slug)) {
+        localStorage.removeItem("pendingClaim");
+        router.replace("/dashboard");
+        return;
       }
 
       // Step 3: POST to /api/claim to record claim in Supabase + update WP

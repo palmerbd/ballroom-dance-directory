@@ -1,8 +1,9 @@
 "use client";
 
 // ─── /dashboard — Studio Owner Dashboard ─────────────────────────────────────
-// Requires Supabase session (redirects to /claim if not logged in).
-// Shows the owner's claimed listing, claim status, and next steps.
+// Requires a Supabase session (shows a sign-in prompt linking to /login if not).
+// Shows every listing the owner manages (looked up by account or verified email
+// via /api/owner/claims), claim status, password settings and next steps.
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -37,8 +38,18 @@ const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string; 
 
 export default function DashboardPage() {
   const [pageState, setPageState] = useState<PageState>("loading");
-  const [claim,     setClaim]     = useState<Claim | null>(null);
+  const [claims,    setClaims]    = useState<Claim[]>([]);
+  const [selected,  setSelected]  = useState(0);
   const [email,     setEmail]     = useState("");
+  const [hasPassword, setHasPassword] = useState(false);
+
+  // Password card state
+  const [pw,       setPw]       = useState("");
+  const [pw2,      setPw2]      = useState("");
+  const [pwBusy,   setPwBusy]   = useState(false);
+  const [pwMsg,    setPwMsg]    = useState<{ ok: boolean; text: string } | null>(null);
+
+  const claim: Claim | null = claims[selected] ?? null;
 
   useEffect(() => {
     async function load() {
@@ -46,22 +57,40 @@ export default function DashboardPage() {
       if (!session) { setPageState("unauthenticated"); return; }
 
       setEmail(session.user.email || "");
+      setHasPassword(!!session.user.user_metadata?.has_password);
 
-      // Fetch this user's claim
-      const { data } = await supabase
-        .from("claims")
-        .select("*")
-        .eq("user_id", session.user.id)
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
-
-      if (!data) { setPageState("no_claim"); return; }
-      setClaim(data as Claim);
-      setPageState("ready");
+      // All listings this owner manages (by account, or by verified email for
+      // listings our team set up on the owner's behalf).
+      try {
+        const res = await fetch("/api/owner/claims", {
+          headers: { Authorization: `Bearer ${session.access_token}` },
+        });
+        if (res.status === 401) { setPageState("unauthenticated"); return; }
+        const body = await res.json();
+        const list = (body.claims || []) as Claim[];
+        if (!list.length) { setPageState("no_claim"); return; }
+        setClaims(list);
+        setPageState("ready");
+      } catch {
+        setPageState("no_claim");
+      }
     }
     load();
   }, []);
+
+  async function handleSetPassword(e: React.FormEvent) {
+    e.preventDefault();
+    setPwMsg(null);
+    if (pw.length < 8) { setPwMsg({ ok: false, text: "Use at least 8 characters." }); return; }
+    if (pw !== pw2)    { setPwMsg({ ok: false, text: "The two passwords don't match." }); return; }
+    setPwBusy(true);
+    const { error } = await supabase.auth.updateUser({ password: pw, data: { has_password: true } });
+    setPwBusy(false);
+    if (error) { setPwMsg({ ok: false, text: error.message || "Could not save your password." }); return; }
+    setHasPassword(true);
+    setPw(""); setPw2("");
+    setPwMsg({ ok: true, text: "Password saved. You can now sign in with your email and password." });
+  }
 
   async function handleSignOut() {
     await supabase.auth.signOut();
@@ -87,18 +116,22 @@ export default function DashboardPage() {
         className="flex items-center justify-center px-6">
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 max-w-md w-full text-center">
           <div className="text-5xl mb-4">&#128274;</div>
-          <h1 className="font-bold text-gray-900 text-xl mb-2">Sign in required</h1>
+          <h1 className="font-bold text-gray-900 text-xl mb-2">Sign in to your dashboard</h1>
           <p className="text-gray-500 text-sm mb-6">
-            You need to claim a studio listing before you can access the dashboard.
+            Studio owners can sign in to manage their listing.
           </p>
           <Link
-            href="/claim"
+            href="/login"
             className="inline-block w-full py-3 rounded-xl font-bold text-gray-900 text-sm text-center
-                       transition-all hover:brightness-110"
+                       transition-all hover:brightness-110 mb-3"
             style={{ background: "linear-gradient(135deg,#b8922a,#e8c560)" }}
           >
-            Claim Your Listing
+            Owner Login
           </Link>
+          <p className="text-gray-400 text-xs">
+            Don&apos;t manage a listing yet?{" "}
+            <Link href="/claim" className="text-yellow-700 hover:underline">Claim your studio</Link>.
+          </p>
         </div>
       </main>
     );
@@ -117,8 +150,9 @@ export default function DashboardPage() {
             Logged in as <strong>{email}</strong>.
           </p>
           <p className="text-gray-500 text-sm mb-6">
-            You haven&apos;t claimed a listing yet, or your claim may be associated with a
-            different email address.
+            We couldn&apos;t find a listing for this email. You may have claimed it with a
+            different address, or it isn&apos;t claimed yet. If our team set up your listing, sign
+            in with the email you gave us, or <Link href="/contact" className="text-yellow-700 hover:underline">contact us</Link>.
           </p>
           <Link
             href="/claim"
@@ -169,6 +203,26 @@ export default function DashboardPage() {
       </div>
 
       <div className="max-w-2xl mx-auto px-4 py-10 space-y-6">
+
+        {/* Listing switcher (owners with more than one studio) */}
+        {claims.length > 1 && (
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+            <h2 className="font-bold text-gray-900 text-lg mb-3">Your listings ({claims.length})</h2>
+            <div className="space-y-2">
+              {claims.map((c, i) => (
+                <button
+                  key={c.id}
+                  onClick={() => setSelected(i)}
+                  className={`w-full text-left px-4 py-3 rounded-xl border text-sm transition-colors ${
+                    i === selected ? "border-yellow-400 bg-yellow-50 font-semibold text-gray-900" : "border-gray-200 text-gray-700 hover:bg-gray-50"
+                  }`}
+                >
+                  {c.studio_title}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Claim status card */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
@@ -295,6 +349,32 @@ export default function DashboardPage() {
             studioState={(claim as Claim & { studio_state?: string }).studio_state ?? ""}
           />
         )}
+
+        {/* Password / sign-in settings */}
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+          <h3 className="font-bold text-gray-900 mb-1">{hasPassword ? "Change your password" : "Create a password"}</h3>
+          <p className="text-gray-500 text-sm mb-4">
+            {hasPassword
+              ? "Update the password you use to sign in."
+              : "Set a password so you can sign in any time at Owner Login without waiting for an email link."}
+          </p>
+          <form onSubmit={handleSetPassword} className="grid sm:grid-cols-2 gap-3">
+            <input type="password" autoComplete="new-password" placeholder="New password (8+ characters)"
+              value={pw} onChange={(e) => setPw(e.target.value)}
+              className="px-4 py-2.5 rounded-xl border border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-100 outline-none text-sm" />
+            <input type="password" autoComplete="new-password" placeholder="Confirm password"
+              value={pw2} onChange={(e) => setPw2(e.target.value)}
+              className="px-4 py-2.5 rounded-xl border border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-100 outline-none text-sm" />
+            <div className="sm:col-span-2 flex items-center gap-3">
+              <button type="submit" disabled={pwBusy || !pw}
+                className="px-5 py-2.5 rounded-xl font-bold text-gray-900 text-sm hover:brightness-110 disabled:opacity-50"
+                style={{ background: "linear-gradient(135deg,#b8922a,#e8c560)" }}>
+                {pwBusy ? "Saving\u2026" : "Save password"}
+              </button>
+              {pwMsg && <span className={`text-sm ${pwMsg.ok ? "text-green-700" : "text-red-600"}`}>{pwMsg.text}</span>}
+            </div>
+          </form>
+        </div>
 
         {/* Help */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
