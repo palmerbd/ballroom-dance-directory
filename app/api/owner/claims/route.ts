@@ -8,6 +8,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { getStudio } from "@/lib/wordpress";
 
 export const dynamic = "force-dynamic";
 
@@ -51,5 +52,32 @@ export async function GET(req: NextRequest) {
   const seen = new Set<string>();
   const claims = all.filter((c) => (seen.has(c.studio_slug) ? false : (seen.add(c.studio_slug), true)));
 
-  return NextResponse.json({ email: user.email, claims });
+  // Enrich each listing with what the dashboard needs: the public listing data from
+  // WordPress (for the profile checklist and preview), the photo count and the
+  // owner-edited Featured profile. Any lookup that fails just comes back empty.
+  const enriched = await Promise.all(claims.map(async (c) => {
+    const [studio, photos, profile] = await Promise.all([
+      getStudio(c.studio_slug).catch(() => null),
+      supabaseAdmin.from("studio_photos").select("id", { count: "exact", head: true }).eq("studio_slug", c.studio_slug),
+      supabaseAdmin.from("studio_profiles")
+        .select("custom_description, facebook_url, instagram_url, tiktok_url, promo_text, show_google_reviews")
+        .eq("studio_slug", c.studio_slug).maybeSingle(),
+    ]);
+    const listing = studio ? {
+      title:        studio.title,
+      address:      studio.address || "",
+      city:         studio.city || "",
+      state:        studio.state || "",
+      zip:          studio.zip || "",
+      phone:        studio.phone || "",
+      email:        studio.email || "",
+      website:      studio.website || "",
+      hours:        studio.hours || {},
+      danceStyles:  studio.danceStyles || [],
+      tagline:      studio.tagline || "",
+    } : null;
+    return { ...c, listing, photo_count: photos.count ?? 0, profile: profile.data ?? null };
+  }));
+
+  return NextResponse.json({ email: user.email, claims: enriched });
 }
