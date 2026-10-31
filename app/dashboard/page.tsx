@@ -351,7 +351,7 @@ function Gate({ icon, title, children }: { icon: React.ReactNode; title: string;
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-[#f6f7f9] px-6 py-12" style={FONT}>
       <Link href="/" className="mb-8">
-        <Image src="/logo.png" alt="Ballroom Dance Directory" width={480} height={190} className="h-16 w-auto" priority />
+        <Image src="/logo.png" alt="Ballroom Dance Directory" width={480} height={190} className="h-16 w-auto mix-blend-multiply" priority />
       </Link>
       <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-8 text-center shadow-sm">
         <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#f0f3f9] text-[#1e3a8a]">{icon}</span>
