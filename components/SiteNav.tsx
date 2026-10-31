@@ -18,6 +18,9 @@ export default function SiteNav() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
+  // The owner dashboard has its own app shell (sidebar + top bar).
+  if (pathname?.startsWith("/dashboard")) return null;
+
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
