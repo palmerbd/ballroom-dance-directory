@@ -56,11 +56,14 @@ export async function GET(req: NextRequest) {
   // WordPress (for the profile checklist and preview), the photo count and the
   // owner-edited Featured profile. Any lookup that fails just comes back empty.
   const enriched = await Promise.all(claims.map(async (c) => {
-    const [studio, photos, profile] = await Promise.all([
+    const [studio, photos, profile, answers] = await Promise.all([
       getStudio(c.studio_slug).catch(() => null),
       supabaseAdmin.from("studio_photos").select("id", { count: "exact", head: true }).eq("studio_slug", c.studio_slug),
       supabaseAdmin.from("studio_profiles")
         .select("custom_description, facebook_url, instagram_url, tiktok_url, promo_text, show_google_reviews")
+        .eq("studio_slug", c.studio_slug).maybeSingle(),
+      supabaseAdmin.from("owner_answers")
+        .select("studio_slug, first_visit, typical_student, what_different, answered_by, updated_at")
         .eq("studio_slug", c.studio_slug).maybeSingle(),
     ]);
     const listing = studio ? {
@@ -76,7 +79,12 @@ export async function GET(req: NextRequest) {
       danceStyles:  studio.danceStyles || [],
       tagline:      studio.tagline || "",
     } : null;
-    return { ...c, listing, photo_count: photos.count ?? 0, profile: profile.data ?? null };
+    // answers_enabled is false until the owner_answers table exists (migration 006),
+    // so the Owner Portal can hide the Q&A form instead of showing a failing one.
+    return {
+      ...c, listing, photo_count: photos.count ?? 0, profile: profile.data ?? null,
+      answers: answers.data ?? null, answers_enabled: !answers.error,
+    };
   }));
 
   return NextResponse.json({ email: user.email, claims: enriched });
