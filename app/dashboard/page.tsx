@@ -17,11 +17,15 @@ import {
   LogOut, ExternalLink, CircleCheck, Circle, ChevronsUpDown, Phone, Globe,
   MapPin, Clock, Mail, Lock, ArrowRight, Menu, X, BadgeCheck, Crown, Info,
   Copy, Check, Hourglass, KeyRound, User, ChevronRight, Music2, Eye, ListChecks,
-  type LucideIcon,
+  MessageSquare, type LucideIcon,
 } from "lucide-react";
 import { supabase, type Claim } from "@/lib/supabase";
 import PhotoManager from "@/components/PhotoManager";
 import StudioProfileEditor from "@/components/StudioProfileEditor";
+import {
+  OWNER_QUESTIONS, OWNER_ANSWER_MAX, OWNER_ANSWER_MIN, publishedAnswers,
+  type OwnerAnswers, type OwnerAnswerKey,
+} from "@/lib/owner-answers";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -55,10 +59,15 @@ type OwnerClaim = Claim & {
   listing?:     ListingData | null;
   photo_count?: number;
   profile?:     FeaturedProfile | null;
+  answers?:     OwnerAnswers | null;
+  answers_enabled?: boolean;
 };
 
+type AnswerDraft = Record<OwnerAnswerKey, string>;
+const EMPTY_DRAFT: AnswerDraft = { first_visit: "", typical_student: "", what_different: "" };
+
 type PageState = "loading" | "unauthenticated" | "no_claim" | "ready";
-type SectionId = "overview" | "listing" | "photos" | "profile" | "plan" | "account";
+type SectionId = "overview" | "listing" | "answers" | "photos" | "profile" | "plan" | "account";
 
 interface CheckItem {
   id:      string;
@@ -74,6 +83,7 @@ interface CheckItem {
 const SECTIONS: { id: SectionId; label: string; icon: LucideIcon; featured?: boolean }[] = [
   { id: "overview", label: "Overview",             icon: LayoutDashboard },
   { id: "listing",  label: "Listing details",      icon: Store },
+  { id: "answers",  label: "Owner Q&A",            icon: MessageSquare },
   { id: "photos",   label: "Photos",               icon: Images,   featured: true },
   { id: "profile",  label: "Description & promos", icon: Sparkles, featured: true },
   { id: "plan",     label: "Plan & billing",       icon: CreditCard },
@@ -143,6 +153,7 @@ function buildChecklist(c: OwnerClaim, hasPassword: boolean): CheckItem[] {
   const photos   = c.photo_count ?? 0;
   const hasHours = !!l && DAYS.some((d) => (l.hours?.[d] || "").trim());
   const update   = { label: "Send update", href: changeRequestHref(c.studio_title) };
+  const answered = publishedAnswers(c.answers).length;
 
   return [
     {
@@ -155,6 +166,11 @@ function buildChecklist(c: OwnerClaim, hasPassword: boolean): CheckItem[] {
       detail: hasPassword ? "You can sign in with your email and password." : "Sign in any time without waiting for an email link.",
       done: hasPassword, action: { label: "Set password", section: "account" },
     },
+    ...(c.answers_enabled === false ? [] : [{
+      id: "answers", title: "Answer 3 questions for dancers",
+      detail: answered ? `${answered} of 3 answered, shown on your listing in your words.` : "Your own words on your listing: free on every plan.",
+      done: answered === 3, action: { label: "Answer", section: "answers" as SectionId },
+    }]),
     {
       id: "phone", title: "Phone number",
       detail: l?.phone ? l.phone : "Dancers can't call you from your listing yet.",
@@ -381,6 +397,11 @@ export default function DashboardPage() {
   const [pwBusy, setPwBusy] = useState(false);
   const [pwMsg,  setPwMsg]  = useState<{ ok: boolean; text: string } | null>(null);
 
+  // Owner Q&A state
+  const [qa,     setQa]     = useState<AnswerDraft>(EMPTY_DRAFT);
+  const [qaBusy, setQaBusy] = useState(false);
+  const [qaMsg,  setQaMsg]  = useState<{ ok: boolean; text: string } | null>(null);
+
   const claim: OwnerClaim | null = claims[selected] ?? null;
 
   // ── Data ────────────────────────────────────────────────────────────────────
@@ -408,6 +429,21 @@ export default function DashboardPage() {
     }
     load();
   }, []);
+
+  // ── Load the selected listing's answers into the Q&A form ──────────────────
+  // Keyed on the listing id, so saving (which updates `claims`) doesn't wipe the
+  // form or its "Saved" message.
+  const currentClaimId = claims[selected]?.id;
+  useEffect(() => {
+    const a = claims[selected]?.answers;
+    setQa({
+      first_visit:     a?.first_visit     || "",
+      typical_student: a?.typical_student || "",
+      what_different:  a?.what_different  || "",
+    });
+    setQaMsg(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentClaimId]);
 
   // ── Section routing via the URL hash (#photos, #account, …) ─────────────────
   useEffect(() => {
@@ -441,6 +477,32 @@ export default function DashboardPage() {
     setHasPassword(true);
     setPw(""); setPw2("");
     setPwMsg({ ok: true, text: "Password saved. You can now sign in with your email and password." });
+  }
+
+  async function handleSaveAnswers(e: React.FormEvent) {
+    e.preventDefault();
+    const current = claims[selected];
+    if (!current) return;
+    setQaMsg(null);
+    setQaBusy(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) { setQaMsg({ ok: false, text: "Your session ended. Sign in again to save." }); return; }
+      const res = await fetch("/api/owner/answers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
+        body: JSON.stringify({ claim_id: current.id, ...qa }),
+      });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) { setQaMsg({ ok: false, text: body.error || "Could not save your answers." }); return; }
+      setClaims((list) => list.map((c, i) => (i === selected ? { ...c, answers: body.answers } : c)));
+      const live = publishedAnswers(body.answers).length;
+      setQaMsg({ ok: true, text: live ? `Saved. ${live} of 3 answers are live on your listing.` : "Saved." });
+    } catch {
+      setQaMsg({ ok: false, text: "Could not save your answers. Check your connection and try again." });
+    } finally {
+      setQaBusy(false);
+    }
   }
 
   async function handleSignOut() {
@@ -516,6 +578,7 @@ export default function DashboardPage() {
 
   // ── Derived data ────────────────────────────────────────────────────────────
   const paid       = claim.tier === "paid";
+  const answersOn  = claim.answers_enabled !== false;
   const approved   = claim.status === "approved";
   const canUpgrade = !paid && (claim.status === "approved" || claim.status === "verified");
   const listing    = claim.listing ?? null;
@@ -531,7 +594,7 @@ export default function DashboardPage() {
   const doneCount  = applicable.filter((i) => i.done).length;
   const score      = applicable.length ? Math.round((doneCount / applicable.length) * 100) : 0;
   const nextItem   = applicable.find((i) => !i.done && i.action);
-  const current    = SECTIONS.find((s) => s.id === section) ?? SECTIONS[0];
+  const current    = (section === "answers" && !answersOn ? undefined : SECTIONS.find((s) => s.id === section)) ?? SECTIONS[0];
   const cityLine   = listing ? [[listing.city, listing.state].filter(Boolean).join(", "), listing.zip].filter(Boolean).join(" ") : "";
   const streetLine = listing ? [listing.address, cityLine].filter(Boolean).join(", ") : "";
   const hasAnyHours = !!listing && DAYS.some((d) => (listing.hours?.[d] || "").trim());
@@ -590,7 +653,7 @@ export default function DashboardPage() {
       {/* Navigation */}
       <nav className="flex-1 space-y-0.5 overflow-y-auto px-3 py-4">
         <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-gray-400">Manage</p>
-        {SECTIONS.map((s) => {
+        {SECTIONS.filter((s) => s.id !== "answers" || answersOn).map((s) => {
           const Icon   = s.icon;
           const active = section === s.id;
           return (
@@ -933,6 +996,63 @@ export default function DashboardPage() {
     </div>
   );
 
+  const liveAnswers = publishedAnswers(claim.answers);
+  const renderAnswers = () => (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader
+          title="Owner Q&A"
+          description="Answer in your own words. Dancers see your answers on your listing with your first name and the date. Free on every plan."
+          right={liveAnswers.length ? (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> {liveAnswers.length} of 3 live
+            </span>
+          ) : undefined}
+        />
+        <form onSubmit={handleSaveAnswers} className="space-y-6 border-t border-gray-100 px-5 py-5">
+          {OWNER_QUESTIONS.map((q) => {
+            const value = qa[q.key];
+            const short = value.trim().length > 0 && value.trim().length < OWNER_ANSWER_MIN;
+            return (
+              <label key={q.key} className="block">
+                <span className="text-sm font-semibold text-gray-900">{q.question}</span>
+                <span className="mt-0.5 block text-xs text-gray-500">{q.hint}</span>
+                <textarea
+                  rows={4}
+                  maxLength={OWNER_ANSWER_MAX}
+                  value={value}
+                  onChange={(e) => setQa((d) => ({ ...d, [q.key]: e.target.value }))}
+                  className="mt-2 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm leading-6 shadow-sm outline-none transition placeholder:text-gray-400 focus:border-[#1e3a8a] focus:ring-2 focus:ring-[#1e3a8a]/15"
+                  placeholder="Write it the way you'd say it to a new student."
+                />
+                <span className={cx("mt-1 flex justify-between text-xs", short ? "text-amber-600" : "text-gray-400")}>
+                  <span>{short ? `A little more, please: answers under ${OWNER_ANSWER_MIN} characters aren't shown.` : ""}</span>
+                  <span>{value.length}/{OWNER_ANSWER_MAX}</span>
+                </span>
+              </label>
+            );
+          })}
+          <div className="flex flex-wrap items-center gap-3">
+            <button type="submit" disabled={qaBusy} className={BTN_PRIMARY}>
+              {qaBusy ? "Saving\u2026" : "Save answers"}
+            </button>
+            <a href={listingUrl} target="_blank" rel="noopener noreferrer" className={BTN_SECONDARY}>
+              <Eye className="h-4 w-4" /> See them on your listing
+            </a>
+            {qaMsg && (
+              <span className={cx("inline-flex items-center gap-1.5 text-sm", qaMsg.ok ? "text-emerald-700" : "text-red-600")}>
+                {qaMsg.ok && <Check className="h-4 w-4" />} {qaMsg.text}
+              </span>
+            )}
+          </div>
+          {claim.answers?.updated_at && (
+            <p className="text-xs text-gray-400">Last updated {fmtDate(claim.answers.updated_at)}.</p>
+          )}
+        </form>
+      </Card>
+    </div>
+  );
+
   const renderPhotos = () => paid ? (
     <div className="space-y-6">
       <PhotoManager key={claim.id} claimId={claim.id} studioSlug={claim.studio_slug} />
@@ -1103,6 +1223,7 @@ export default function DashboardPage() {
 
   const content =
     section === "listing" ? renderListing()
+    : section === "answers" && answersOn ? renderAnswers()
     : section === "photos"  ? renderPhotos()
     : section === "profile" ? renderProfile()
     : section === "plan"    ? renderPlan()
