@@ -4,6 +4,7 @@ import { COMPETITIONS } from "@/lib/competitions-data";
 import { COMP_REGION_LABELS, COMP_STYLE_LABELS } from "@/types/competition";
 import { DANCE_STYLES } from "@/types/studio";
 import { DANCE_BOOKING_RANK } from "@/lib/dancebookingrank";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 
 // Regenerate daily so studio <lastmod> values (real WP modified dates) stay current
 // between deploys; otherwise the sitemap is frozen at build time.
@@ -64,11 +65,30 @@ async function getStudioModifiedDates(): Promise<Map<string, Date>> {
   return map;
 }
 
+/**
+ * Slugs of owner-verified studios. Claims live in Supabase and the WP studio_tier
+ * field is not synced, so without this the sitemap listed no studio pages at all
+ * (found Nov 2026). Matches the studio page's own rule: verified or approved claims.
+ * Fails soft to an empty set.
+ */
+async function getVerifiedClaimSlugs(): Promise<Set<string>> {
+  try {
+    const { data } = await supabaseAdmin
+      .from("claims")
+      .select("studio_slug")
+      .in("status", ["verified", "approved"]);
+    return new Set(((data || []) as { studio_slug: string | null }[]).map((r) => r.studio_slug || "").filter(Boolean));
+  } catch {
+    return new Set();
+  }
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [studios, blogSlugs, modifiedDates] = await Promise.all([
+  const [studios, blogSlugs, modifiedDates, claimSlugs] = await Promise.all([
     getAllStudios(),
     getBlogSlugs(),
     getStudioModifiedDates(),
+    getVerifiedClaimSlugs(),
   ]);
 
   const studioEntries: MetadataRoute.Sitemap = studios.map((studio) => {
@@ -160,7 +180,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Wave 2 (Oct 2026): unverified studio pages are noindexed for Google, so only
   // claimed/paid studios are listed. DBR seo-details pages are noindexed too.
-  const verifiedSlugs = new Set(studios.filter((s) => s.tier === "claimed" || s.tier === "paid").map((s) => s.slug));
+  // Only published studios (in `studios`) qualify, so a claim on an unpublished or
+  // demo slug never puts a 404 in the sitemap.
+  const verifiedSlugs = new Set(
+    studios
+      .filter((s) => s.tier === "claimed" || s.tier === "paid" || claimSlugs.has(s.slug))
+      .map((s) => s.slug)
+  );
   const verifiedStudioEntries = studioEntries.filter((e) => verifiedSlugs.has(e.url.split("/studios/")[1]));
   const dbrIndexable = danceBookingRankEntries.filter((e) => !e.url.endsWith("/seo-details"));
 
