@@ -76,11 +76,14 @@ export async function generateMetadata({
     ...(verifiedListing ? {} : {
       robots: { index: true, follow: true, googleBot: { index: false, follow: true } },
     }),
-    description:
-      (verifiedListing ? studio.description : "") ||
-      `Private dance lessons at ${studio.title}${location ? ` in ${location}` : ""}. ${
-        studio.danceStyles.map((s) => STYLE_LABELS[s as DanceStyle]).join(", ")
-      } instruction available.`,
+    // Unverified listings don't assert dance styles: most were filled in by default at
+    // import and nobody has checked them (Nov 2026 authenticity audit).
+    description: verifiedListing
+      ? (studio.description ||
+        `Private dance lessons at ${studio.title}${location ? ` in ${location}` : ""}. ${
+          studio.danceStyles.map((s) => STYLE_LABELS[s as DanceStyle]).join(", ")
+        } instruction available.`)
+      : `${studio.title}${location ? ` in ${location}` : ""}: address, phone and opening hours from public listing data.`,
     alternates: {
       canonical: `https://www.ballroomdancedirectory.com/studios/${slug}`,
     },
@@ -497,8 +500,8 @@ export default async function StudioPage({
             <p className="text-white/60 text-lg italic mb-4">{studio.tagline}</p>
           ) : studio.city ? (
             <p className="text-white/60 text-lg mb-4">
-              Private dance lessons in {studio.city}
-              {styleList ? ` \u2014 ${styleList.toLowerCase()} instruction` : ""}.
+              {isVerified ? "Private dance lessons" : "Dance studio"} in {studio.city}
+              {isVerified && styleList ? ` \u2014 ${styleList.toLowerCase()} instruction` : ""}.
             </p>
           ) : null}
 
@@ -618,13 +621,22 @@ export default async function StudioPage({
             {/* Dance Styles */}
             {studio.danceStyles.length > 0 && (
               <section>
-                <h2 className="font-display font-bold text-gray-900 text-xl mb-4">Dance Styles Offered</h2>
+                <h2 className="font-display font-bold text-gray-900 text-xl mb-1">
+                  {isVerified ? "Dance Styles Offered" : "Dance Styles Listed"}
+                </h2>
+                <p className="text-xs text-gray-400 mb-4">
+                  {isVerified
+                    ? "This listing is managed by the studio owner."
+                    : "From public listing data. Not yet checked with the studio."}
+                </p>
                 <div className="flex flex-wrap gap-2">
                   {studio.danceStyles.map((style) => (
                     <span
                       key={style}
                       className="px-4 py-2 rounded-full text-sm font-semibold border"
-                      style={{ borderColor: "#b8922a", color: "#b8922a", background: "#fdf8f0" }}
+                      style={isVerified
+                        ? { borderColor: "#b8922a", color: "#b8922a", background: "#fdf8f0" }
+                        : { borderColor: "#e5e7eb", color: "#6b7280", background: "#f9fafb" }}
                     >
                       {STYLE_LABELS[style as DanceStyle]}
                     </span>
@@ -633,8 +645,9 @@ export default async function StudioPage({
               </section>
             )}
 
-            {/* Amenities */}
-            {studio.amenities && studio.amenities.length > 0 && (
+            {/* Amenities — owner-verified listings only; on the rest "private lessons" was
+                filled in by default at import and was never checked. */}
+            {isVerified && studio.amenities && studio.amenities.length > 0 && (
               <section>
                 <h2 className="font-display font-bold text-gray-900 text-xl mb-4">Amenities</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
