@@ -11,6 +11,7 @@ import SocialLinks from "@/components/SocialLinks";
 import ReviewsSection, { type GoogleReview } from "@/components/ReviewsSection";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { type StudioProfile } from "@/lib/supabase";
+import { publishedAnswers, type OwnerAnswers } from "@/lib/owner-answers";
 
 export const revalidate = 86400; // 24 hours \u2014 studio data changes infrequently; 1hr was burning Vercel ISR quota
 
@@ -303,6 +304,23 @@ export default async function StudioPage({
       }
     } catch { /* non-fatal */ }
   }
+
+  // Owner Q&A: the owner's own answers, free on every owner-verified listing (Nov 2026)
+  let ownerAnswers: OwnerAnswers | null = null;
+  if (studio.tier === "claimed" || studio.tier === "paid") {
+    try {
+      const { data } = await supabaseAdmin
+        .from("owner_answers")
+        .select("studio_slug, first_visit, typical_student, what_different, answered_by, updated_at")
+        .eq("studio_slug", slug)
+        .maybeSingle();
+      ownerAnswers = (data as OwnerAnswers | null) ?? null;
+    } catch { /* non-fatal: table may not exist yet */ }
+  }
+  const ownerQA = publishedAnswers(ownerAnswers);
+  const ownerQADate = ownerAnswers?.updated_at
+    ? new Date(ownerAnswers.updated_at).toLocaleDateString("en-US", { month: "long", year: "numeric" })
+    : "";
 
   const chain    = CHAIN_CONFIG[studio.studioChain];
   const location = [studio.address, studio.city, studio.state, studio.zip]
@@ -610,6 +628,30 @@ export default async function StudioPage({
                 {studioProfile?.custom_description && (
                   <p className="text-xs text-gray-400 mt-2 italic">Description provided by studio owner.</p>
                 )}
+              </section>
+            )}
+
+            {/* Owner Q&A \u2014 in the owner's own words */}
+            {ownerQA.length > 0 && (
+              <section>
+                <h2 className="font-display font-bold text-gray-900 text-xl mb-1">From the Owner</h2>
+                <p className="text-xs text-gray-400 mb-5">
+                  Answered by {ownerAnswers?.answered_by || "the owner"}, owner of {studio.title}
+                  {ownerQADate ? ` \u00b7 ${ownerQADate}` : ""}
+                </p>
+                <div className="space-y-5">
+                  {ownerQA.map((q) => (
+                    <div key={q.key}>
+                      <h3 className="font-semibold text-gray-900 mb-1.5">{q.question}</h3>
+                      <blockquote
+                        className="border-l-2 pl-4 text-gray-600 leading-relaxed whitespace-pre-line"
+                        style={{ borderColor: "#b8922a" }}
+                      >
+                        {q.answer}
+                      </blockquote>
+                    </div>
+                  ))}
+                </div>
               </section>
             )}
 
