@@ -69,6 +69,10 @@ export default function AboutPage() {
               authorized representative claims their profile. We encourage studio owners to claim
               their listing to ensure their information is accurate and up to date.
             </p>
+            <p className="text-gray-600 leading-relaxed mt-4">
+              Every listing shows its verification level and where its facts come from. See{" "}
+              <Link href="/how-we-verify" className="underline" style={{ color: "#b8922a" }}>how we verify</Link>.
+            </p>
           </div>
 
           <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
