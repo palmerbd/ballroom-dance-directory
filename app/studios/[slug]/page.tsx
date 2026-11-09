@@ -12,6 +12,7 @@ import ReviewsSection, { type GoogleReview } from "@/components/ReviewsSection";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { type StudioProfile } from "@/lib/supabase";
 import { publishedAnswers, type OwnerAnswers } from "@/lib/owner-answers";
+import { findStudioPrice } from "@/lib/lesson-prices";
 
 export const revalidate = 86400; // 24 hours \u2014 studio data changes infrequently; 1hr was burning Vercel ISR quota
 
@@ -318,6 +319,13 @@ export default async function StudioPage({
     } catch { /* non-fatal: table may not exist yet */ }
   }
   const ownerQA = publishedAnswers(ownerAnswers);
+  const detailsUpdated = studio.modified
+    ? new Date(studio.modified).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" })
+    : "";
+  const priceRow = findStudioPrice(studio.slug);
+  const priceRead = priceRow
+    ? new Date(`${priceRow.report.checkedOn}T12:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" })
+    : "";
   const ownerQADate = ownerAnswers?.updated_at
     ? new Date(ownerAnswers.updated_at).toLocaleDateString("en-US", { month: "long", year: "numeric" })
     : "";
@@ -584,6 +592,7 @@ export default async function StudioPage({
               {studio.studioChain !== "independent" ? chain.label : "this studio"}. This listing was
               compiled from public sources for informational purposes. Information may not be
               current &mdash; please contact the studio directly to confirm hours, pricing, and availability.{" "}
+              <a href="/how-we-verify" className="underline hover:text-amber-900">How we verify</a>.{" "}
               <a
                 href={`/claim?slug=${encodeURIComponent(studio.slug)}`}
                 className="underline font-medium hover:text-amber-900"
@@ -706,6 +715,21 @@ export default async function StudioPage({
             {/* Pricing */}
             <section>
               <h2 className="font-display font-bold text-gray-900 text-xl mb-4">Pricing</h2>
+              {priceRow?.studio.introOffer && (
+                <div className="mb-4 rounded-xl border p-4 text-sm leading-relaxed" style={{ borderColor: "#ecdcb0", background: "#fdf8ec" }}>
+                  <p className="text-gray-800">
+                    <span className="font-semibold">Intro offer on the studio&apos;s website:</span>{" "}
+                    {priceRow.studio.introPrice != null ? `$${priceRow.studio.introPrice} \u00b7 ` : ""}
+                    {priceRow.studio.introOffer}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {`Read from the studio\u2019s website on ${priceRead}. Prices change, so confirm with the studio. `}
+                    <a href={`/lesson-prices/${priceRow.report.slug}`} className="underline" style={{ color: "#9a7620" }}>
+                      {`Compare ${priceRow.report.city} lesson prices`}
+                    </a>
+                  </p>
+                </div>
+              )}
               {(studio.introLessonRate || studio.privateLessonRate || studio.monthlyRate) ? (
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {studio.introLessonRate && (
@@ -900,6 +924,71 @@ export default async function StudioPage({
                 </p>
               </div>
             )}
+
+            {/* Listing status — verification level, freshness, unchecked facts (Nov 2026) */}
+            <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+              <h3 className="font-display font-bold text-gray-900 text-lg mb-3">Listing status</h3>
+              <span
+                className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold"
+                style={isVerified
+                  ? { background: "#ecfdf5", color: "#047857" }
+                  : { background: "#f3f4f6", color: "#4b5563" }}
+              >
+                <span className="h-1.5 w-1.5 rounded-full" style={{ background: isVerified ? "#10b981" : "#9ca3af" }} />
+                {isVerified ? "Owner-confirmed" : "Listed \u00b7 not yet checked"}
+              </span>
+              <p className="text-sm text-gray-600 mt-3 leading-relaxed">
+                {isVerified
+                  ? "The studio owner has claimed and verified this listing and manages its details."
+                  : "Address, phone and hours come from public business listing data. We haven\u2019t checked them with the studio yet."}
+              </p>
+              <dl className="mt-4 space-y-1.5 text-sm">
+                {detailsUpdated && (
+                  <div className="flex justify-between gap-3">
+                    <dt className="text-gray-500">Details last updated</dt>
+                    <dd className="text-gray-900">{detailsUpdated}</dd>
+                  </div>
+                )}
+                {priceRow && (
+                  <div className="flex justify-between gap-3">
+                    <dt className="text-gray-500">Intro offer on its website</dt>
+                    <dd className="text-gray-900 text-right">
+                      {priceRow.studio.introPrice != null ? `$${priceRow.studio.introPrice}` : "Not published"}
+                      <span className="block text-xs text-gray-400">read {priceRead}</span>
+                    </dd>
+                  </div>
+                )}
+                <div className="flex justify-between gap-3">
+                  <dt className="text-gray-500">Books online</dt>
+                  <dd className="text-gray-400">Not checked yet</dd>
+                </div>
+                <div className="flex justify-between gap-3">
+                  <dt className="text-gray-500">Pays online</dt>
+                  <dd className="text-gray-400">Not checked yet</dd>
+                </div>
+                {studio.tier === "paid" && (
+                  <div className="flex justify-between gap-3">
+                    <dt className="text-gray-500">Placement</dt>
+                    <dd className="text-gray-900">Featured (paid)</dd>
+                  </div>
+                )}
+              </dl>
+              <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                {priceRow && (
+                  <a href={`/lesson-prices/${priceRow.report.slug}`} className="font-medium underline" style={{ color: "#9a7620" }}>
+                    {priceRow.report.city} lesson prices
+                  </a>
+                )}
+                <a href="/how-we-verify" className="font-medium underline" style={{ color: "#9a7620" }}>How we verify</a>
+                <a
+                  href={`mailto:info@ballroomdancedirectory.com?subject=${encodeURIComponent(`Correction: ${studio.title}`)}`}
+                  className="font-medium underline"
+                  style={{ color: "#9a7620" }}
+                >
+                  Is something wrong?
+                </a>
+              </div>
+            </div>
 
             {/* Contact card */}
             <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
@@ -1139,6 +1228,7 @@ export default async function StudioPage({
           <div className="flex gap-6 text-sm text-gray-400">
             <Link href="/" className="hover:text-gray-900 transition-colors">Home</Link>
             <Link href="/studios" className="hover:text-gray-900 transition-colors">All Studios</Link>
+            <Link href="/how-we-verify" className="hover:text-gray-900 transition-colors">How We Verify</Link>
           </div>
         </div>
       </footer>
