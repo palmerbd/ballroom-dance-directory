@@ -50,8 +50,8 @@ const FACTS: { fact: string; source: string; label: string }[] = [
   { fact: "Address, phone, hours", source: "Public business listing data until checked; the studio's own site or owner after that", label: "“Details last updated” date" },
   { fact: "Dance styles", source: "Listed: public data. Checked: the studio's own class pages. Owner-confirmed: the owner", label: "“Dance styles listed” until checked, then “offered”" },
   { fact: "Intro offer and prices", source: "The studio's own website, copied as published", label: "The date we read it" },
-  { fact: "Books online", source: "Yes if the studio's site lets you book a lesson or class online without calling", label: "Yes / No / Not checked yet" },
-  { fact: "Pays online", source: "Yes if you can pay for a lesson, package or intro offer on the studio's site", label: "Yes / No / Not checked yet" },
+  { fact: "Books online", source: "An automated read of the studio's own site (home page plus its booking, schedule and pricing pages). Yes if it links to a booking or class-registration system, or has its own booking page", label: "“Yes” with where we found it and the date, “Not found on its website”, or “Not checked yet”" },
+  { fact: "Pays online", source: "The same read. Yes if you can buy a lesson, class pass, package or intro offer there. Gift cards and donations don't count", label: "“Yes” with where we found it and the date, “Not found on its website”, or “Not checked yet”" },
   { fact: "Reply time", source: "Our own new-student inquiry, timed from sending to the first reply", label: "Tested studios only, with the test date" },
   { fact: "From the Owner", source: "Written by the studio owner", label: "Owner's first name and the date" },
 ];
@@ -125,6 +125,21 @@ export default function HowWeVerifyPage() {
                 </tbody>
               </table>
             </div>
+          </section>
+
+          {/* Online booking check */}
+          <section className="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+            <h2 className="font-display font-bold text-gray-900 text-xl mb-4">Online booking and payment</h2>
+            <p className="text-gray-700 leading-relaxed mb-4">
+              On November 9, 2026, we checked every listed studio with a working website, about 3,300 sites, for
+              online booking and payment. A “Yes” links to what we found, such as a Mindbody schedule or a checkout
+              page for an intro offer. When we find nothing we say “Not found on its website”, never a flat “No”: a
+              booking button that only appears after a site loads its scripts can be missed. Studios whose site
+              didn&apos;t load, or that list only a social media page, show “Not checked yet”.
+            </p>
+            <p className="text-gray-700 leading-relaxed">
+              We&apos;ll re-run this check monthly. Studio owners who see it wrong can tell us and we&apos;ll re-check.
+            </p>
           </section>
 
           {/* What we don't do */}
