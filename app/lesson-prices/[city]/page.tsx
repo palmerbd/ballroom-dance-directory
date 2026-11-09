@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LESSON_PRICES, getLessonPriceReport, summarize, fmtCheckedOn, type LessonPriceStudio } from "@/lib/lesson-prices";
+import { getBookingCheck, fmtShort, type BookingHit } from "@/lib/booking-checks";
 
 // ─── /lesson-prices/[city] — First Lesson Price Index ─────────────────────────
 // What studios in a metro publish about intro offers and prices, read from each
@@ -36,6 +37,16 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
   };
 }
 
+function Online({ checked, h }: { checked: boolean; h: BookingHit | null | undefined }) {
+  if (!checked) return <span className="text-gray-400">Not checked yet</span>;
+  if (!h) return <span className="text-gray-500">Not found</span>;
+  return (
+    <a href={h.url} target="_blank" rel="nofollow noopener noreferrer" className="font-medium text-emerald-700 underline">
+      Yes{h.via === "on its website" ? "" : `, ${h.via}`}
+    </a>
+  );
+}
+
 function YesNo({ value }: { value: boolean | null | undefined }) {
   if (value === true) return <span className="font-medium text-emerald-700">Yes</span>;
   if (value === false) return <span className="text-gray-700">No</span>;
@@ -58,6 +69,11 @@ export default async function LessonPricesPage({ params }: { params: Promise<{ c
   const expiring = r.studios.filter((x) => x.note && /expire/i.test(x.note));
   const expiryDate = expiring[0]?.note?.match(/expires\s+([A-Z][a-z]+ \d{1,2})/)?.[1] ?? "soon";
   const maxPrice = s.max ?? 1;
+  const bk = Object.fromEntries(r.studios.map((x) => [x.slug, getBookingCheck(x.slug)]));
+  const bkChecked = r.studios.filter((x) => bk[x.slug]);
+  const booksN = bkChecked.filter((x) => bk[x.slug]?.books).length;
+  const paysN = bkChecked.filter((x) => bk[x.slug]?.pays).length;
+  const bkDate = bkChecked.length ? fmtShort(bkChecked.map((x) => bk[x.slug]!.checkedOn).sort().at(-1)!) : "";
 
   const jsonLd = [
     {
@@ -139,6 +155,11 @@ export default async function LessonPricesPage({ params }: { params: Promise<{ c
             beginner class on their schedule. What an intro offer includes varies a lot, from one lesson to two
             30-minute private lessons plus a social party, so compare what you get, not only the price.
           </p>
+          {bkChecked.length > 0 && (
+            <p className="text-gray-700 leading-relaxed mt-3">
+              {`Booking online is rare here: of the ${bkChecked.length} studio websites we could check, ${booksN} let you book a lesson or class online and ${paysN} let you pay online. At the rest, you call or send an inquiry.`}
+            </p>
+          )}
         </section>
 
         {/* Intro offers, lowest to highest */}
@@ -191,8 +212,8 @@ export default async function LessonPricesPage({ params }: { params: Promise<{ c
                   <th className="px-4 py-3">Intro offer</th>
                   <th className="px-4 py-3">No partner needed</th>
                   <th className="px-4 py-3">Beginner class</th>
-                  {s.booksOnlineChecked && <th className="px-4 py-3">Books online</th>}
-                  {s.paysOnlineChecked && <th className="px-4 py-3">Pays online</th>}
+                  <th className="px-4 py-3">Books online</th>
+                  <th className="px-4 py-3">Pays online</th>
                   <th className="px-6 py-3">Source</th>
                 </tr>
               </thead>
@@ -211,8 +232,8 @@ export default async function LessonPricesPage({ params }: { params: Promise<{ c
                     </td>
                     <td className="px-4 py-4"><YesNo value={x.noPartner} /></td>
                     <td className="px-4 py-4 text-gray-700">{x.beginnerClass ?? <span className="text-gray-400">Not stated</span>}</td>
-                    {s.booksOnlineChecked && <td className="px-4 py-4"><YesNo value={x.booksOnline} /></td>}
-                    {s.paysOnlineChecked && <td className="px-4 py-4"><YesNo value={x.paysOnline} /></td>}
+                    <td className="px-4 py-4"><Online checked={!!bk[x.slug]} h={bk[x.slug]?.books} /></td>
+                    <td className="px-4 py-4"><Online checked={!!bk[x.slug]} h={bk[x.slug]?.pays} /></td>
                     <td className="px-6 py-4">
                       <a href={x.source} target="_blank" rel="noopener nofollow" className="text-xs underline" style={{ color: "#9a7620" }}>
                         Studio website
@@ -257,9 +278,14 @@ export default async function LessonPricesPage({ params }: { params: Promise<{ c
             pages, and recorded what it says. We didn’t contact the studios for this edition, so every price is
             as published and can change. The median counts only studios that publish a price.
           </p>
+          {bkChecked.length > 0 && (
+            <p>
+              {`On ${bkDate}, we checked each studio’s website for online booking and payment. “Not found” means we didn’t find it on the site, not that the studio can’t take a booking another way.`}
+            </p>
+          )}
           <p>
-            Next for {r.city}: how quickly each studio replies to a new-student inquiry, and whether you can book and
-            pay online. See <Link href="/how-we-verify" className="underline" style={{ color: "#9a7620" }}>how we verify</Link>.
+            Next for {r.city}: how quickly each studio replies to a new-student inquiry. See{" "}
+            <Link href="/how-we-verify" className="underline" style={{ color: "#9a7620" }}>how we verify</Link>.
           </p>
           <p>
             Featured is a paid placement on Ballroom Dance Directory and is labelled. It doesn’t change what we
