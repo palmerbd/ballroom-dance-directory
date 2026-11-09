@@ -72,6 +72,7 @@ export interface Studio {
   claimed:                boolean;
   tier:                   ListingTier;
   cityState:              string; // e.g. "new-york-ny" — used in URL
+  modified?:              string; // WP modified_gmt (ISO, UTC) — "details last updated"
 }
 
 export interface StudioCard {
