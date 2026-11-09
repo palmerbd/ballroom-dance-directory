@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import DanceBookingRank from "@/components/DanceBookingRank";
 import { DANCE_BOOKING_RANK, getDbrCity } from "@/lib/dancebookingrank";
+import { getLessonPriceReport } from "@/lib/lesson-prices";
 
 // Dance Booking Rank: a city's ranked studio list (see lib/dancebookingrank.ts).
 const BASE_URL = "https://www.ballroomdancedirectory.com";
@@ -35,6 +36,7 @@ export default async function DanceBookingRankCityPage({ params }: { params: Pro
   const { city } = await params;
   const c = getDbrCity(city);
   if (!c) notFound();
+  const prices = getLessonPriceReport(c.slug);
   return (
     <>
     <DanceBookingRank
@@ -52,6 +54,15 @@ export default async function DanceBookingRankCityPage({ params }: { params: Pro
         Google local results and AI-search visibility. It does not rate teaching quality. Placement
         cannot be purchased, and Featured listings on Ballroom Dance Directory do not affect the ranking.
       </p>
+      {prices && (
+        <p className="max-w-3xl mx-auto text-sm text-gray-700 leading-relaxed mt-3">
+          <strong>What lessons cost:</strong> see intro offers and published prices from {prices.studios.length}{" "}
+          {c.city}-area studios in{" "}
+          <a href={`/lesson-prices/${prices.slug}`} className="underline" style={{ color: "#9a7620" }}>
+            What Ballroom Dance Lessons Cost in {c.city}
+          </a>.
+        </p>
+      )}
     </section>
     </>
   );
