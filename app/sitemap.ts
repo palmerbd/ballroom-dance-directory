@@ -4,6 +4,7 @@ import { COMPETITIONS } from "@/lib/competitions-data";
 import { COMP_REGION_LABELS, COMP_STYLE_LABELS } from "@/types/competition";
 import { DANCE_STYLES } from "@/types/studio";
 import { DANCE_BOOKING_RANK } from "@/lib/dancebookingrank";
+import { LESSON_PRICES } from "@/lib/lesson-prices";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 
 // Regenerate daily so studio <lastmod> values (real WP modified dates) stay current
@@ -170,6 +171,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/blog`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE_URL}/dance-lessons-near-me`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${BASE_URL}/cities`, changeFrequency: "weekly", priority: 0.85 },
+    { url: `${BASE_URL}/how-we-verify`, changeFrequency: "monthly", priority: 0.6 },
+    ...LESSON_PRICES.map((r) => ({
+      url: `${BASE_URL}/lesson-prices/${r.slug}`,
+      lastModified: new Date(`${r.checkedOn}T00:00:00Z`),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
   ];
 
   // Oct 2026 recovery plan: only indexable pages belong in the sitemap. City × style,

@@ -460,6 +460,7 @@ export default async function HomePage() {
             <Link href="/tango-dance-lessons"    className="hover:text-gray-900 transition-colors">Tango</Link>
             <Link href="/wedding-dance-lessons"  className="hover:text-gray-900 transition-colors">Wedding Dance</Link>
             <Link href="/about"                  className="hover:text-gray-900 transition-colors">About</Link>
+            <Link href="/how-we-verify"          className="hover:text-gray-900 transition-colors">How We Verify</Link>
             <Link href="/contact"                className="hover:text-gray-900 transition-colors">Contact</Link>
             <Link href="/privacy"                className="hover:text-gray-900 transition-colors">Privacy</Link>
             <Link href="/terms"                  className="hover:text-gray-900 transition-colors">Terms</Link>
