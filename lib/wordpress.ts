@@ -361,11 +361,14 @@ export async function getStudiosPage(
 export async function getStudio(slug: string): Promise<Studio | null> {
   try {
     const posts = await fetchWP<Record<string, unknown>[]>(
-      `/wp/v2/dance_studio?${FIELDS}`,
+      `/wp/v2/dance_studio?${FIELDS},modified_gmt`,
       { slug, status: "publish" }
     );
     if (!posts.length) return null;
     const studio = mapWPPost(posts[0]);
+    // "Details last updated" on the studio page (How we verify, Nov 2026)
+    const modifiedGmt = posts[0].modified_gmt as string | undefined;
+    if (modifiedGmt) studio.modified = `${modifiedGmt}Z`;
 
     // Override tier from Supabase claims — single source of truth for claim status.
     // WP ACF studio_tier field is a best-effort sync; Supabase is authoritative.
