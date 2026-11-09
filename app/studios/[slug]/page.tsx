@@ -13,6 +13,7 @@ import { supabaseAdmin } from "@/lib/supabase-admin";
 import { type StudioProfile } from "@/lib/supabase";
 import { publishedAnswers, type OwnerAnswers } from "@/lib/owner-answers";
 import { findStudioPrice } from "@/lib/lesson-prices";
+import { getBookingCheck, hitLabel, fmtShort } from "@/lib/booking-checks";
 
 export const revalidate = 86400; // 24 hours \u2014 studio data changes infrequently; 1hr was burning Vercel ISR quota
 
@@ -323,6 +324,7 @@ export default async function StudioPage({
     ? new Date(studio.modified).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" })
     : "";
   const priceRow = findStudioPrice(studio.slug);
+  const booking = getBookingCheck(studio.slug);
   const priceRead = priceRow
     ? new Date(`${priceRow.report.checkedOn}T12:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" })
     : "";
@@ -958,14 +960,26 @@ export default async function StudioPage({
                     </dd>
                   </div>
                 )}
-                <div className="flex justify-between gap-3">
-                  <dt className="text-gray-500">Books online</dt>
-                  <dd className="text-gray-400">Not checked yet</dd>
-                </div>
-                <div className="flex justify-between gap-3">
-                  <dt className="text-gray-500">Pays online</dt>
-                  <dd className="text-gray-400">Not checked yet</dd>
-                </div>
+                {([["Books online", booking?.books], ["Pays online", booking?.pays]] as const).map(([label, h]) => (
+                  <div key={label} className="flex justify-between gap-3">
+                    <dt className="text-gray-500 shrink-0">{label}</dt>
+                    <dd className="text-right">
+                      {!booking ? (
+                        <span className="text-gray-400">Not checked yet</span>
+                      ) : h ? (
+                        <>
+                          <a href={h.url} target="_blank" rel="nofollow noopener noreferrer" className="font-medium text-emerald-700 underline">Yes</a>
+                          <span className="block text-xs text-gray-500">{hitLabel(h)}</span>
+                        </>
+                      ) : (
+                        <span className="text-gray-500">Not found on its website</span>
+                      )}
+                    </dd>
+                  </div>
+                ))}
+                {booking && (
+                  <p className="text-xs text-gray-400 text-right -mt-0.5">Website checked {fmtShort(booking.checkedOn)}</p>
+                )}
                 {studio.tier === "paid" && (
                   <div className="flex justify-between gap-3">
                     <dt className="text-gray-500">Placement</dt>
