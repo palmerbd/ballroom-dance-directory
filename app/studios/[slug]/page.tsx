@@ -502,6 +502,18 @@ export default async function StudioPage({
             >
               {chain.label}
             </span>
+            {booking?.books && (
+              <a
+                href={booking.books.url}
+                target="_blank"
+                rel="nofollow noopener noreferrer"
+                title={`Found on the studio's website (${booking.books.registration ? "class registration" : "online booking"} via ${booking.books.via}), checked ${booking.checkedOn}`}
+                className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide hover:brightness-110"
+                style={{ color: "#047857", background: "#ecfdf5" }}
+              >
+                <span aria-hidden="true">&#10003;</span> Provides Online Booking
+              </a>
+            )}
             {studio.tier === "paid" && (
               <span
                 className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold"
