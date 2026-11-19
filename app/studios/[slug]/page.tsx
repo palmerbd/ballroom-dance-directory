@@ -502,7 +502,7 @@ export default async function StudioPage({
             >
               {chain.label}
             </span>
-            {booking?.books && (
+            {booking?.books ? (
               <a
                 href={booking.books.url}
                 target="_blank"
@@ -512,6 +512,29 @@ export default async function StudioPage({
                 style={{ color: "#047857", background: "#ecfdf5" }}
               >
                 <span aria-hidden="true">&#10003;</span> Provides Online Booking
+              </a>
+            ) : (
+              <a
+                href="/how-we-verify"
+                title={booking
+                  ? `We checked the studio's website on ${booking.checkedOn} and didn't find a way to book online. Call or message the studio to book.`
+                  : "We haven't been able to check this studio's website for online booking yet."}
+                className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide hover:brightness-110"
+                style={{ color: "#4b5563", background: "#f3f4f6" }}
+              >
+                Unconfirmed Online Booking
+              </a>
+            )}
+            {booking?.pays && (
+              <a
+                href={booking.pays.url}
+                target="_blank"
+                rel="nofollow noopener noreferrer"
+                title={`Found on the studio's website (via ${booking.pays.via}), checked ${booking.checkedOn}`}
+                className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide hover:brightness-110"
+                style={{ color: "#047857", background: "#ecfdf5" }}
+              >
+                <span aria-hidden="true">&#10003;</span> Takes Online Payments
               </a>
             )}
             {studio.tier === "paid" && (
