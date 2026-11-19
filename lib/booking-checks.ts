@@ -4,7 +4,8 @@
 // schedule, pricing, shop). Data: lib/booking-checks.json, written by
 // SEO Reports/booking_payment_checker.py.
 //
-// Row = [booksVia, booksUrl, paysVia, paysUrl]; "" = not found on the site.
+// Row = [booksVia, booksUrl, paysVia, paysUrl, checkedOn]; "" = not found on the site.
+// Nov 19 2026: second pass in a real browser (catches booking widgets loaded by JavaScript).
 // A studio missing from the file wasn't checked (no website, the site didn't
 // load, or it points to a social or aggregator page) → show "Not checked yet".
 // We never show a flat "No": a scan can miss a booking link, so a miss reads
@@ -14,7 +15,7 @@ import data from "./booking-checks.json";
 
 export const BOOKING_CHECKED_ON = "2026-11-09";
 
-type Row = [string, string, string, string];
+type Row = [string, string, string, string, string?]; // + date checked (ISO), when present
 const ROWS = data as unknown as Record<string, Row>;
 
 /** Class-registration systems: you enrol in a class or term rather than book a slot. */
@@ -44,7 +45,7 @@ function hit(via: string, url: string): BookingHit | null {
 export function getBookingCheck(slug: string): BookingCheck | null {
   const row = ROWS[slug];
   if (!row) return null;
-  return { checkedOn: BOOKING_CHECKED_ON, books: hit(row[0], row[1]), pays: hit(row[2], row[3]) };
+  return { checkedOn: row[4] || BOOKING_CHECKED_ON, books: hit(row[0], row[1]), pays: hit(row[2], row[3]) };
 }
 
 /** "via Mindbody", "class registration via Jackrabbit", "on its website" */
