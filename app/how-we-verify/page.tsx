@@ -131,11 +131,13 @@ export default function HowWeVerifyPage() {
           <section className="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
             <h2 className="font-display font-bold text-gray-900 text-xl mb-4">Online booking and payment</h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              On November 9, 2026, we checked every listed studio with a working website, about 3,300 sites, for
-              online booking and payment. A “Yes” links to what we found, such as a Mindbody schedule or a checkout
-              page for an intro offer. When we find nothing we say “Not found on its website”, never a flat “No”: a
-              booking button that only appears after a site loads its scripts can be missed. Studios whose site
-              didn&apos;t load, or that list only a social media page, show “Not checked yet”.
+              We checked every listed studio with a working website, about 3,300 sites, on November 9, 2026, and
+              again on November 19 in a real browser to catch booking buttons that only appear once a site loads its
+              scripts. A “Yes” or a green “Provides Online Booking” badge links to what we found, such as a Mindbody
+              schedule or a checkout page for an intro offer. When we find nothing, the listing shows “Unconfirmed
+              Online Booking” and “Not found on its website”, never a flat “No”: the studio may still take bookings
+              in a way we can&apos;t see. Studios whose site didn&apos;t load, or that list only a social media page,
+              show “Not checked yet”.
             </p>
             <p className="text-gray-700 leading-relaxed">
               We&apos;ll re-run this check monthly. Studio owners who see it wrong can tell us and we&apos;ll re-check.
