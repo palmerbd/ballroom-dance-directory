@@ -258,8 +258,36 @@ const STUDIO_LIST_STAGGER = 900;
 
 // ── Public API ────────────────────────────────────────────────────────────────
 
-/** All published studios as lightweight cards — fetches all pages automatically */
+// Nov 2026: every hub/style page, the homepage and the sitemaps read the whole
+// catalog. When many of them render at once (e.g. Googlebot crawling hundreds of
+// hubs), each render pulled ~41 WP pages and the small WP VPS answered with
+// Cloudflare 520/525s, so cold renders 5xx'd. Now they all read ONE copy of the
+// catalog from /api/studios-catalog, which Vercel caches for 24h and keeps serving
+// (stale) if WP is down during a refresh. Direct WP reads are the fallback.
+const CATALOG_URL =
+  process.env.STUDIOS_CATALOG_URL ||
+  `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.ballroomdancedirectory.com"}/api/studios-catalog`;
+const MIN_CATALOG_SIZE = 1000; // a much smaller list means something went wrong
+
+/** All published studios as lightweight cards (shared cached catalog, WP fallback). */
 export async function getAllStudios(perPage = 100): Promise<StudioCard[]> {
+  try {
+    const res = await fetch(CATALOG_URL, {
+      next: { revalidate: 3600 },
+      headers: { "x-bdd-internal": "catalog" },
+    });
+    if (res.ok) {
+      const body = (await res.json()) as { studios?: StudioCard[] };
+      if (Array.isArray(body.studios) && body.studios.length >= MIN_CATALOG_SIZE) return body.studios;
+    }
+  } catch {
+    // fall through to WordPress
+  }
+  return getAllStudiosFromWP(perPage);
+}
+
+/** Reads the catalog straight from WordPress. Only /api/studios-catalog and the fallback above call this. */
+export async function getAllStudiosFromWP(perPage = 100): Promise<StudioCard[]> {
   try {
     // First page — also tells us how many total pages exist
     const url = new URL(`${WP_API_URL}/wp/v2/dance_studio?${FIELDS}`);
