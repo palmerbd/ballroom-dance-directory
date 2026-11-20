@@ -86,6 +86,8 @@ export default async function LessonPricesPage({ params }: { params: Promise<{ c
       spatialCoverage: { "@type": "Place", name: `${r.city}, ${r.state}` },
       variableMeasured: ["Intro offer", "Intro offer price (USD)", "Other published prices", "No partner needed", "Beginner class"],
       creator: { "@type": "Organization", name: "Ballroom Dance Directory", url: BASE_URL },
+      license: "https://creativecommons.org/licenses/by/4.0/",
+      isAccessibleForFree: true,
       dateModified: r.checkedOn,
     },
     {
@@ -292,6 +294,11 @@ export default async function LessonPricesPage({ params }: { params: Promise<{ c
             publish here. Ballroom Dance Directory is run by the team behind BookDanceLessons, which sells marketing
             services to dance studios, and some studios listed may be its clients. Every price on this page is copied
             from the studio’s own website either way.
+          </p>
+          <p>
+            You may reuse these figures under{" "}
+            <a href="https://creativecommons.org/licenses/by/4.0/" className="underline" style={{ color: "#9a7620" }} rel="license noopener" target="_blank">CC BY 4.0</a>
+            : credit Ballroom Dance Directory and link to this page.
           </p>
           <p>
             Spot something out of date? Email{" "}
